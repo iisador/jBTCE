@@ -1,4 +1,4 @@
 jBTCE
 =====
 
-btc-e.com trade api wrapper
+btc-e.com trade api wrapper. 
