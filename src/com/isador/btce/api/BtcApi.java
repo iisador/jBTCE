@@ -17,7 +17,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.isador.btce.api.constants.Pair;
@@ -32,7 +31,6 @@ import com.isador.btce.api.tools.Nonce;
  * @author Isador BTC-E API main class. Generates mac key when instance created.
  */
 public class BtcApi {
-    public static final String FEE_URL = "https://btc-e.com/api/2/%s/fee";
     // Mac key
     private static Mac mac = null;
 
@@ -513,31 +511,5 @@ public class BtcApi {
 
 	JsonObject result = apiCall("Trade", params);
 	return (result != null) ? new TradeResult(result) : null;
-    }
-
-    /**
-     * Returns pair fee.
-     * 
-     * @param pair
-     *            trade pair
-     * @return
-     * @throws IOException
-     */
-    public double getFee(Pair pair) throws IOException {
-	double fee = -1.0;
-	if (pair == null)
-	    return fee;
-
-	String url = String.format(FEE_URL, pair.toString().toLowerCase());
-	String serverAnswer = httpClient.send(url, null, null, "POST");
-	if (serverAnswer != null) {
-	    try {
-		JsonObject jo = p.parse(serverAnswer).getAsJsonObject();
-		fee = jo.get("trade").getAsDouble();
-	    } catch (JsonParseException e) {
-		;
-	    }
-	}
-	return fee;
     }
 }
