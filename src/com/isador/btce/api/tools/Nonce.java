@@ -3,10 +3,10 @@ package com.isador.btce.api.tools;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Nonce {
-	private static AtomicLong nonce = new AtomicLong(
-			System.currentTimeMillis() / 1000L);
+    private static final AtomicLong nonce = new AtomicLong(
+	    System.currentTimeMillis() / 1000L);
 
-	public static long get() {
-		return nonce.getAndIncrement();
-	}
+    public static long get() {
+	return nonce.getAndIncrement();
+    }
 }
