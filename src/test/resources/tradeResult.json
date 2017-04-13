@@ -1,0 +1,25 @@
+{
+  "success": 1,
+  "return": {
+    "received": 0.00100000,
+    "remains": 0,
+    "order_id": 0,
+    "funds": {
+      "usd": 16.5607577,
+      "btc": 0,
+      "ltc": 0.00000999,
+      "nmc": 0,
+      "rur": 0.00006105,
+      "eur": 0,
+      "nvc": 0,
+      "trc": 0,
+      "ppc": 0,
+      "ftc": 0,
+      "xpm": 0,
+      "cnh": 0,
+      "gbp": 0,
+      "dsh": 0,
+      "eth": 0
+    }
+  }
+}

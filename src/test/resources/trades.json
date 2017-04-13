@@ -1,0 +1,1352 @@
+[
+  {
+    "date": 1491542177,
+    "price": 1178,
+    "amount": 1.78,
+    "tid": 97938795,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542177,
+    "price": 1177.999,
+    "amount": 0.22,
+    "tid": 97938794,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542171,
+    "price": 1177.999,
+    "amount": 0.06942265,
+    "tid": 97938793,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491542143,
+    "price": 1173.093,
+    "amount": 0.22,
+    "tid": 97938791,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491542109,
+    "price": 1178,
+    "amount": 0.11893041,
+    "tid": 97938790,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542109,
+    "price": 1177.999,
+    "amount": 0.04999997,
+    "tid": 97938789,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542088,
+    "price": 1178,
+    "amount": 1.05951913,
+    "tid": 97938784,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542088,
+    "price": 1177.999,
+    "amount": 0.5,
+    "tid": 97938783,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542088,
+    "price": 1177.999,
+    "amount": 0.1,
+    "tid": 97938782,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542088,
+    "price": 1177.9,
+    "amount": 0.05,
+    "tid": 97938781,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542088,
+    "price": 1177.899,
+    "amount": 0.29048087,
+    "tid": 97938780,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542026,
+    "price": 1177.999,
+    "amount": 0.05,
+    "tid": 97938759,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542024,
+    "price": 1173.369,
+    "amount": 0.12648084,
+    "tid": 97938758,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542024,
+    "price": 1173.371,
+    "amount": 0.01351916,
+    "tid": 97938757,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491542009,
+    "price": 1178,
+    "amount": 1.17014036,
+    "tid": 97938753,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542009,
+    "price": 1177.937,
+    "amount": 0.02113277,
+    "tid": 97938752,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542009,
+    "price": 1177.894,
+    "amount": 0.017058,
+    "tid": 97938751,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542009,
+    "price": 1177.894,
+    "amount": 0.017029,
+    "tid": 97938750,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542009,
+    "price": 1177.891,
+    "amount": 2.77463987,
+    "tid": 97938749,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542003,
+    "price": 1177.891,
+    "amount": 2.22536013,
+    "tid": 97938746,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542003,
+    "price": 1177.85,
+    "amount": 0.15,
+    "tid": 97938745,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542003,
+    "price": 1177.816,
+    "amount": 0.1,
+    "tid": 97938744,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542003,
+    "price": 1177.798,
+    "amount": 0.06334661,
+    "tid": 97938743,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542003,
+    "price": 1177.797,
+    "amount": 0.00297963,
+    "tid": 97938742,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542003,
+    "price": 1177.65,
+    "amount": 0.073,
+    "tid": 97938741,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542003,
+    "price": 1177.649,
+    "amount": 0.38531363,
+    "tid": 97938740,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491542002,
+    "price": 1173.369,
+    "amount": 0.014,
+    "tid": 97938739,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541982,
+    "price": 1177.65,
+    "amount": 0.027,
+    "tid": 97938727,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541975,
+    "price": 1177.647,
+    "amount": 0.01438465,
+    "tid": 97938697,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541975,
+    "price": 1177.647,
+    "amount": 0.00601535,
+    "tid": 97938696,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541939,
+    "price": 1177.644,
+    "amount": 0.08727502,
+    "tid": 97938687,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541939,
+    "price": 1177.643,
+    "amount": 0.01272498,
+    "tid": 97938686,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541899,
+    "price": 1177.792,
+    "amount": 0.01002,
+    "tid": 97938680,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541884,
+    "price": 1176.699,
+    "amount": 0.0135,
+    "tid": 97938671,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541873,
+    "price": 1177.798,
+    "amount": 0.44991082,
+    "tid": 97938670,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541873,
+    "price": 1177.798,
+    "amount": 0.81808918,
+    "tid": 97938669,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541873,
+    "price": 1173.331,
+    "amount": 2.732,
+    "tid": 97938668,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541868,
+    "price": 1173.331,
+    "amount": 2,
+    "tid": 97938667,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541862,
+    "price": 1173.331,
+    "amount": 0.008,
+    "tid": 97938665,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541832,
+    "price": 1172.209,
+    "amount": 0.09,
+    "tid": 97938657,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541795,
+    "price": 1172.204,
+    "amount": 0.001,
+    "tid": 97938642,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541763,
+    "price": 1173.331,
+    "amount": 0.1515886,
+    "tid": 97938623,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541763,
+    "price": 1173.332,
+    "amount": 0.00852273,
+    "tid": 97938622,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541763,
+    "price": 1173.332,
+    "amount": 0.00852273,
+    "tid": 97938621,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541755,
+    "price": 1177.798,
+    "amount": 0.30219487,
+    "tid": 97938615,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541755,
+    "price": 1177.4,
+    "amount": 0.11,
+    "tid": 97938614,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541755,
+    "price": 1177.15,
+    "amount": 0.06,
+    "tid": 97938613,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541755,
+    "price": 1177,
+    "amount": 0.001,
+    "tid": 97938612,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541755,
+    "price": 1176.85,
+    "amount": 0.1,
+    "tid": 97938611,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541755,
+    "price": 1176.818,
+    "amount": 1.12,
+    "tid": 97938610,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541755,
+    "price": 1176.7,
+    "amount": 0.001,
+    "tid": 97938609,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541755,
+    "price": 1176.699,
+    "amount": 1.30580513,
+    "tid": 97938608,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541668,
+    "price": 1173.066,
+    "amount": 0.007984,
+    "tid": 97938589,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541646,
+    "price": 1177.798,
+    "amount": 2,
+    "tid": 97938586,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541646,
+    "price": 1177.798,
+    "amount": 1.87971595,
+    "tid": 97938585,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541646,
+    "price": 1177.777,
+    "amount": 0.49402002,
+    "tid": 97938584,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541646,
+    "price": 1177.77,
+    "amount": 0.00112601,
+    "tid": 97938583,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541646,
+    "price": 1177.77,
+    "amount": 0.62513802,
+    "tid": 97938582,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541631,
+    "price": 1177.769,
+    "amount": 0.03217895,
+    "tid": 97938574,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.77,
+    "amount": 0.03475199,
+    "tid": 97938573,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938572,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938571,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938570,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938569,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938568,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851921,
+    "tid": 97938567,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851921,
+    "tid": 97938566,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851921,
+    "tid": 97938565,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851921,
+    "tid": 97938564,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851921,
+    "tid": 97938563,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938562,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938561,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938560,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938559,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938558,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938557,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938556,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938555,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938554,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.769,
+    "amount": 0.00851918,
+    "tid": 97938553,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.311,
+    "amount": 1.12,
+    "tid": 97938552,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.311,
+    "amount": 0.21716737,
+    "tid": 97938551,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.31,
+    "amount": 0.00852249,
+    "tid": 97938550,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.31,
+    "amount": 0.00852249,
+    "tid": 97938549,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.31,
+    "amount": 0.00852249,
+    "tid": 97938548,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.31,
+    "amount": 0.00852249,
+    "tid": 97938547,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.31,
+    "amount": 0.00852249,
+    "tid": 97938546,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.31,
+    "amount": 0.00852249,
+    "tid": 97938545,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.31,
+    "amount": 0.00852249,
+    "tid": 97938544,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.31,
+    "amount": 0.00852249,
+    "tid": 97938543,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1177.31,
+    "amount": 0.00852249,
+    "tid": 97938542,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.888,
+    "amount": 0.03139,
+    "tid": 97938541,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.85,
+    "amount": 0.02046144,
+    "tid": 97938540,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00852772,
+    "tid": 97938539,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00846613,
+    "tid": 97938538,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00846613,
+    "tid": 97938537,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00846613,
+    "tid": 97938536,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00852626,
+    "tid": 97938535,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00852626,
+    "tid": 97938534,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00765189,
+    "tid": 97938533,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00765189,
+    "tid": 97938532,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00765189,
+    "tid": 97938531,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00852577,
+    "tid": 97938530,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00852577,
+    "tid": 97938529,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00852577,
+    "tid": 97938528,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00852577,
+    "tid": 97938527,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00852577,
+    "tid": 97938526,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1176.849,
+    "amount": 0.00765189,
+    "tid": 97938525,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1175,
+    "amount": 0.02,
+    "tid": 97938524,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1174.7,
+    "amount": 0.11,
+    "tid": 97938523,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1174.45,
+    "amount": 0.06,
+    "tid": 97938522,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541626,
+    "price": 1174,
+    "amount": 0.014928,
+    "tid": 97938521,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541622,
+    "price": 1174,
+    "amount": 0.019,
+    "tid": 97938520,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541622,
+    "price": 1173.028,
+    "amount": 0.015,
+    "tid": 97938519,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541621,
+    "price": 1172.201,
+    "amount": 0.00948008,
+    "tid": 97938518,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541614,
+    "price": 1172.201,
+    "amount": 0.002,
+    "tid": 97938517,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541613,
+    "price": 1174,
+    "amount": 0.036072,
+    "tid": 97938516,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541610,
+    "price": 1172.201,
+    "amount": 24.36443897,
+    "tid": 97938515,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541603,
+    "price": 1170.65,
+    "amount": 0.01634051,
+    "tid": 97938513,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541602,
+    "price": 1170.65,
+    "amount": 0.06968096,
+    "tid": 97938512,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541601,
+    "price": 1170.65,
+    "amount": 0.1,
+    "tid": 97938511,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541601,
+    "price": 1170.651,
+    "amount": 0.46791145,
+    "tid": 97938510,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541575,
+    "price": 1172.2,
+    "amount": 0.02542895,
+    "tid": 97938505,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541567,
+    "price": 1172.2,
+    "amount": 0.01535109,
+    "tid": 97938502,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541542,
+    "price": 1170.651,
+    "amount": 0.06172667,
+    "tid": 97938494,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541490,
+    "price": 1172.2,
+    "amount": 0.05,
+    "tid": 97938459,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541470,
+    "price": 1172.2,
+    "amount": 0.424,
+    "tid": 97938451,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541441,
+    "price": 1172.2,
+    "amount": 0.0031377,
+    "tid": 97938443,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541422,
+    "price": 1172.2,
+    "amount": 0.01172025,
+    "tid": 97938435,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541413,
+    "price": 1172.201,
+    "amount": 0.31149403,
+    "tid": 97938425,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541409,
+    "price": 1172.201,
+    "amount": 2.34772031,
+    "tid": 97938420,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541409,
+    "price": 1172.2,
+    "amount": 0.65827969,
+    "tid": 97938419,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541373,
+    "price": 1170.564,
+    "amount": 0.27,
+    "tid": 97938392,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541372,
+    "price": 1172.2,
+    "amount": 0.01172031,
+    "tid": 97938391,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541366,
+    "price": 1170.564,
+    "amount": 0.4,
+    "tid": 97938387,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541299,
+    "price": 1170.856,
+    "amount": 0.02099099,
+    "tid": 97938366,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541297,
+    "price": 1170.51,
+    "amount": 0.1015893,
+    "tid": 97938363,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541297,
+    "price": 1170.855,
+    "amount": 0.0875743,
+    "tid": 97938362,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541297,
+    "price": 1170.856,
+    "amount": 0.010506,
+    "tid": 97938361,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541272,
+    "price": 1172.2,
+    "amount": 0.010506,
+    "tid": 97938355,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541238,
+    "price": 1172.201,
+    "amount": 0.51272314,
+    "tid": 97938346,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541238,
+    "price": 1172.2,
+    "amount": 0.03365331,
+    "tid": 97938345,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541235,
+    "price": 1172.201,
+    "amount": 0.01,
+    "tid": 97938343,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541231,
+    "price": 1171.7,
+    "amount": 0.03365332,
+    "tid": 97938342,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541231,
+    "price": 1172.15,
+    "amount": 0.01634668,
+    "tid": 97938341,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541206,
+    "price": 1172.201,
+    "amount": 0.01,
+    "tid": 97938331,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541182,
+    "price": 1172.15,
+    "amount": 0.58365331,
+    "tid": 97938324,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  },
+  {
+    "date": 1491541159,
+    "price": 1172.201,
+    "amount": 0.14,
+    "tid": 97938317,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541148,
+    "price": 1172.201,
+    "amount": 0.07757126,
+    "tid": 97938287,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "bid"
+  },
+  {
+    "date": 1491541125,
+    "price": 1172.15,
+    "amount": 0.13167891,
+    "tid": 97938279,
+    "price_currency": "USD",
+    "item": "BTC",
+    "trade_type": "ask"
+  }
+]
