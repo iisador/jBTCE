@@ -46,11 +46,7 @@ public class PrivateApiTest {
 
     @Before
     public void setUp() throws Exception {
-        try {
-            api = new PrivateApi(connector);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        api = new PrivateApi(connector);
     }
 
     @Test
@@ -200,7 +196,7 @@ public class PrivateApiTest {
     public void testGetTradeHistoryList() {
         when(connector.signedPost(eq("TradeHistory"), any())).thenReturn(getJson("tradeHistory.json"));
 
-        List<TradeHistory> trades = api.getTradesList(null,null,null,null,null,null,null,null);
+        List<TradeHistory> trades = api.getTradesList(null, null, null, null, null, null, null, null);
 
         assertNotNull("Trade list must be not null", trades);
         assertFalse("Trade list must be non empty", trades.isEmpty());
