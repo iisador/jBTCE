@@ -31,7 +31,7 @@ public class PrivateApi extends AbstractApi {
 
     private final Connector connector;
 
-    public PrivateApi(Connector connector) throws InvalidKeyException, NoSuchAlgorithmException {
+    public PrivateApi(Connector connector) {
         super(ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
                 Funds.class, new FundsDeserializer()));
         this.connector = checkNotNull(connector, "Connector instance should be not null");
