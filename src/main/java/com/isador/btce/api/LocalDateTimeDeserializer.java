@@ -20,7 +20,7 @@ public class LocalDateTimeDeserializer implements JsonDeserializer<LocalDateTime
         return deserialize(json.getAsLong());
     }
 
-    public static LocalDateTime deserialize(long epochSeoonds) {
-        return LocalDateTime.ofEpochSecond(epochSeoonds, 0, ZoneOffset.UTC);
+    public static LocalDateTime deserialize(long epochSeconds) {
+        return LocalDateTime.ofEpochSecond(epochSeconds, 0, ZoneOffset.UTC);
     }
 }
