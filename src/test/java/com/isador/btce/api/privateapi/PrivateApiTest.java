@@ -128,7 +128,7 @@ public class PrivateApiTest {
         double amount = 0.001;
         when(connector.signedPost(eq("Trade"), any())).thenReturn(getJson("tradeResult.json"));
 
-        com.isador.btce.api.privateapi.TradeResult tResult = api.trade(Pair.BTC_USD, Operation.BUY, amount, 1);
+        TradeResult tResult = api.trade(Pair.BTC_USD, Operation.BUY, amount, 1);
 
         assertNotNull("Trade result must be not null", tResult);
         assertEquals("TradeResult.orderId doesn't match", 0, tResult.getOrderId());
@@ -174,8 +174,6 @@ public class PrivateApiTest {
 
         assertNotNull("Order list must be not null", transactions);
         assertFalse("Order list must be non empty", transactions.isEmpty());
-
-        System.out.println(transactions.get(0));
     }
 
     @Test
@@ -186,8 +184,6 @@ public class PrivateApiTest {
 
         assertNotNull("Order list must be not null", orders);
         assertFalse("Order list must be non empty", orders.isEmpty());
-
-        System.out.println(orders.get(0));
     }
 
     @Test
@@ -198,8 +194,6 @@ public class PrivateApiTest {
 
         assertNotNull("Trade list must be not null", trades);
         assertFalse("Trade list must be non empty", trades.isEmpty());
-
-        System.out.println(trades.get(0));
     }
 
     private void assertFunds(Funds funds) {
