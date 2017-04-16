@@ -2,7 +2,6 @@ package com.isador.btce.api;
 
 import com.isador.btce.api.constants.Pair;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
