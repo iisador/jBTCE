@@ -52,3 +52,4 @@ System.out.println(info);
 
 Next release goals:
 * Public V3 support
+* Logging support
