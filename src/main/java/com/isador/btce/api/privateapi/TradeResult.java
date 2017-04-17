@@ -11,7 +11,7 @@ public class TradeResult {
     @SerializedName("order_id")
     private final long orderId;
 
-    public TradeResult(double received, double remains, long orderId, Funds funds) {
+    TradeResult(double received, double remains, long orderId, Funds funds) {
         this.received = received;
         this.remains = remains;
         this.orderId = orderId;

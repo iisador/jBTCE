@@ -2,6 +2,7 @@ package com.isador.btce.api.privateapi;
 
 import com.isador.btce.api.BTCEException;
 import com.isador.btce.api.Connector;
+import com.isador.btce.api.constants.Currency;
 import com.isador.btce.api.constants.Operation;
 import com.isador.btce.api.constants.Pair;
 import com.isador.btce.api.privateapi.UserInfo.Rights;
@@ -15,11 +16,15 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.isador.btce.api.LocalDateTimeDeserializer.deserialize;
 import static com.isador.btce.api.TestUtils.getErrorJson;
 import static com.isador.btce.api.TestUtils.getJson;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -65,21 +70,17 @@ public class PrivateApiTest {
 
     @Test
     public void testGetUserInfo() {
+        UserInfo expected = new UserInfo(new Rights(1, 1, 0), getExpectedFunds(), 0, deserialize(1491468795), 0);
         when(connector.signedPost(eq("getInfo"), any())).thenReturn(getJson("info.json"));
 
-        UserInfo info = api.getUserInfo();
-        assertNotNull("User info must be not null", info);
-        assertEquals("Open orders count doesn't match", 0, info.getOpenOrdersCount());
-        assertEquals("Transaction count doesn't match", 0, info.getTransactionCount());
-        assertEquals("Server time doesn't match", deserialize(1491468795), info.getServerTime());
+        UserInfo actual = api.getUserInfo();
 
-        assertFunds(info.getFunds());
-
-        Rights rights = info.getRights();
-        assertNotNull("Rights must be not null", rights);
-        assertEquals("Rights.info doesn't match", 1, rights.getInfo());
-        assertEquals("Rights.trade doesn't match", 1, rights.getTrade());
-        assertEquals("Rights.withdraw doesn't match", 0, rights.getWithdraw());
+        assertNotNull("User info must be not null", actual);
+        assertEquals("Open orders count doesn't match", expected.getOpenOrdersCount(), actual.getOpenOrdersCount());
+        assertEquals("Transaction count doesn't match", expected.getTransactionCount(), actual.getTransactionCount());
+        assertEquals("Server time doesn't match", expected.getServerTime(), actual.getServerTime());
+        assertRightsEquals(expected.getRights(), actual.getRights());
+        assertFunds(expected.getFunds(), actual.getFunds());
     }
 
     @Test
@@ -126,16 +127,18 @@ public class PrivateApiTest {
     @Test
     public void testTrade() {
         double amount = 0.001;
+        TradeResult expected = new TradeResult(amount, 0, 0, getExpectedFunds());
         when(connector.signedPost(eq("Trade"), any())).thenReturn(getJson("tradeResult.json"));
 
-        TradeResult tResult = api.trade(Pair.BTC_USD, Operation.BUY, amount, 1);
+        TradeResult actual = api.trade(Pair.BTC_USD, Operation.BUY, amount, 1);
 
-        assertNotNull("Trade result must be not null", tResult);
-        assertEquals("TradeResult.orderId doesn't match", 0, tResult.getOrderId());
-        assertEquals("TradeResult.received doesn't match with amount requested", amount, tResult.getReceived(), 0.0000001);
-        assertEquals("TradeResult.remains doesn't match", 0, tResult.getRemains(), 0.0000001);
+        assertNotNull("Trade result must be not null", actual);
+        assertEquals("TradeResult.orderId doesn't match", expected.getOrderId(), actual.getOrderId());
+        assertTrue("OrderId is not null - so trade scheduled", actual.isTradeComplete());
+        assertEquals("TradeResult.received doesn't match with amount requested", expected.getReceived(), actual.getReceived(), 0.0000001);
+        assertEquals("TradeResult.remains doesn't match", expected.getRemains(), actual.getRemains(), 0.0000001);
 
-        assertFunds(tResult.getFunds());
+        assertFunds(expected.getFunds(), actual.getFunds());
     }
 
     @Test
@@ -156,14 +159,14 @@ public class PrivateApiTest {
 
     @Test
     public void testCancelOrder() {
+        CancelOrderResult expected = new CancelOrderResult(123, getExpectedFunds());
         when(connector.signedPost(eq("CancelOrder"), any())).thenReturn(getJson("cancelOrder.json"));
 
-        CancelOrderResult result = api.cancelOrder(123);
+        CancelOrderResult actual = api.cancelOrder(123);
 
-        assertNotNull("Cancel order result must be not null", result);
-        assertEquals("Order id doesn't match", 123, result.getOrderId());
-
-        assertFunds(result.getFunds());
+        assertNotNull("Cancel order result must be not null", actual);
+        assertEquals("Actual cancel order result doesn't match", expected, actual);
+        assertFunds(expected.getFunds(), actual.getFunds());
     }
 
     @Test
@@ -196,17 +199,42 @@ public class PrivateApiTest {
         assertFalse("Trade list must be non empty", trades.isEmpty());
     }
 
-    private void assertFunds(Funds funds) {
-        assertNotNull("Funds must be not null", funds);
-        assertEquals("Funds.btc doesn't match expected", 0, funds.getBtc(), 0.0000001);
-        assertEquals("Funds.usd doesn't match expected", 16.5607577, funds.getUsd(), 0.0000001);
-        assertEquals("Funds.rur doesn't match expected", 0.00006105, funds.getRur(), 0.0000001);
-        assertEquals("Funds.eur doesn't match expected", 0, funds.getEur(), 0.0000001);
-        assertEquals("Funds.ltc doesn't match expected", 0.00000999, funds.getLtc(), 0.0000001);
-        assertEquals("Funds.nmc doesn't match expected", 0, funds.getNmc(), 0.0000001);
-        assertEquals("Funds.nvc doesn't match expected", 0, funds.getNvc(), 0.0000001);
-        assertEquals("Funds.ppc doesn't match expected", 0, funds.getPpc(), 0.0000001);
-        assertEquals("Funds.dsh doesn't match expected", 0, funds.getDsh(), 0.0000001);
-        assertEquals("Funds.eth doesn't match expected", 0, funds.getEth(), 0.0000001);
+    private void assertRightsEquals(Rights expected, Rights actual) {
+        if (expected == null) {
+            assertNull("Actual rights is not null", actual);
+            return;
+        }
+
+        assertNotNull("Actual user rights must be not null", actual);
+        assertEquals("Rights.info doesn't match", expected.getInfo(), actual.getInfo());
+        assertEquals("Rights.trade doesn't match", expected.getTrade(), actual.getTrade());
+        assertEquals("Rights.withdraw doesn't match", expected.getWithdraw(), actual.getWithdraw());
+    }
+
+    private void assertFunds(Funds expected, Funds actual) {
+        if (expected == null) {
+            assertNull("Actual funds must be null", actual);
+            return;
+        }
+
+        assertNotNull("Funds must be not null", actual);
+        assertEquals("Actual btc value doesn't match expected", expected.getBtc(), actual.getBtc(), 0.0000001);
+        assertEquals("Actual usd value doesn't match expected", expected.getUsd(), actual.getUsd(), 0.0000001);
+        assertEquals("Actual rur value doesn't match expected", expected.getRur(), actual.getRur(), 0.0000001);
+        assertEquals("Actual eur value doesn't match expected", expected.getEur(), actual.getEur(), 0.0000001);
+        assertEquals("Actual ltc value doesn't match expected", expected.getLtc(), actual.getLtc(), 0.0000001);
+        assertEquals("Actual nmc value doesn't match expected", expected.getNmc(), actual.getNmc(), 0.0000001);
+        assertEquals("Actual nvc value doesn't match expected", expected.getNvc(), actual.getNvc(), 0.0000001);
+        assertEquals("Actual ppc value doesn't match expected", expected.getPpc(), actual.getPpc(), 0.0000001);
+        assertEquals("Actual dsh value doesn't match expected", expected.getDsh(), actual.getDsh(), 0.0000001);
+        assertEquals("Actual eth value doesn't match expected", expected.getEth(), actual.getEth(), 0.0000001);
+    }
+
+    private Funds getExpectedFunds() {
+        Map<Currency, Double> map = new HashMap<>();
+        map.put(Currency.USD, 16.5607577);
+        map.put(Currency.RUR, 0.00006105);
+        map.put(Currency.LTC, 0.00000999);
+        return new Funds(map);
     }
 }

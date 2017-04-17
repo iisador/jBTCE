@@ -56,7 +56,8 @@ public final class Funds {
             return getFund(Currency.ETH);
         }
 
-        @Override public String toString() {
+        @Override
+        public String toString() {
             return "Funds{" +
                     "fundsMap=" + fundsMap +
                     '}';

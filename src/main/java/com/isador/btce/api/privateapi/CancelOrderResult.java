@@ -11,7 +11,7 @@ public class CancelOrderResult {
 
     private final Funds funds;
 
-    private CancelOrderResult(long orderId, Funds funds) {
+    CancelOrderResult(long orderId, Funds funds) {
         this.orderId = orderId;
         this.funds = funds;
     }

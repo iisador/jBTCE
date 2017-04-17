@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/iisador/jBTCE.svg?branch=master)](https://travis-ci.org/iisador/jBTCE)
+[![Coverage Status](https://coveralls.io/repos/github/iisador/jBTCE/badge.svg?branch=master)](https://coveralls.io/github/iisador/jBTCE?branch=master)
 
 jBTCE
 =====
