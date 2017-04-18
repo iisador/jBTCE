@@ -15,7 +15,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -171,32 +170,72 @@ public class PrivateApiTest {
 
     @Test
     public void testGetTransactionList() {
+        Transaction expectedTransaction = new Transaction(4, 1.09920000, Currency.USD, 2, deserialize(1491904521), 3574749223L, "Cancel order :order:1703917256:");
         when(connector.signedPost(eq("TransHistory"), any())).thenReturn(getJson("transactionHistory.json"));
 
         List<Transaction> transactions = api.getTransactionsList(null, null, null, null, null, null, null);
 
-        assertNotNull("Order list must be not null", transactions);
-        assertFalse("Order list must be non empty", transactions.isEmpty());
+        assertNotNull("Transactions list must be not null", transactions);
+        assertFalse("Transactions list must be non empty", transactions.isEmpty());
+        transactions.stream()
+                .forEach(transaction -> assertNotNull("Transactions list should not contain null elements", transaction));
+
+        Transaction actualTransaction = transactions.get(0);
+
+        assertEquals("Actual transaction doesn't match", expectedTransaction, actualTransaction);
+        assertEquals("Actual transaction amount doesn't match", expectedTransaction.getAmount(), actualTransaction.getAmount(), 0.000001);
+        assertEquals("Actual transaction currency doesn't match", expectedTransaction.getCurrency(), actualTransaction.getCurrency());
+        assertEquals("Actual transaction description doesn't match", expectedTransaction.getDescription(), actualTransaction.getDescription());
+        assertEquals("Actual transaction status doesn't match", expectedTransaction.getStatus(), actualTransaction.getStatus());
+        assertEquals("Actual transaction timestamp doesn't match", expectedTransaction.getTimestamp(), actualTransaction.getTimestamp());
+        assertEquals("Actual transaction type doesn't match", expectedTransaction.getType(), actualTransaction.getType());
     }
 
     @Test
     public void testGetOrderList() {
+        Order expectedOrder = new Order(1696817430L, Pair.BTC_USD, Operation.BUY, 0.00100000, 1158.82900000, 0, deserialize(1491563567));
         when(connector.signedPost(eq("OrderList"), any())).thenReturn(getJson("orders.json"));
 
-        List<Order> orders = api.getOrderList(1L, 1, 1L, 1L, null, LocalDateTime.now(), LocalDateTime.MAX, Pair.BTC_USD, null);
+        List<Order> orders = api.getOrderList(null, null, null, null, null, null, null, null, null);
 
         assertNotNull("Order list must be not null", orders);
         assertFalse("Order list must be non empty", orders.isEmpty());
+        orders.stream()
+                .forEach(order -> assertNotNull("Order list should not contain null elements", order));
+
+        Order actualOrder = orders.get(0);
+        assertEquals("Actual order doesn't match", expectedOrder, actualOrder);
+        assertEquals("Actual order amount doesn't match", expectedOrder.getAmount(), actualOrder.getAmount(), 0.000001);
+        assertEquals("Actual order status doesn't match", expectedOrder.getStatus(), actualOrder.getStatus());
+        assertEquals("Actual order type doesn't match", expectedOrder.getType(), actualOrder.getType());
+        assertEquals("Actual order pair doesn't match", expectedOrder.getPair(), actualOrder.getPair());
+        assertEquals("Actual order rate doesn't match", expectedOrder.getRate(), actualOrder.getRate(), 0.000001);
+        assertEquals("Actual order timestamp doesn't match", expectedOrder.getTimestampCreated(), actualOrder.getTimestampCreated());
     }
 
     @Test
     public void testGetTradeHistoryList() {
+        TradeHistory expectedTh = new TradeHistory(Pair.BTC_USD, Operation.BUY,
+                                                   0.00100000, 1180.00000000, 1696641686,
+                                                   false, deserialize(1491555286), 97951082L);
         when(connector.signedPost(eq("TradeHistory"), any())).thenReturn(getJson("tradeHistory.json"));
 
         List<TradeHistory> trades = api.getTradesList(null, null, null, null, null, null, null, null);
 
-        assertNotNull("Trade list must be not null", trades);
-        assertFalse("Trade list must be non empty", trades.isEmpty());
+        assertNotNull("Trade history list must be not null", trades);
+        assertFalse("Trade history list must be non empty", trades.isEmpty());
+        trades.stream()
+                .forEach(trade -> assertNotNull("Trade history list should not contain null elements", trade));
+
+        TradeHistory actualTh = trades.get(0);
+        assertEquals("Actual trade hostory doesn't match", expectedTh, actualTh);
+        assertEquals("Actual trade hostory rate doesn't match", expectedTh.getRate(), actualTh.getRate(), 0.0000001);
+        assertEquals("Actual trade hostory pair doesn't match", expectedTh.getPair(), actualTh.getPair());
+        assertEquals("Actual trade hostory type doesn't match", expectedTh.getType(), actualTh.getType());
+        assertEquals("Actual trade hostory amount doesn't match", expectedTh.getAmount(), actualTh.getAmount(), 0.0000001);
+        assertEquals("Actual trade hostory orderId doesn't match", expectedTh.getOrderId(), actualTh.getOrderId());
+        assertEquals("Actual trade hostory timestamp doesn't match", expectedTh.getTimestamp(), actualTh.getTimestamp());
+        assertEquals("Actual trade hostory tradeId doesn't match", expectedTh.getTradeId(), actualTh.getTradeId());
     }
 
     private void assertRightsEquals(Rights expected, Rights actual) {
