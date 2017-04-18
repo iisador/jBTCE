@@ -23,7 +23,7 @@ public final class Trade {
     @SerializedName("trade_type")
     private final TradeType type;
 
-    private Trade(LocalDateTime date, double price, double amount, long tradeId, Currency priceCurrency, Currency item, TradeType type) {
+    Trade(LocalDateTime date, double price, double amount, long tradeId, Currency priceCurrency, Currency item, TradeType type) {
         this.date = date;
         this.price = price;
         this.amount = amount;

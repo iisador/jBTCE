@@ -12,15 +12,12 @@ import com.isador.btce.api.constants.Operation;
 import com.isador.btce.api.constants.Pair;
 import com.isador.btce.api.constants.Sort;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -33,7 +30,7 @@ public class PrivateApi extends AbstractApi {
 
     public PrivateApi(Connector connector) {
         super(ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
-                Funds.class, new FundsDeserializer()));
+                              Funds.class, new FundsDeserializer()));
         this.connector = checkNotNull(connector, "Connector instance should be not null");
     }
 
@@ -50,9 +47,9 @@ public class PrivateApi extends AbstractApi {
         checkArgument(amount > 0, "Invalid trade amount: %s", amount);
 
         Map<String, Object> map = ImmutableMap.of("pair", pair.getName(),
-                "type", operation.name().toLowerCase(),
-                "rate", rate,
-                "amount", amount);
+                                                  "type", operation.name().toLowerCase(),
+                                                  "rate", rate,
+                                                  "amount", amount);
         String json = connector.signedPost("Trade", map);
         JsonElement response = processResponse(json);
         return gson.fromJson(response, TradeResult.class);
@@ -184,6 +181,7 @@ public class PrivateApi extends AbstractApi {
     }
 
     private class ParametersBuiilder {
+
         private final Map<String, Object> parameters;
 
         public ParametersBuiilder() {

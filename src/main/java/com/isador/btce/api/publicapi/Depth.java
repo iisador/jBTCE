@@ -12,8 +12,8 @@ public final class Depth {
     private final SimpleOrder[] asks;
     private final SimpleOrder[] bids;
 
-    private Depth(SimpleOrder[] asks,
-                  SimpleOrder[] bids) {
+    Depth(SimpleOrder[] asks,
+          SimpleOrder[] bids) {
         this.asks = asks;
         this.bids = bids;
     }

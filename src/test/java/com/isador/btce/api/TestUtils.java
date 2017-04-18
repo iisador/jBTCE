@@ -3,9 +3,6 @@ package com.isador.btce.api;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 
@@ -25,7 +22,7 @@ public class TestUtils {
             // Leading '/' issue. Path is /D:/test/test.json instead of D:/test/test.json
 //            return Files.lines(Paths.get(TestUtils.class.getClassLoader().getResource(name).getPath())).collect(Collectors.joining());
 
-            try(BufferedReader in = new BufferedReader(new InputStreamReader(TestUtils.class.getClassLoader().getResourceAsStream(name)))) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(TestUtils.class.getClassLoader().getResourceAsStream(name)))) {
                 return in.lines().collect(joining());
             }
         } catch (IOException e) {

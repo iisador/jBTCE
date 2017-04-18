@@ -22,7 +22,7 @@ public final class Tick {
     @SerializedName("server_time")
     private final LocalDateTime serverTime;
 
-    private Tick(double avg, double buy, double high, double last, double low, double sell, LocalDateTime serverTime, LocalDateTime updated, double vol, double volCur) {
+    Tick(double avg, double buy, double high, double last, double low, double sell, LocalDateTime serverTime, LocalDateTime updated, double vol, double volCur) {
         this.avg = avg;
         this.buy = buy;
         this.high = high;
@@ -73,23 +73,6 @@ public final class Tick {
 
     public double getVolCur() {
         return volCur;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Tick tick = (Tick) o;
-        return Objects.equals(updated, tick.updated);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(updated);
     }
 
     @Override
