@@ -19,9 +19,9 @@ Features
 * Public v2 API: [ticker](https://btc-e.com/api/2/btc_usd/ticker), [trades](https://btc-e.com/api/2/btc_usd/trades), [depth](https://btc-e.com/api/2/btc_usd/depth)
 * Private API
   - getInfo
-  - OrderList (without attributes)
-  - TransHistory (without attributes)
-  - TradeHistory (without attributes)
+  - OrderList (some attributes doesn't work on btc-e side)
+  - TransHistory (some attributes doesn't work on btc-e side)
+  - TradeHistory (some attributes doesn't work on btc-e side)
   - CancelOrder
   - Trade
 

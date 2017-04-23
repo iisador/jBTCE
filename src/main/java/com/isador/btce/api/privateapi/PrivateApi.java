@@ -21,8 +21,8 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.isador.btce.api.LocalDateTimeDeserializer.deserialize;
+import static java.util.Objects.requireNonNull;
 
 public class PrivateApi extends AbstractApi {
 
@@ -31,7 +31,7 @@ public class PrivateApi extends AbstractApi {
     public PrivateApi(Connector connector) {
         super(ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
                               Funds.class, new FundsDeserializer()));
-        this.connector = checkNotNull(connector, "Connector instance should be not null");
+        this.connector = requireNonNull(connector, "Connector instance should be not null");
     }
 
     public UserInfo getUserInfo() throws BTCEException {
@@ -41,8 +41,8 @@ public class PrivateApi extends AbstractApi {
     }
 
     public TradeResult trade(Pair pair, Operation operation, double rate, double amount) throws BTCEException {
-        checkNotNull(pair, "Invalid trade pair");
-        checkNotNull(operation, "Invalid trade type");
+        requireNonNull(pair, "Invalid trade pair");
+        requireNonNull(operation, "Invalid trade type");
         checkArgument(rate > 0, "Invalid trade rate: %s", rate);
         checkArgument(amount > 0, "Invalid trade amount: %s", amount);
 
@@ -59,7 +59,7 @@ public class PrivateApi extends AbstractApi {
                                     Long endId, Sort sort, LocalDateTime since,
                                     LocalDateTime end, Pair pair, Boolean active) throws BTCEException {
 
-        Map<String, Object> map = new ParametersBuiilder()
+        Map<String, Object> map = new ParametersBuilder()
                 .from(fromNum)
                 .count(count)
                 .fromId(fromId)
@@ -81,7 +81,7 @@ public class PrivateApi extends AbstractApi {
     public List<Transaction> getTransactionsList(Long fromNum, Integer count, Long fromId,
                                                  Long endId, Sort sort, LocalDateTime since,
                                                  LocalDateTime end) throws BTCEException {
-        Map<String, Object> map = new ParametersBuiilder()
+        Map<String, Object> map = new ParametersBuilder()
                 .from(fromNum)
                 .count(count)
                 .fromId(fromId)
@@ -101,7 +101,7 @@ public class PrivateApi extends AbstractApi {
     public List<TradeHistory> getTradesList(Long fromNum, Integer count, Long fromId,
                                             Long endId, Sort sort, LocalDateTime since,
                                             LocalDateTime end, Pair pair) throws BTCEException {
-        Map<String, Object> map = new ParametersBuiilder()
+        Map<String, Object> map = new ParametersBuilder()
                 .from(fromNum)
                 .count(count)
                 .fromId(fromId)
@@ -172,79 +172,80 @@ public class PrivateApi extends AbstractApi {
     }
 
     private JsonElement processResponse(String json) throws BTCEException {
+        processServerResponse(json);
         JsonObject obj = parser.parse(json).getAsJsonObject();
-        if (obj.get("success").getAsByte() == 0) {
-            throw new BTCEException(obj.get("error").getAsString());
+        if (get(obj, "success").getAsByte() == 0) {
+            throw new BTCEException(get(obj, "error").getAsString());
         }
 
-        return obj.get("return");
+        return get(obj, "return");
     }
 
-    private class ParametersBuiilder {
+    private class ParametersBuilder {
 
         private final Map<String, Object> parameters;
 
-        public ParametersBuiilder() {
+        public ParametersBuilder() {
             this.parameters = new HashMap<>();
         }
 
-        public ParametersBuiilder from(Long from) {
+        public ParametersBuilder from(Long from) {
             if (from != null) {
                 parameters.put("from", from);
             }
             return this;
         }
 
-        public ParametersBuiilder count(Integer count) {
+        public ParametersBuilder count(Integer count) {
             if (count != null) {
                 parameters.put("count", count);
             }
             return this;
         }
 
-        public ParametersBuiilder fromId(Long fromId) {
+        public ParametersBuilder fromId(Long fromId) {
             if (fromId != null) {
                 parameters.put("from_id", fromId);
             }
             return this;
         }
 
-        public ParametersBuiilder endId(Long endId) {
+        public ParametersBuilder endId(Long endId) {
             if (endId != null) {
                 parameters.put("end_id", endId);
             }
             return this;
         }
 
-        public ParametersBuiilder order(Sort sort) {
+        public ParametersBuilder order(Sort sort) {
             if (sort != null) {
                 parameters.put("order", sort);
             }
             return this;
         }
 
-        public ParametersBuiilder since(LocalDateTime since) {
+        public ParametersBuilder since(LocalDateTime since) {
             if (since != null) {
                 parameters.put("since", since.toEpochSecond(ZoneOffset.UTC));
             }
             return this;
         }
 
-        public ParametersBuiilder end(LocalDateTime end) {
+        public ParametersBuilder end(LocalDateTime end) {
             if (end != null) {
                 parameters.put("end", end.toEpochSecond(ZoneOffset.UTC));
             }
             return this;
         }
 
-        public ParametersBuiilder pair(Pair pair) {
+        public ParametersBuilder pair(Pair pair) {
             if (pair != null) {
                 parameters.put("pair", pair.getName());
             }
             return this;
         }
 
-        public ParametersBuiilder active(Boolean active) {
+        public ParametersBuilder active(Boolean active) {
             if (active != null) {
                 parameters.put("active", active ? 1 : 0);
             }
@@ -255,382 +256,4 @@ public class PrivateApi extends AbstractApi {
             return parameters;
         }
     }
-
-//    /**
-//     * Returns your open orders.
-//     *
-//     * @param pair
-//     *            Trade pair or null
-//     * @return orders array
-//     * @throws IOException
-//     */
-//    public Order[] getActiveOrders(Pair pair) throws IOException {
-//        Map<String, String> params = new HashMap<String, String>();
-//        if (pair != null) {
-//            params.put("pair", pair.toString().toLowerCase());
-//        }
-//
-//        Order[] orders = new Order[0];
-//        JsonObject result = apiCall("ActiveOrders", params);
-//        if (result != null) {
-//            Set<Entry<String, JsonElement>> set = result.entrySet();
-//            Iterator<Entry<String, JsonElement>> it = set.iterator();
-//            List<Order> l = new ArrayList<Order>();
-//            while (it.hasNext()) {
-//                Entry<String, JsonElement> entry = it.next();
-//                l.add(new Order(Long.parseLong(entry.getKey()), entry
-//                        .getValue().getAsJsonObject()));
-//            }
-//            orders = l.toArray(orders);
-//        }
-//        return orders;
-//    }
-
-//    /**
-//     * Cancel opened order.
-//     *
-//     * @param orderId
-//     *            should be >= 0 or -1
-//     * @return CancelOrderStatus
-//     * @throws IllegalArgumentException
-//     *             when orderId is invalid
-//     * @throws IOException
-//     *             on any errors with server communication
-//     */
-//    public CancelOrderStatus cancelOrder(long orderId) throws IOException {
-//        if (orderId != -1 && orderId <= 0) {
-//            throw new IllegalArgumentException("Wrong order id value: "
-//                                                       + orderId);
-//        }
-//
-//        Map<String, String> params = new HashMap<String, String>();
-//        if (orderId != -1) {
-//            params.put("order_id", String.valueOf(orderId));
-//        }
-//
-//        JsonObject result = apiCall("CancelOrder", params);
-//        if (result != null) {
-//            return new CancelOrderStatus(result);
-//        }
-//        return null;
-//    }
-
-//    /**
-//     * It returns your open orders/the orders history. Calls
-//     * {@code getOrderList(-1, -1, -1, -1, null, -1, -1, null, -1)}
-//     *
-//     * @return last account orders
-//     * @throws IOException
-//     *             on any errors with server communication
-//     */
-//    @Deprecated
-//    public Order[] getOrderList() throws IOException {
-//        return getOrderList(-1, -1, -1, -1, null, -1, -1, null, -1);
-//    }
-
-//    /**
-//     * It returns your open orders/the orders history. <br>
-//     * <i>Note: while using since or end parameters, order parameter
-//     * automatically takes up ASC value.</i>
-//     *
-//     * @deprecated use getActiveOrders
-//     *
-//     * @param from
-//     *            the number of the order to start displaying with
-//     * @param count
-//     *            The number of orders for displaying
-//     * @param fromId
-//     *            id of the order to start displaying with
-//     * @param endId
-//     *            id of the order to finish displaying
-//     * @param order
-//     *            sorting
-//     * @param since
-//     *            when to start displaying
-//     * @param end
-//     *            when to finish displaying
-//     * @param pair
-//     *            the pair to display the orders
-//     * @param active
-//     *            is it displaying of active orders only?
-//     * @return orders array
-//     * @throws IOException
-//     */
-//    @Deprecated
-//    public Order[] getOrderList(long from, int count, long fromId, long endId,
-//                                Sort order, long since, long end, Pair pair, int active)
-//            throws IOException {
-//        Map<String, String> params = new HashMap<String, String>();
-//        if (from != -1) {
-//            params.put("from", String.valueOf(from));
-//        }
-//        if (count != -1) {
-//            params.put("count", String.valueOf(count));
-//        }
-//        if (fromId != -1) {
-//            params.put("from_id", String.valueOf(fromId));
-//        }
-//        if (endId != -1) {
-//            params.put("end_id", String.valueOf(endId));
-//        }
-//        if (order != null) {
-//            params.put("order", order.toString());
-//        }
-//        if (since != -1) {
-//            params.put("since", String.valueOf(since));
-//        }
-//        if (end != -1) {
-//            params.put("end", String.valueOf(end));
-//        }
-//        if (pair != null) {
-//            params.put("pair", pair.toString().toLowerCase());
-//        }
-//        if (active != -1) {
-//            if (active > 1) {
-//                params.put("active", "1");
-//            } else {
-//                params.put("active", "0");
-//            }
-//        }
-//
-//        Order[] orders = new Order[0];
-//        JsonObject result = apiCall("OrderList", params);
-//        if (result != null) {
-//            Set<Entry<String, JsonElement>> set = result.entrySet();
-//            Iterator<Entry<String, JsonElement>> it = set.iterator();
-//            List<Order> l = new ArrayList<Order>();
-//            while (it.hasNext()) {
-//                Entry<String, JsonElement> entry = it.next();
-//                l.add(new Order(Long.parseLong(entry.getKey()), entry
-//                        .getValue().getAsJsonObject()));
-//            }
-//            orders = l.toArray(orders);
-//        }
-//        return orders;
-//    }
-
-//    /**
-//     * It returns the trade history. Calls
-//     * {@code getTradeHistory(-1, -1, -1, -1, null, -1, -1, null)}
-//     *
-//     * @return trade array
-//     * @throws IOException
-//     */
-//    public Trade[] getTradeHistory() throws IOException {
-//        return getTradeHistory(-1, -1, -1, -1, null, -1, -1, null);
-//    }
-
-//    /**
-//     * Returns your last trade. Calls
-//     * {@code getTradeHistory(-1, 1, -1, -1, null, -1, -1, pair)}
-//     *
-//     * @param pair
-//     *            pair of lsat trade
-//     * @return Trade instance
-//     * @throws IOException
-//     */
-//    public Trade getLastTrade(Pair pair) throws IOException {
-//        Trade[] list = getTradeHistory(-1, 1, -1, -1, null, -1, -1, pair);
-//        return (list.length > 0) ? list[0] : null;
-//    }
-
-//    /**
-//     * It returns the trade history. <br>
-//     * <i>Note: while using since or end parameters, order parameter
-//     * automatically takes up ASC value.</i>
-//     *
-//     * @param from
-//     *            the number of the transaction to start displaying with
-//     * @param count
-//     *            the number of transactions for displaying
-//     * @param fromId
-//     *            the ID of the transaction to start displaying with
-//     * @param endId
-//     *            the ID of the transaction to finish displaying with
-//     * @param order
-//     *            sorting
-//     * @param since
-//     *            when to start the displaying
-//     * @param end
-//     *            when to finish the displaying
-//     * @param pair
-//     *            the pair to show the transactions
-//     * @return trades array
-//     * @throws IOException
-//     */
-//    public Trade[] getTradeHistory(long from, int count, long fromId,
-//                                   long endId, Sort order, long since, long end, Pair pair)
-//            throws IOException {
-//        Map<String, String> params = new HashMap<String, String>();
-//        if (from != -1) {
-//            params.put("from", String.valueOf(from));
-//        }
-//        if (count != -1) {
-//            params.put("count", String.valueOf(count));
-//        }
-//        if (fromId != -1) {
-//            params.put("from_id", String.valueOf(fromId));
-//        }
-//        if (endId != -1) {
-//            params.put("end_id", String.valueOf(endId));
-//        }
-//        if (order != null) {
-//            params.put("order", order.toString());
-//        }
-//        if (since != -1) {
-//            params.put("since", String.valueOf(since));
-//        }
-//        if (end != -1) {
-//            params.put("end", String.valueOf(end));
-//        }
-//        if (pair != null) {
-//            params.put("pair", pair.toString().toLowerCase());
-//        }
-//
-//        Trade[] trades = new Trade[0];
-//        JsonObject result = apiCall("TradeHistory", params);
-//        if (result != null) {
-//            Set<Entry<String, JsonElement>> set = result.entrySet();
-//            Iterator<Entry<String, JsonElement>> it = set.iterator();
-//            List<Trade> l = new ArrayList<Trade>();
-//            while (it.hasNext()) {
-//                Entry<String, JsonElement> entry = it.next();
-//                l.add(new Trade(Long.parseLong(entry.getKey()), entry
-//                        .getValue().getAsJsonObject()));
-//            }
-//            trades = l.toArray(trades);
-//        }
-//        return trades;
-//    }
-
-//    /**
-//     * It returns the transactions history. Calls
-//     * {@code getTransHistrory(-1, -1, -1, -1, null, -1, -1)}
-//     *
-//     * @return transaction array
-//     * @throws IOException
-//     */
-//    public Transaction[] getTransactionHistory() throws IOException {
-//        return getTransHistrory(-1, -1, -1, -1, null, -1, -1);
-//    }
-
-//    /**
-//     * Returns your last transaction. Calls
-//     * {@code getTransHistrory(-1, 1, -1, -1, null, -1, -1)}.
-//     *
-//     * @return transaction instance
-//     * @throws IOException
-//     */
-//    public Transaction getLastTransaction() throws IOException {
-//        Transaction[] list = getTransHistrory(-1, 1, -1, -1, null, -1, -1);
-//        return (list.length > 0) ? list[0] : null;
-//    }
-
-//    /**
-//     * It returns the transactions history. <br>
-//     * <i>Note: while using since or end parameters, the order parameter
-//     * automatically take up ASC value.</i>
-//     *
-//     * @param from
-//     *            The ID of the transaction to start displaying with
-//     * @param count
-//     *            The number of transactions for displaying
-//     * @param fromId
-//     *            The ID of the transaction to start displaying with
-//     * @param endId
-//     *            The ID of the transaction to finish displaying with
-//     * @param order
-//     *            sorting
-//     * @param since
-//     *            When to start displaying?
-//     * @param end
-//     *            When to finish displaying?
-//     * @return
-//     * @throws IOException
-//     */
-//    public Transaction[] getTransHistrory(long from, int count, long fromId,
-//                                          long endId, Sort order, long since, long end) throws IOException {
-//        Map<String, String> params = new HashMap<String, String>();
-//        if (from != -1) {
-//            params.put("from", String.valueOf(from));
-//        }
-//        if (count != -1) {
-//            params.put("count", String.valueOf(count));
-//        }
-//        if (fromId != -1) {
-//            params.put("from_id", String.valueOf(fromId));
-//        }
-//        if (endId != -1) {
-//            params.put("end_id", String.valueOf(endId));
-//        }
-//        if (order != null) {
-//            params.put("order", order.toString());
-//        }
-//        if (since != -1) {
-//            params.put("since", String.valueOf(since));
-//        }
-//        if (end != -1) {
-//            params.put("end", String.valueOf(end));
-//        }
-//
-//        Transaction[] transactions = new Transaction[0];
-//        JsonObject result = apiCall("TransHistory", params);
-//        if (result != null) {
-//            Set<Entry<String, JsonElement>> set = result.entrySet();
-//            Iterator<Entry<String, JsonElement>> it = set.iterator();
-//            List<Transaction> l = new ArrayList<Transaction>();
-//            while (it.hasNext()) {
-//                Entry<String, JsonElement> entry = it.next();
-//                l.add(new Transaction(Long.parseLong(entry.getKey()), entry
-//                        .getValue().getAsJsonObject()));
-//            }
-//            transactions = l.toArray(transactions);
-//        }
-//        return transactions;
-//    }
-
-//    public UserInfo getUserInfo() throws BTCEException {
-//        return mapper.readValue(connector.signedPost("getInfo", null).toString(), UserInfo.class);
-//    }
-
-//    /**
-//     * Trading is done according to this method.
-//     *
-//     * @param pair
-//     *            Trade pair
-//     * @param type
-//     *            The transaction type
-//     * @param rate
-//     *            The rate to buy/sell
-//     * @param amount
-//     *            The amount which is necessary to buy/sell
-//     * @return trade result instance
-//     * @throws IOException
-//     * @throws IllegalArgumentException
-//     *             when any of parameters is invalid
-//     */
-//    public TradeResult trade(Pair pair, TradeType type, Double rate,
-//                             Double amount) throws IOException {
-//        if (pair == null) {
-//            throw new IllegalArgumentException("Pair is null");
-//        }
-//        if (type == null) {
-//            throw new IllegalArgumentException("Type is null");
-//        }
-//        if (rate != -1 && rate <= 0) {
-//            throw new IllegalArgumentException("Rate value is illegal");
-//        }
-//        if (amount != -1 && amount <= 0) {
-//            throw new IllegalArgumentException("Amount value is illegal");
-//        }
-//
-//        Map<String, String> params = new HashMap<String, String>();
-//        params.put("pair", pair.toString().toLowerCase());
-//        params.put("type", type.toString().toLowerCase());
-//        params.put("rate", String.valueOf(rate));
-//        params.put("amount", String.format("%.7f", amount).replace(',', '.'));
-//
-//        JsonObject result = apiCall("Trade", params);
-//        return (result != null) ? new TradeResult(result) : null;
-//    }
 }

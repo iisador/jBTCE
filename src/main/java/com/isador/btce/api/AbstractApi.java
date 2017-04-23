@@ -1,9 +1,6 @@
 package com.isador.btce.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -28,5 +25,18 @@ public abstract class AbstractApi {
 
         gson = builder.create();
         parser = new JsonParser();
+    }
+
+    protected void processServerResponse(String response) throws BTCEException {
+        if (response == null || response.isEmpty()) {
+            throw new BTCEException("Invalid server response. Null or empty response");
+        }
+    }
+
+    protected JsonElement get(JsonObject obj, String field) throws BTCEException {
+        if (!obj.has(field)) {
+            throw new BTCEException(String.format("Invalid server response. \"%s\" field missed.", field));
+        }
+        return obj.get(field);
     }
 }

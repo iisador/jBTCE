@@ -59,6 +59,46 @@ public class PrivateApiTest {
     }
 
     @Test
+    public void testGetUserInfoInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("getInfo"), any())).thenReturn("");
+        api.getUserInfo();
+    }
+
+    @Test
+    public void testGetUserInfoInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("getInfo"), any())).thenReturn("");
+        api.getUserInfo();
+    }
+
+    @Test
+    public void testGetUserInfoInvalidResponseNoSuccess() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"success\" field missed.");
+        when(connector.signedPost(eq("getInfo"), any())).thenReturn("{}");
+        api.getUserInfo();
+    }
+
+    @Test
+    public void testGetUserInfoInvalidResponseNoReturn() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"return\" field missed.");
+        when(connector.signedPost(eq("getInfo"), any())).thenReturn("{\"success\": 1}");
+        api.getUserInfo();
+    }
+
+    @Test
+    public void testGetUserInfoInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.signedPost(eq("getInfo"), any())).thenReturn("{\"success\": 0}");
+        api.getUserInfo();
+    }
+
+    @Test
     public void testGetUserInfoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
@@ -115,6 +155,46 @@ public class PrivateApiTest {
     }
 
     @Test
+    public void testTradeInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("Trade"), any())).thenReturn("");
+        api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
+    }
+
+    @Test
+    public void testTradeInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("Trade"), any())).thenReturn("");
+        api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
+    }
+
+    @Test
+    public void testTradeInvalidResponseNoSuccess() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"success\" field missed.");
+        when(connector.signedPost(eq("Trade"), any())).thenReturn("{}");
+        api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
+    }
+
+    @Test
+    public void testTradeInvalidResponseNoReturn() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"return\" field missed.");
+        when(connector.signedPost(eq("Trade"), any())).thenReturn("{\"success\": 1}");
+        api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
+    }
+
+    @Test
+    public void testTradeInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.signedPost(eq("Trade"), any())).thenReturn("{\"success\": 0}");
+        api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
+    }
+
+    @Test
     public void testTradeError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
@@ -148,6 +228,46 @@ public class PrivateApiTest {
     }
 
     @Test
+    public void testCancelOrderInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn("");
+        api.cancelOrder(123);
+    }
+
+    @Test
+    public void testCancelOrderInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn("");
+        api.cancelOrder(123);
+    }
+
+    @Test
+    public void testCancelOrderInvalidResponseNoSuccess() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"success\" field missed.");
+        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn("{}");
+        api.cancelOrder(123);
+    }
+
+    @Test
+    public void testCancelOrderInvalidResponseNoReturn() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"return\" field missed.");
+        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn("{\"success\": 1}");
+        api.cancelOrder(123);
+    }
+
+    @Test
+    public void testCancelOrderInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn("{\"success\": 0}");
+        api.cancelOrder(123);
+    }
+
+    @Test
     public void testCancelOrderError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
@@ -166,6 +286,53 @@ public class PrivateApiTest {
         assertNotNull("Cancel order result must be not null", actual);
         assertEquals("Actual cancel order result doesn't match", expected, actual);
         assertFunds(expected.getFunds(), actual.getFunds());
+    }
+
+    @Test
+    public void testGetTransactionListInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("");
+        api.getTransactionsList(null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTransactionListInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("");
+        api.getTransactionsList(null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTransactionListInvalidResponseNoSuccess() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"success\" field missed.");
+        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("{}");
+        api.getTransactionsList(null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTransactionListInvalidResponseNoReturn() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"return\" field missed.");
+        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("{\"success\": 1}");
+        api.getTransactionsList(null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTransactionListInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("{\"success\": 0}");
+        api.getTransactionsList(null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTransactionListEmptyResponse() {
+        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("{\"success\": 1, \"return\": {}}");
+        List<Transaction> list = api.getTransactionsList(null, null, null, null, null, null, null);
+        assertTrue("Transactions list must be empty", list.isEmpty());
     }
 
     @Test
@@ -192,6 +359,53 @@ public class PrivateApiTest {
     }
 
     @Test
+    public void testGetOrderListInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("OrderList"), any())).thenReturn("");
+        api.getOrderList(null, null, null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetOrderListInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("OrderList"), any())).thenReturn("");
+        api.getOrderList(null, null, null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetOrderListInvalidResponseNoSuccess() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"success\" field missed.");
+        when(connector.signedPost(eq("OrderList"), any())).thenReturn("{}");
+        api.getOrderList(null, null, null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetOrderListInvalidResponseNoReturn() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"return\" field missed.");
+        when(connector.signedPost(eq("OrderList"), any())).thenReturn("{\"success\": 1}");
+        api.getOrderList(null, null, null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetOrderListInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.signedPost(eq("OrderList"), any())).thenReturn("{\"success\": 0}");
+        api.getOrderList(null, null, null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetOrderListEmptyResponse() {
+        when(connector.signedPost(eq("OrderList"), any())).thenReturn("{\"success\": 1, \"return\": {}}");
+        List<Order> list = api.getOrderList(null, null, null, null, null, null, null, null, null);
+        assertTrue("Order list must be empty", list.isEmpty());
+    }
+
+    @Test
     public void testGetOrderList() {
         Order expectedOrder = new Order(1696817430L, Pair.BTC_USD, Operation.BUY, 0.00100000, 1158.82900000, 0, deserialize(1491563567));
         when(connector.signedPost(eq("OrderList"), any())).thenReturn(getJson("orders.json"));
@@ -214,6 +428,53 @@ public class PrivateApiTest {
     }
 
     @Test
+    public void testGetTradeHistoryInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("");
+        api.getTradesList(null, null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTradeHistoryInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("");
+        api.getTradesList(null, null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTradeHistoryListInvalidResponseNoSuccess() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"success\" field missed.");
+        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("{}");
+        api.getTradesList(null, null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTradeHistoryListInvalidResponseNoReturn() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"return\" field missed.");
+        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("{\"success\": 1}");
+        api.getTradesList(null, null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTradeHistoryListInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("{\"success\": 0}");
+        api.getTradesList(null, null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTradeHistoryListEmptyResponse() {
+        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("{\"success\": 1, \"return\": {}}");
+        List<TradeHistory> list = api.getTradesList(null, null, null, null, null, null, null, null);
+        assertTrue("Trade history list must be empty", list.isEmpty());
+    }
+
+    @Test
     public void testGetTradeHistoryList() {
         TradeHistory expectedTh = new TradeHistory(Pair.BTC_USD, Operation.BUY,
                                                    0.00100000, 1180.00000000, 1696641686,
@@ -228,14 +489,14 @@ public class PrivateApiTest {
                 .forEach(trade -> assertNotNull("Trade history list should not contain null elements", trade));
 
         TradeHistory actualTh = trades.get(0);
-        assertEquals("Actual trade hostory doesn't match", expectedTh, actualTh);
-        assertEquals("Actual trade hostory rate doesn't match", expectedTh.getRate(), actualTh.getRate(), 0.0000001);
-        assertEquals("Actual trade hostory pair doesn't match", expectedTh.getPair(), actualTh.getPair());
-        assertEquals("Actual trade hostory type doesn't match", expectedTh.getType(), actualTh.getType());
-        assertEquals("Actual trade hostory amount doesn't match", expectedTh.getAmount(), actualTh.getAmount(), 0.0000001);
-        assertEquals("Actual trade hostory orderId doesn't match", expectedTh.getOrderId(), actualTh.getOrderId());
-        assertEquals("Actual trade hostory timestamp doesn't match", expectedTh.getTimestamp(), actualTh.getTimestamp());
-        assertEquals("Actual trade hostory tradeId doesn't match", expectedTh.getTradeId(), actualTh.getTradeId());
+        assertEquals("Actual trade history doesn't match", expectedTh, actualTh);
+        assertEquals("Actual trade history rate doesn't match", expectedTh.getRate(), actualTh.getRate(), 0.0000001);
+        assertEquals("Actual trade history pair doesn't match", expectedTh.getPair(), actualTh.getPair());
+        assertEquals("Actual trade history type doesn't match", expectedTh.getType(), actualTh.getType());
+        assertEquals("Actual trade history amount doesn't match", expectedTh.getAmount(), actualTh.getAmount(), 0.0000001);
+        assertEquals("Actual trade history orderId doesn't match", expectedTh.getOrderId(), actualTh.getOrderId());
+        assertEquals("Actual trade history timestamp doesn't match", expectedTh.getTimestamp(), actualTh.getTimestamp());
+        assertEquals("Actual trade history tradeId doesn't match", expectedTh.getTradeId(), actualTh.getTradeId());
     }
 
     private void assertRightsEquals(Rights expected, Rights actual) {

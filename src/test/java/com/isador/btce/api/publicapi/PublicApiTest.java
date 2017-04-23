@@ -22,6 +22,7 @@ import static com.isador.btce.api.TestUtils.getErrorJson;
 import static com.isador.btce.api.TestUtils.getJson;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -59,21 +60,45 @@ public class PublicApiTest {
     }
 
     @Test
+    public void testGetTickInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.call(anyString())).thenReturn("");
+        api.getTick(Pair.BTC_USD);
+    }
+
+    @Test
+    public void testGetTickInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.call(anyString())).thenReturn("");
+        api.getTick(Pair.BTC_USD);
+    }
+
+    @Test
+    public void testGetTickInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.call(anyString())).thenReturn("{\"success\": 0}");
+        api.getTick(Pair.BTC_USD);
+    }
+
+    @Test
     public void testGetTickError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
 
-        when(connector.getTick(Pair.BTC_USD)).thenReturn(getErrorJson());
+        when(connector.call(anyString())).thenReturn(getErrorJson());
         api.getTick(Pair.BTC_USD);
     }
 
     @Test
     public void testGetTick() {
         Tick expected = new Tick(1128.0015, 1154.849, 1155.003,
-                                 1150.504, 1101, 1150.504,
-                                 deserialize(1491478858), deserialize(1491478857),
-                                 10573719.72477, 9390.70116);
-        when(connector.getTick(Pair.BTC_USD)).thenReturn(getJson("ticker.json"));
+                1150.504, 1101, 1150.504,
+                deserialize(1491478858), deserialize(1491478857),
+                10573719.72477, 9390.70116, null);
+        when(connector.call(anyString())).thenReturn(getJson("ticker.json"));
 
         Tick actual = api.getTick(Pair.BTC_USD);
 
@@ -98,18 +123,42 @@ public class PublicApiTest {
     }
 
     @Test
+    public void testGetTradesInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.call(anyString())).thenReturn("");
+        api.getTrades(Pair.BTC_USD);
+    }
+
+    @Test
+    public void testGetTradesInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.call(anyString())).thenReturn("");
+        api.getTrades(Pair.BTC_USD);
+    }
+
+    @Test
+    public void testGetTradesInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.call(anyString())).thenReturn("{\"success\": 0}");
+        api.getTrades(Pair.BTC_USD);
+    }
+
+    @Test
     public void testGetTradesError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
 
-        when(connector.getTrades(Pair.BTC_USD)).thenReturn(getErrorJson());
+        when(connector.call(anyString())).thenReturn(getErrorJson());
         api.getTrades(Pair.BTC_USD);
     }
 
     @Test
     public void testGetTrades() {
         Trade expectedTrade = new Trade(deserialize(1491542177), 1178, 1.78, 97938795, Currency.USD, Currency.BTC, TradeType.BID);
-        when(connector.getTrades(Pair.BTC_USD)).thenReturn(getJson("trades.json"));
+        when(connector.call(anyString())).thenReturn(getJson("trades.json"));
 
         Trade[] actualTrades = api.getTrades(Pair.BTC_USD);
 
@@ -134,18 +183,42 @@ public class PublicApiTest {
     }
 
     @Test
+    public void testGetDepthInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.call(anyString())).thenReturn("");
+        api.getDepth(Pair.BTC_USD);
+    }
+
+    @Test
+    public void testGetDepthInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.call(anyString())).thenReturn("");
+        api.getDepth(Pair.BTC_USD);
+    }
+
+    @Test
+    public void testGetDepthInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.call(anyString())).thenReturn("{\"success\": 0}");
+        api.getDepth(Pair.BTC_USD);
+    }
+
+    @Test
     public void testGetDepthError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
 
-        when(connector.getDepth(Pair.BTC_USD)).thenReturn(getErrorJson());
+        when(connector.call(anyString())).thenReturn(getErrorJson());
         api.getDepth(Pair.BTC_USD);
     }
 
     @Test
     public void testGetDepth() {
         Depth expected = getExpectedDepth();
-        when(connector.getDepth(Pair.BTC_USD)).thenReturn(getJson("depth.json"));
+        when(connector.call(anyString())).thenReturn(getJson("depth.json"));
 
         Depth actual = api.getDepth(Pair.BTC_USD);
 
@@ -157,10 +230,34 @@ public class PublicApiTest {
     }
 
     @Test
-    public void testGetFeehNullPair() {
+    public void testGetFeeNullPair() {
         thrown.expect(NullPointerException.class);
         thrown.expectMessage("Pair must be specified");
         api.getFee(null);
+    }
+
+    @Test
+    public void testGetFeeInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.call(anyString())).thenReturn("");
+        api.getFee(Pair.BTC_USD);
+    }
+
+    @Test
+    public void testGetFeeInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.call(anyString())).thenReturn("");
+        api.getFee(Pair.BTC_USD);
+    }
+
+    @Test
+    public void testGetFeeInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.call(anyString())).thenReturn("{\"success\": 0}");
+        api.getFee(Pair.BTC_USD);
     }
 
     @Test
@@ -168,13 +265,13 @@ public class PublicApiTest {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
 
-        when(connector.getFee(Pair.BTC_USD)).thenReturn(getErrorJson());
+        when(connector.call(anyString())).thenReturn(getErrorJson());
         api.getFee(Pair.BTC_USD);
     }
 
     @Test
     public void testGetFee() {
-        when(connector.getFee(Pair.BTC_USD)).thenReturn("{\"trade\":0.2}");
+        when(connector.call(anyString())).thenReturn("{\"trade\":0.2}");
 
         double fee = api.getFee(Pair.BTC_USD);
 
@@ -182,7 +279,7 @@ public class PublicApiTest {
     }
 
     private Depth getExpectedDepth() {
-        SimpleOrder[] asks = new SimpleOrder[] {
+        SimpleOrder[] asks = new SimpleOrder[]{
                 new SimpleOrder(1177.999, 0.5),
                 new SimpleOrder(1178, 4.01039939),
                 new SimpleOrder(1178.172, 0.0051885),
@@ -335,7 +432,7 @@ public class PublicApiTest {
                 new SimpleOrder(1187.571, 3.31962953)
         };
 
-        SimpleOrder[] bids = new SimpleOrder[] {
+        SimpleOrder[] bids = new SimpleOrder[]{
                 new SimpleOrder(1173.501, 2.033331),
                 new SimpleOrder(1173.5, 0.001),
                 new SimpleOrder(1173.254, 0.13903309),

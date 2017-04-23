@@ -7,7 +7,7 @@ package com.isador.btce.api;
 public class BTCEException extends RuntimeException {
 
     public BTCEException(String message, Throwable cause) {
-        super(message, cause, false, false);
+        super(message, cause);
     }
 
     public BTCEException(String message) {
