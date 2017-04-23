@@ -29,7 +29,6 @@ public class JavaConnectorTest {
         thrown.expect(NullPointerException.class);
         thrown.expectMessage("Key must be specified");
 
-        Connector connector = new JavaConnector();
         connector.init(null, null);
     }
 
@@ -38,7 +37,6 @@ public class JavaConnectorTest {
         thrown.expect(NullPointerException.class);
         thrown.expectMessage("Secret must be specified");
 
-        Connector connector = new JavaConnector();
         connector.init("", null);
     }
 
@@ -46,5 +44,13 @@ public class JavaConnectorTest {
     public void testCall() {
         String response = connector.call("https://httpbin.org/user-agent");
         assertNotNull("Some response must be", response);
+    }
+
+    @Test
+    public void testSignedCallNotInitialized() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Connector is not initialized");
+
+        connector.signedPost(null, null);
     }
 }

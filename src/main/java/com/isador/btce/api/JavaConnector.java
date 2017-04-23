@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.joining;
 
 /**
  * Created by isador
+ * NOT THREAD SAFE
  * on 05.04.17
  */
 public class JavaConnector implements Connector {
@@ -33,9 +34,14 @@ public class JavaConnector implements Connector {
 
     private Mac mac;
     private Map<String, String> headers;
+    private boolean initialized;
 
     @Override
     public String signedPost(String method, Map<String, Object> additionalParameters) throws BTCEException {
+        if(!initialized) {
+            throw new IllegalStateException("Connector is not initialized");
+        }
+
         try {
             HttpsURLConnection uc = (HttpsURLConnection) new URL(PRIVATE_API_URL).openConnection();
             uc.setRequestMethod("POST");
@@ -106,5 +112,7 @@ public class JavaConnector implements Connector {
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             throw new RuntimeException(e);
         }
+
+        initialized = true;
     }
 }

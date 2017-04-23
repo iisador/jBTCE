@@ -4,10 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.isador.btce.api.AbstractApi;
-import com.isador.btce.api.BTCEException;
-import com.isador.btce.api.Connector;
-import com.isador.btce.api.LocalDateTimeDeserializer;
+import com.isador.btce.api.*;
 import com.isador.btce.api.constants.Pair;
 
 import java.time.LocalDateTime;
@@ -22,12 +19,23 @@ public class PublicApi extends AbstractApi {
 
     private static final String PUBLIC_API_TMPL = "https://btc-e.com/api/2/%s/%s";
 
-    private final Connector connector;
+    private Connector connector;
 
+    public PublicApi() {
+        this(new JavaConnector());
+    }
     public PublicApi(Connector connector) {
         super(ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
                               Depth.SimpleOrder.class, new SimpleOrderDeserializer()));
         this.connector = requireNonNull(connector, "Connector instance should be not null");
+    }
+
+    public Connector getConnector() {
+        return connector;
+    }
+
+    public void setConnector(Connector connector) {
+        this.connector = connector;
     }
 
     public Tick getTick(Pair pair) throws BTCEException {

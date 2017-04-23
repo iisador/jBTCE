@@ -344,7 +344,7 @@ public class PrivateApiTest {
 
         assertNotNull("Transactions list must be not null", transactions);
         assertFalse("Transactions list must be non empty", transactions.isEmpty());
-        transactions.stream()
+        transactions
                 .forEach(transaction -> assertNotNull("Transactions list should not contain null elements", transaction));
 
         Transaction actualTransaction = transactions.get(0);
@@ -414,8 +414,7 @@ public class PrivateApiTest {
 
         assertNotNull("Order list must be not null", orders);
         assertFalse("Order list must be non empty", orders.isEmpty());
-        orders.stream()
-                .forEach(order -> assertNotNull("Order list should not contain null elements", order));
+        orders.forEach(order -> assertNotNull("Order list should not contain null elements", order));
 
         Order actualOrder = orders.get(0);
         assertEquals("Actual order doesn't match", expectedOrder, actualOrder);
@@ -485,8 +484,7 @@ public class PrivateApiTest {
 
         assertNotNull("Trade history list must be not null", trades);
         assertFalse("Trade history list must be non empty", trades.isEmpty());
-        trades.stream()
-                .forEach(trade -> assertNotNull("Trade history list should not contain null elements", trade));
+        trades.forEach(trade -> assertNotNull("Trade history list should not contain null elements", trade));
 
         TradeHistory actualTh = trades.get(0);
         assertEquals("Actual trade history doesn't match", expectedTh, actualTh);
