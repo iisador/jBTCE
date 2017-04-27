@@ -5,7 +5,7 @@ import com.isador.btce.api.constants.Pair;
 
 import java.time.LocalDateTime;
 
-public class Order {
+public final class Order {
 
     private final long id;
     private final Pair pair;

@@ -10,7 +10,8 @@ import java.util.Objects;
  * Created by isador
  * on 12.04.17
  */
-public class TradeHistory {
+public final class TradeHistory {
+
     private final Pair pair;
     private final Operation type;
     private final double amount;
@@ -18,9 +19,9 @@ public class TradeHistory {
     private final long orderId;
     private final boolean yourOrder;
     private final LocalDateTime timestamp;
-    private final long tradeId;
+    private final long id;
 
-    TradeHistory(Pair pair, Operation type, double amount, double rate, long orderId, boolean yourOrder, LocalDateTime timestamp, long tradeId) {
+    TradeHistory(Pair pair, Operation type, double amount, double rate, long orderId, boolean yourOrder, LocalDateTime timestamp, long id) {
         this.pair = pair;
         this.type = type;
         this.amount = amount;
@@ -28,7 +29,7 @@ public class TradeHistory {
         this.orderId = orderId;
         this.yourOrder = yourOrder;
         this.timestamp = timestamp;
-        this.tradeId = tradeId;
+        this.id = id;
     }
 
     public Pair getPair() {
@@ -59,8 +60,8 @@ public class TradeHistory {
         return timestamp;
     }
 
-    public long getTradeId() {
-        return tradeId;
+    public long getId() {
+        return id;
     }
 
     @Override
@@ -68,12 +69,12 @@ public class TradeHistory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TradeHistory that = (TradeHistory) o;
-        return Objects.equals(tradeId, that.tradeId);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tradeId);
+        return Objects.hash(id);
     }
 
     @Override
@@ -86,7 +87,7 @@ public class TradeHistory {
                 ", orderId=" + orderId +
                 ", yourOrder=" + yourOrder +
                 ", timestamp=" + timestamp +
-                ", tradeId=" + tradeId +
+                ", id=" + id +
                 '}';
     }
 }

@@ -2,14 +2,14 @@ package com.isador.btce.api.privateapi;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TradeResult {
+public final class TradeResult {
+
+    @SerializedName("order_id")
+    private final long orderId;
 
     private final double received;
     private final double remains;
     private final Funds funds;
-
-    @SerializedName("order_id")
-    private final long orderId;
 
     TradeResult(double received, double remains, long orderId, Funds funds) {
         this.received = received;

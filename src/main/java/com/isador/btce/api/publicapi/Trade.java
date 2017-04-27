@@ -9,13 +9,8 @@ import java.util.Objects;
 
 public final class Trade {
 
-    private final LocalDateTime date;
-    private final double price;
-    private final double amount;
-    private final Currency item;
-
     @SerializedName("tid")
-    private final long tradeId;
+    private final long id;
 
     @SerializedName("price_currency")
     private final Currency priceCurrency;
@@ -23,11 +18,16 @@ public final class Trade {
     @SerializedName("trade_type")
     private final TradeType type;
 
-    Trade(LocalDateTime date, double price, double amount, long tradeId, Currency priceCurrency, Currency item, TradeType type) {
+    private final LocalDateTime date;
+    private final double price;
+    private final double amount;
+    private final Currency item;
+
+    Trade(LocalDateTime date, double price, double amount, long id, Currency priceCurrency, Currency item, TradeType type) {
         this.date = date;
         this.price = price;
         this.amount = amount;
-        this.tradeId = tradeId;
+        this.id = id;
         this.priceCurrency = priceCurrency;
         this.item = item;
         this.type = type;
@@ -45,8 +45,8 @@ public final class Trade {
         return amount;
     }
 
-    public long getTradeId() {
-        return tradeId;
+    public long getId() {
+        return id;
     }
 
     public Currency getPriceCurrency() {
@@ -70,12 +70,12 @@ public final class Trade {
             return false;
         }
         Trade trade = (Trade) o;
-        return Objects.equals(tradeId, trade.tradeId);
+        return Objects.equals(id, trade.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tradeId);
+        return Objects.hash(id);
     }
 
     @Override
@@ -84,7 +84,7 @@ public final class Trade {
                 "date=" + date +
                 ", price=" + price +
                 ", amount=" + amount +
-                ", tradeId=" + tradeId +
+                ", id=" + id +
                 ", priceCurrency=" + priceCurrency +
                 ", item=" + item +
                 ", type=" + type +

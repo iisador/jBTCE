@@ -8,12 +8,7 @@ import java.util.Map;
  */
 public interface Connector {
 
-    String PRIVATE_API_URL = "https://btc-e.com/tapi";
-    String PUBLIC_V3_API_TMPL = "https://btc-e.com/api/3/%s/%s";
+    String get(String url) throws BTCEException;
 
-    void init(String key, String secret);
-
-    String call(String url) throws BTCEException;
-
-    String signedPost(String method, Map<String, Object> additionalParameters) throws BTCEException;
+    String post(String url, String body, Map<String, String> headers) throws BTCEException;
 }

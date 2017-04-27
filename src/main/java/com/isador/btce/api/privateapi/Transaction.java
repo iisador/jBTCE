@@ -5,23 +5,23 @@ import com.isador.btce.api.constants.Currency;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Transaction {
+public final class Transaction {
 
     private final int type;
     private final double amount;
     private final Currency currency;
     private final int status;
     private final LocalDateTime timestamp;
-    private final long transactionId;
+    private final long id;
     private final String description;
 
-    Transaction(int type, double amount, Currency currency, int status, LocalDateTime timestamp, long transactionId, String description) {
+    Transaction(int type, double amount, Currency currency, int status, LocalDateTime timestamp, long id, String description) {
         this.type = type;
         this.amount = amount;
         this.currency = currency;
         this.status = status;
         this.timestamp = timestamp;
-        this.transactionId = transactionId;
+        this.id = id;
         this.description = description;
     }
 
@@ -45,8 +45,8 @@ public class Transaction {
         return timestamp;
     }
 
-    public long getTransactionId() {
-        return transactionId;
+    public long getId() {
+        return id;
     }
 
     public String getDescription() {
@@ -62,12 +62,12 @@ public class Transaction {
             return false;
         }
         Transaction that = (Transaction) o;
-        return Objects.equals(transactionId, that.transactionId);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(transactionId);
+        return Objects.hash(id);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class Transaction {
                 ", currency=" + currency +
                 ", status=" + status +
                 ", timestamp=" + timestamp +
-                ", transactionId=" + transactionId +
+                ", id=" + id +
                 ", description='" + description + '\'' +
                 '}';
     }

@@ -4,8 +4,15 @@ import com.google.gson.annotations.SerializedName;
 import com.isador.btce.api.constants.Pair;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public final class Tick {
+
+    @SerializedName("vol_cur")
+    private final double volCur;
+
+    @SerializedName("server_time")
+    private final LocalDateTime serverTime;
 
     private final double avg;
     private final double buy;
@@ -16,12 +23,6 @@ public final class Tick {
     private final double vol;
     private final LocalDateTime updated;
     private final Pair pair;
-
-    @SerializedName("vol_cur")
-    private final double volCur;
-
-    @SerializedName("server_time")
-    private final LocalDateTime serverTime;
 
     Tick(double avg, double buy, double high, double last, double low, double sell, LocalDateTime serverTime, LocalDateTime updated, double vol, double volCur, Pair pair) {
         this.avg = avg;
@@ -79,6 +80,25 @@ public final class Tick {
 
     public Pair getPair() {
         return pair;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Tick tick = (Tick) o;
+        return Objects.equals(updated, tick.updated) &&
+                Objects.equals(pair, tick.pair);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(updated, pair);
     }
 
     @Override

@@ -61,8 +61,8 @@ public final class Depth {
                 return false;
             }
             SimpleOrder item = (SimpleOrder) o;
-            return Objects.equals(price, item.price) &&
-                    Objects.equals(amount, item.amount);
+            return Double.compare(price, item.price) == 0 &&
+                    Double.compare(amount, item.amount) == 0;
         }
 
         @Override

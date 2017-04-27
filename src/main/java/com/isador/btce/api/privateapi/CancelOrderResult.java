@@ -4,20 +4,20 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-public class CancelOrderResult {
+public final class CancelOrderResult {
 
     @SerializedName("order_id")
-    private final long orderId;
+    private final long id;
 
     private final Funds funds;
 
-    CancelOrderResult(long orderId, Funds funds) {
-        this.orderId = orderId;
+    CancelOrderResult(long id, Funds funds) {
+        this.id = id;
         this.funds = funds;
     }
 
-    public long getOrderId() {
-        return orderId;
+    public long getId() {
+        return id;
     }
 
     public Funds getFunds() {
@@ -26,21 +26,25 @@ public class CancelOrderResult {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CancelOrderResult that = (CancelOrderResult) o;
-        return Objects.equals(orderId, that.orderId);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "CancelOrderStatus{" +
-                "orderId=" + orderId +
+        return "CancelOrderResult{" +
+                "id=" + id +
                 ", funds=" + funds +
                 '}';
     }

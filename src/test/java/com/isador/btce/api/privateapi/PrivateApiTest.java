@@ -2,11 +2,11 @@ package com.isador.btce.api.privateapi;
 
 import com.isador.btce.api.BTCEException;
 import com.isador.btce.api.Connector;
+import com.isador.btce.api.JavaConnector;
 import com.isador.btce.api.constants.Currency;
 import com.isador.btce.api.constants.Operation;
 import com.isador.btce.api.constants.Pair;
 import com.isador.btce.api.privateapi.UserInfo.Rights;
-import com.isador.btce.api.publicapi.PublicApi;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,13 +22,9 @@ import java.util.Map;
 import static com.isador.btce.api.LocalDateTimeDeserializer.deserialize;
 import static com.isador.btce.api.TestUtils.getErrorJson;
 import static com.isador.btce.api.TestUtils.getJson;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 /**
@@ -48,21 +44,52 @@ public class PrivateApiTest {
 
     @Before
     public void setUp() throws Exception {
-        api = new PrivateApi(connector);
+        api = new PrivateApi("1", "1", connector);
+    }
+
+    @Test
+    public void testCreateWithNullKey() {
+        thrown.expect(NullPointerException.class);
+        thrown.expectMessage("Key must be specified");
+
+        new PrivateApi(null, null, null);
+    }
+
+    @Test
+    public void testCreateWithNullSecret() {
+        thrown.expect(NullPointerException.class);
+        thrown.expectMessage("Secret must be specified");
+
+        new PrivateApi("", null, null);
     }
 
     @Test
     public void testCreateNullConnector() {
         thrown.expect(NullPointerException.class);
-        thrown.expectMessage("Connector instance should be not null");
-        new PublicApi(null);
+        thrown.expectMessage("Connector must be specified");
+        new PrivateApi("", "", null);
+    }
+
+    @Test
+    public void testCreateWithEmptySecret() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Empty key");
+
+        new PrivateApi("", "", connector);
+    }
+
+    @Test
+    public void testCreate() {
+        PrivateApi api = new PrivateApi("1", "1");
+
+        assertThat("Default connector should be JavaConnector", api.getConnector(), instanceOf(JavaConnector.class));
     }
 
     @Test
     public void testGetUserInfoInvalidResponseNull() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("getInfo"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
         api.getUserInfo();
     }
 
@@ -70,7 +97,7 @@ public class PrivateApiTest {
     public void testGetUserInfoInvalidResponseEmpty() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("getInfo"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
         api.getUserInfo();
     }
 
@@ -78,7 +105,7 @@ public class PrivateApiTest {
     public void testGetUserInfoInvalidResponseNoSuccess() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"success\" field missed.");
-        when(connector.signedPost(eq("getInfo"), any())).thenReturn("{}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{}");
         api.getUserInfo();
     }
 
@@ -86,7 +113,7 @@ public class PrivateApiTest {
     public void testGetUserInfoInvalidResponseNoReturn() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"return\" field missed.");
-        when(connector.signedPost(eq("getInfo"), any())).thenReturn("{\"success\": 1}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 1}");
         api.getUserInfo();
     }
 
@@ -94,7 +121,7 @@ public class PrivateApiTest {
     public void testGetUserInfoInvalidResponseNoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.signedPost(eq("getInfo"), any())).thenReturn("{\"success\": 0}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 0}");
         api.getUserInfo();
     }
 
@@ -102,7 +129,7 @@ public class PrivateApiTest {
     public void testGetUserInfoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
-        when(connector.signedPost(eq("getInfo"), any())).thenReturn(getErrorJson());
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getErrorJson());
 
         api.getUserInfo();
     }
@@ -110,7 +137,7 @@ public class PrivateApiTest {
     @Test
     public void testGetUserInfo() {
         UserInfo expected = new UserInfo(new Rights(1, 1, 0), getExpectedFunds(), 0, deserialize(1491468795), 0);
-        when(connector.signedPost(eq("getInfo"), any())).thenReturn(getJson("info.json"));
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getJson("info.json"));
 
         UserInfo actual = api.getUserInfo();
 
@@ -158,7 +185,8 @@ public class PrivateApiTest {
     public void testTradeInvalidResponseNull() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("Trade"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+
         api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
     }
 
@@ -166,7 +194,8 @@ public class PrivateApiTest {
     public void testTradeInvalidResponseEmpty() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("Trade"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+
         api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
     }
 
@@ -174,7 +203,8 @@ public class PrivateApiTest {
     public void testTradeInvalidResponseNoSuccess() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"success\" field missed.");
-        when(connector.signedPost(eq("Trade"), any())).thenReturn("{}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{}");
+
         api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
     }
 
@@ -182,7 +212,8 @@ public class PrivateApiTest {
     public void testTradeInvalidResponseNoReturn() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"return\" field missed.");
-        when(connector.signedPost(eq("Trade"), any())).thenReturn("{\"success\": 1}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 1}");
+
         api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
     }
 
@@ -190,7 +221,8 @@ public class PrivateApiTest {
     public void testTradeInvalidResponseNoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.signedPost(eq("Trade"), any())).thenReturn("{\"success\": 0}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 0}");
+
         api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
     }
 
@@ -198,7 +230,7 @@ public class PrivateApiTest {
     public void testTradeError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
-        when(connector.signedPost(eq("Trade"), any())).thenReturn(getErrorJson());
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getErrorJson());
 
         api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
     }
@@ -207,7 +239,7 @@ public class PrivateApiTest {
     public void testTrade() {
         double amount = 0.001;
         TradeResult expected = new TradeResult(amount, 0, 0, getExpectedFunds());
-        when(connector.signedPost(eq("Trade"), any())).thenReturn(getJson("tradeResult.json"));
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getJson("tradeResult.json"));
 
         TradeResult actual = api.trade(Pair.BTC_USD, Operation.BUY, amount, 1);
 
@@ -231,7 +263,8 @@ public class PrivateApiTest {
     public void testCancelOrderInvalidResponseNull() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+
         api.cancelOrder(123);
     }
 
@@ -239,7 +272,8 @@ public class PrivateApiTest {
     public void testCancelOrderInvalidResponseEmpty() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+
         api.cancelOrder(123);
     }
 
@@ -247,7 +281,8 @@ public class PrivateApiTest {
     public void testCancelOrderInvalidResponseNoSuccess() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"success\" field missed.");
-        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn("{}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{}");
+
         api.cancelOrder(123);
     }
 
@@ -255,7 +290,8 @@ public class PrivateApiTest {
     public void testCancelOrderInvalidResponseNoReturn() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"return\" field missed.");
-        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn("{\"success\": 1}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 1}");
+
         api.cancelOrder(123);
     }
 
@@ -263,7 +299,8 @@ public class PrivateApiTest {
     public void testCancelOrderInvalidResponseNoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn("{\"success\": 0}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 0}");
+
         api.cancelOrder(123);
     }
 
@@ -271,7 +308,7 @@ public class PrivateApiTest {
     public void testCancelOrderError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
-        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn(getErrorJson());
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getErrorJson());
 
         api.cancelOrder(123);
     }
@@ -279,12 +316,13 @@ public class PrivateApiTest {
     @Test
     public void testCancelOrder() {
         CancelOrderResult expected = new CancelOrderResult(123, getExpectedFunds());
-        when(connector.signedPost(eq("CancelOrder"), any())).thenReturn(getJson("cancelOrder.json"));
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getJson("cancelOrder.json"));
 
         CancelOrderResult actual = api.cancelOrder(123);
 
         assertNotNull("Cancel order result must be not null", actual);
         assertEquals("Actual cancel order result doesn't match", expected, actual);
+        assertEquals("Actual cancel order id doesn't match", expected.getId(), actual.getId());
         assertFunds(expected.getFunds(), actual.getFunds());
     }
 
@@ -292,7 +330,8 @@ public class PrivateApiTest {
     public void testGetTransactionListInvalidResponseNull() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+
         api.getTransactionsList(null, null, null, null, null, null, null);
     }
 
@@ -300,7 +339,8 @@ public class PrivateApiTest {
     public void testGetTransactionListInvalidResponseEmpty() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+
         api.getTransactionsList(null, null, null, null, null, null, null);
     }
 
@@ -308,7 +348,8 @@ public class PrivateApiTest {
     public void testGetTransactionListInvalidResponseNoSuccess() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"success\" field missed.");
-        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("{}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{}");
+
         api.getTransactionsList(null, null, null, null, null, null, null);
     }
 
@@ -316,7 +357,8 @@ public class PrivateApiTest {
     public void testGetTransactionListInvalidResponseNoReturn() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"return\" field missed.");
-        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("{\"success\": 1}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 1}");
+
         api.getTransactionsList(null, null, null, null, null, null, null);
     }
 
@@ -324,21 +366,24 @@ public class PrivateApiTest {
     public void testGetTransactionListInvalidResponseNoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("{\"success\": 0}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 0}");
+
         api.getTransactionsList(null, null, null, null, null, null, null);
     }
 
     @Test
     public void testGetTransactionListEmptyResponse() {
-        when(connector.signedPost(eq("TransHistory"), any())).thenReturn("{\"success\": 1, \"return\": {}}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 1, \"return\": {}}");
+
         List<Transaction> list = api.getTransactionsList(null, null, null, null, null, null, null);
+
         assertTrue("Transactions list must be empty", list.isEmpty());
     }
 
     @Test
     public void testGetTransactionList() {
         Transaction expectedTransaction = new Transaction(4, 1.09920000, Currency.USD, 2, deserialize(1491904521), 3574749223L, "Cancel order :order:1703917256:");
-        when(connector.signedPost(eq("TransHistory"), any())).thenReturn(getJson("transactionHistory.json"));
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getJson("transactionHistory.json"));
 
         List<Transaction> transactions = api.getTransactionsList(null, null, null, null, null, null, null);
 
@@ -350,6 +395,7 @@ public class PrivateApiTest {
         Transaction actualTransaction = transactions.get(0);
 
         assertEquals("Actual transaction doesn't match", expectedTransaction, actualTransaction);
+        assertEquals("Actual transaction id doesn't match", expectedTransaction.getId(), actualTransaction.getId());
         assertEquals("Actual transaction amount doesn't match", expectedTransaction.getAmount(), actualTransaction.getAmount(), 0.000001);
         assertEquals("Actual transaction currency doesn't match", expectedTransaction.getCurrency(), actualTransaction.getCurrency());
         assertEquals("Actual transaction description doesn't match", expectedTransaction.getDescription(), actualTransaction.getDescription());
@@ -362,7 +408,8 @@ public class PrivateApiTest {
     public void testGetOrderListInvalidResponseNull() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("OrderList"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+
         api.getOrderList(null, null, null, null, null, null, null, null, null);
     }
 
@@ -370,7 +417,8 @@ public class PrivateApiTest {
     public void testGetOrderListInvalidResponseEmpty() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("OrderList"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+
         api.getOrderList(null, null, null, null, null, null, null, null, null);
     }
 
@@ -378,7 +426,8 @@ public class PrivateApiTest {
     public void testGetOrderListInvalidResponseNoSuccess() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"success\" field missed.");
-        when(connector.signedPost(eq("OrderList"), any())).thenReturn("{}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{}");
+
         api.getOrderList(null, null, null, null, null, null, null, null, null);
     }
 
@@ -386,7 +435,8 @@ public class PrivateApiTest {
     public void testGetOrderListInvalidResponseNoReturn() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"return\" field missed.");
-        when(connector.signedPost(eq("OrderList"), any())).thenReturn("{\"success\": 1}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 1}");
+
         api.getOrderList(null, null, null, null, null, null, null, null, null);
     }
 
@@ -394,21 +444,24 @@ public class PrivateApiTest {
     public void testGetOrderListInvalidResponseNoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.signedPost(eq("OrderList"), any())).thenReturn("{\"success\": 0}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 0}");
+
         api.getOrderList(null, null, null, null, null, null, null, null, null);
     }
 
     @Test
     public void testGetOrderListEmptyResponse() {
-        when(connector.signedPost(eq("OrderList"), any())).thenReturn("{\"success\": 1, \"return\": {}}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 1, \"return\": {}}");
+
         List<Order> list = api.getOrderList(null, null, null, null, null, null, null, null, null);
+
         assertTrue("Order list must be empty", list.isEmpty());
     }
 
     @Test
     public void testGetOrderList() {
         Order expectedOrder = new Order(1696817430L, Pair.BTC_USD, Operation.BUY, 0.00100000, 1158.82900000, 0, deserialize(1491563567));
-        when(connector.signedPost(eq("OrderList"), any())).thenReturn(getJson("orders.json"));
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getJson("orders.json"));
 
         List<Order> orders = api.getOrderList(null, null, null, null, null, null, null, null, null);
 
@@ -418,6 +471,7 @@ public class PrivateApiTest {
 
         Order actualOrder = orders.get(0);
         assertEquals("Actual order doesn't match", expectedOrder, actualOrder);
+        assertEquals("Actual order id doesn't match", expectedOrder.getId(), actualOrder.getId());
         assertEquals("Actual order amount doesn't match", expectedOrder.getAmount(), actualOrder.getAmount(), 0.000001);
         assertEquals("Actual order status doesn't match", expectedOrder.getStatus(), actualOrder.getStatus());
         assertEquals("Actual order type doesn't match", expectedOrder.getType(), actualOrder.getType());
@@ -430,7 +484,8 @@ public class PrivateApiTest {
     public void testGetTradeHistoryInvalidResponseNull() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+
         api.getTradesList(null, null, null, null, null, null, null, null);
     }
 
@@ -438,7 +493,8 @@ public class PrivateApiTest {
     public void testGetTradeHistoryInvalidResponseEmpty() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+
         api.getTradesList(null, null, null, null, null, null, null, null);
     }
 
@@ -446,7 +502,8 @@ public class PrivateApiTest {
     public void testGetTradeHistoryListInvalidResponseNoSuccess() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"success\" field missed.");
-        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("{}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{}");
+
         api.getTradesList(null, null, null, null, null, null, null, null);
     }
 
@@ -454,7 +511,8 @@ public class PrivateApiTest {
     public void testGetTradeHistoryListInvalidResponseNoReturn() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"return\" field missed.");
-        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("{\"success\": 1}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 1}");
+
         api.getTradesList(null, null, null, null, null, null, null, null);
     }
 
@@ -462,14 +520,17 @@ public class PrivateApiTest {
     public void testGetTradeHistoryListInvalidResponseNoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("{\"success\": 0}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 0}");
+
         api.getTradesList(null, null, null, null, null, null, null, null);
     }
 
     @Test
     public void testGetTradeHistoryListEmptyResponse() {
-        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn("{\"success\": 1, \"return\": {}}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 1, \"return\": {}}");
+
         List<TradeHistory> list = api.getTradesList(null, null, null, null, null, null, null, null);
+
         assertTrue("Trade history list must be empty", list.isEmpty());
     }
 
@@ -478,7 +539,7 @@ public class PrivateApiTest {
         TradeHistory expectedTh = new TradeHistory(Pair.BTC_USD, Operation.BUY,
                                                    0.00100000, 1180.00000000, 1696641686,
                                                    false, deserialize(1491555286), 97951082L);
-        when(connector.signedPost(eq("TradeHistory"), any())).thenReturn(getJson("tradeHistory.json"));
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getJson("tradeHistory.json"));
 
         List<TradeHistory> trades = api.getTradesList(null, null, null, null, null, null, null, null);
 
@@ -494,7 +555,9 @@ public class PrivateApiTest {
         assertEquals("Actual trade history amount doesn't match", expectedTh.getAmount(), actualTh.getAmount(), 0.0000001);
         assertEquals("Actual trade history orderId doesn't match", expectedTh.getOrderId(), actualTh.getOrderId());
         assertEquals("Actual trade history timestamp doesn't match", expectedTh.getTimestamp(), actualTh.getTimestamp());
-        assertEquals("Actual trade history tradeId doesn't match", expectedTh.getTradeId(), actualTh.getTradeId());
+        assertEquals("Actual trade history tradeId doesn't match", expectedTh.getId(), actualTh.getId());
+        assertEquals("Actual trade history yourOrder doesn't match", expectedTh.isYourOrder(), actualTh.isYourOrder());
+
     }
 
     private void assertRightsEquals(Rights expected, Rights actual) {

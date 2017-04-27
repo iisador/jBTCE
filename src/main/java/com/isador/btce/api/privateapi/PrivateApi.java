@@ -3,39 +3,78 @@ package com.isador.btce.api.privateapi;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.isador.btce.api.AbstractApi;
-import com.isador.btce.api.BTCEException;
-import com.isador.btce.api.Connector;
-import com.isador.btce.api.LocalDateTimeDeserializer;
+import com.isador.btce.api.*;
 import com.isador.btce.api.constants.Currency;
 import com.isador.btce.api.constants.Operation;
 import com.isador.btce.api.constants.Pair;
 import com.isador.btce.api.constants.Sort;
+import org.apache.commons.codec.binary.Hex;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.Charset;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.isador.btce.api.LocalDateTimeDeserializer.deserialize;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
 
 public class PrivateApi extends AbstractApi {
 
-    private final Connector connector;
+    static final String PRIVATE_API_URL = "https://btc-e.com/tapi";
+    private static final AtomicLong nonce = new AtomicLong(System.currentTimeMillis() / 1000);
+    private Connector connector;
 
-    public PrivateApi(Connector connector) {
+    private final Mac mac;
+    private Map<String, String> headers;
+
+    public PrivateApi(String key, String secret) {
+        this(key, secret, new JavaConnector());
+    }
+
+    public PrivateApi(String key, String secret, Connector connector) {
         super(ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
                               Funds.class, new FundsDeserializer()));
-        this.connector = requireNonNull(connector, "Connector instance should be not null");
+        requireNonNull(key, "Key must be specified");
+        requireNonNull(secret, "Secret must be specified");
+        this.connector = requireNonNull(connector, "Connector must be specified");
+
+        // Init mac
+        try {
+            String alg = "HmacSHA512";
+            mac = Mac.getInstance(alg);
+            mac.init(new SecretKeySpec(secret.getBytes(Charset.forName("UTF-8")), alg));
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Init headers
+        headers = ImmutableMap.of(
+                "Key", key,
+                "User-Agent", "jBTCEv2"
+        );
+    }
+
+    public Connector getConnector() {
+        return connector;
+    }
+
+    public void setConnector(Connector connector) {
+        this.connector = connector;
     }
 
     public UserInfo getUserInfo() throws BTCEException {
-        String json = connector.signedPost("getInfo", null);
+        String json = call("getInfo", null);
         JsonElement response = processResponse(json);
         return gson.fromJson(response, UserInfo.class);
     }
@@ -50,7 +89,7 @@ public class PrivateApi extends AbstractApi {
                                                   "type", operation.name().toLowerCase(),
                                                   "rate", rate,
                                                   "amount", amount);
-        String json = connector.signedPost("Trade", map);
+        String json = call("Trade", map);
         JsonElement response = processResponse(json);
         return gson.fromJson(response, TradeResult.class);
     }
@@ -71,7 +110,7 @@ public class PrivateApi extends AbstractApi {
                 .active(active)
                 .build();
 
-        String json = connector.signedPost("OrderList", map);
+        String json = call("OrderList", map);
         JsonObject response = (JsonObject) processResponse(json);
         return response.entrySet().stream()
                 .map(this::toOrder)
@@ -91,7 +130,7 @@ public class PrivateApi extends AbstractApi {
                 .end(end)
                 .build();
 
-        String json = connector.signedPost("TransHistory", map);
+        String json = call("TransHistory", map);
         JsonObject response = (JsonObject) processResponse(json);
         return response.entrySet().stream()
                 .map(this::toTransaction)
@@ -112,7 +151,7 @@ public class PrivateApi extends AbstractApi {
                 .pair(pair)
                 .build();
 
-        String json = connector.signedPost("TradeHistory", map);
+        String json = call("TradeHistory", map);
         JsonObject response = (JsonObject) processResponse(json);
         return response.entrySet().stream()
                 .map(this::toTradeHistory)
@@ -123,7 +162,7 @@ public class PrivateApi extends AbstractApi {
         checkArgument(orderId > 0, "Invalid oderId: %s", orderId);
 
         Map<String, Object> map = ImmutableMap.of("order_id", orderId);
-        String json = connector.signedPost("CancelOrder", map);
+        String json = call("CancelOrder", map);
         JsonElement response = processResponse(json);
         return gson.fromJson(response, CancelOrderResult.class);
     }
@@ -179,6 +218,34 @@ public class PrivateApi extends AbstractApi {
         }
 
         return get(obj, "return");
+    }
+
+    private String call(String method, Map<String, Object> additionalParameters) throws BTCEException {
+        String body = getBody(method, additionalParameters);
+        Map<String, String> headers = getHeaders(body);
+        return connector.post(PRIVATE_API_URL, body, headers);
+    }
+
+    private String getBody(String method, Map<String, Object> additionalParameters) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("nonce", nonce.getAndIncrement());
+        parameters.put("method", method);
+
+        if (additionalParameters != null) {
+            parameters.putAll(additionalParameters);
+        }
+
+        return parameters.entrySet().stream()
+                .map(e -> String.format("%s=%s", e.getKey(), e.getValue()))
+                .collect(joining("&"));
+    }
+
+    private Map<String, String> getHeaders(String body) {
+        mac.update(body.getBytes(Charset.forName("UTF-8")));
+        Map<String, String> headers = new HashMap<>(this.headers);
+        headers.put("Sign", Hex.encodeHexString(mac.doFinal()));
+
+        return headers;
     }
 
     private class ParametersBuilder {
