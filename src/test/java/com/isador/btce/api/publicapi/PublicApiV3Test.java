@@ -28,7 +28,6 @@ import static com.isador.btce.api.constants.TradeType.BID;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.isIn;
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -52,9 +51,26 @@ public class PublicApiV3Test {
     }
 
     @Test
+    public void testCreate() {
+        PublicApiV3 api = new PublicApiV3();
+
+        assertNotNull("Connector must be not null", api.getConnector());
+        assertThat("Invalid connector class", api.getConnector(), instanceOf(JavaConnector.class));
+    }
+
+    @Test
+    public void testCreateWithNullConnector() {
+        thrown.expect(NullPointerException.class);
+        thrown.expectMessage("Connector instance should be not null");
+
+        new PublicApiV3(null);
+    }
+
+    @Test
     public void testGetTradesNullPairs() {
         thrown.expect(NullPointerException.class);
         thrown.expectMessage("Pairs must be specified");
+
         api.getTrades(null);
     }
 
@@ -63,6 +79,7 @@ public class PublicApiV3Test {
     public void testGetTradesNoPairs() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Pairs must be defined");
+
         api.getTrades();
     }
 
@@ -70,7 +87,8 @@ public class PublicApiV3Test {
     public void testGetTradesInvalidResponseNull() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get(anyString())).thenReturn("");
+        when(connector.get("https://btc-e.com/api/3/trades/btc_usd")).thenReturn(null);
+
         api.getTrades(BTC_USD);
     }
 
@@ -78,24 +96,8 @@ public class PublicApiV3Test {
     public void testGetTradesInvalidResponseEmpty() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get(anyString())).thenReturn("");
-        api.getTrades(BTC_USD);
-    }
+        when(connector.get("https://btc-e.com/api/3/trades/btc_usd")).thenReturn("");
 
-    @Test
-    public void testGetTradesInvalidResponseNoError() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.get(anyString())).thenReturn("{\"success\": 0}");
-        api.getTrades(BTC_USD);
-    }
-
-    @Test
-    public void testGetTradesError() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Some error");
-
-        when(connector.get(anyString())).thenReturn(getErrorJson());
         api.getTrades(BTC_USD);
     }
 
@@ -103,8 +105,26 @@ public class PublicApiV3Test {
     public void testGetTradesInvalidJson() {
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
+        when(connector.get("https://btc-e.com/api/3/trades/btc_usd")).thenReturn(ahalaiMahalai());
 
-        when(connector.get(anyString())).thenReturn(ahalaiMahalai());
+        api.getTrades(BTC_USD);
+    }
+
+    @Test
+    public void testGetTradesInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.get("https://btc-e.com/api/3/trades/btc_usd")).thenReturn("{\"success\": 0}");
+
+        api.getTrades(BTC_USD);
+    }
+
+    @Test
+    public void testGetTradesError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Some error");
+        when(connector.get("https://btc-e.com/api/3/trades/btc_usd")).thenReturn(getErrorJson());
+
         api.getTrades(BTC_USD);
     }
 
@@ -113,7 +133,7 @@ public class PublicApiV3Test {
         Map<Pair, Trade> expected = ImmutableMap.of(
                 BTC_USD, new Trade(deserialize(1493365526), 1304.679, 0.905, 99673985, BTC_USD.getSec(), BTC_USD.getPrim(), BID),
                 BTC_RUR, new Trade(deserialize(1493365545), 72850, 0.00350568, 99673997, BTC_RUR.getSec(), BTC_RUR.getPrim(), ASK));
-        when(connector.get(anyString())).thenReturn(TestUtils.getJson("v3/trades.json"));
+        when(connector.get("https://btc-e.com/api/3/trades/btc_usd-btc_rur")).thenReturn(TestUtils.getJson("v3/trades.json"));
 
         Map<Pair, Trade[]> actual = api.getTrades(expected.keySet().toArray(new Pair[2]));
 
@@ -136,13 +156,5 @@ public class PublicApiV3Test {
 //            assertEquals("Trade.item is invalid", expectedTrade.getItem(), actualTrade.getItem());
 //            assertEquals("Trade.priceCurrency is invalid", expectedTrade.getPriceCurrency(), actualTrade.getPriceCurrency());
         });
-    }
-
-    @Test
-    public void testCreate() {
-        PublicApiV3 api = new PublicApiV3();
-
-        assertNotNull("Connector must be not null", api.getConnector());
-        assertThat("Invalid connector class", api.getConnector(), instanceOf(JavaConnector.class));
     }
 }

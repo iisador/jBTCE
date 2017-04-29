@@ -1,8 +1,6 @@
 package com.isador.btce.api.publicapi;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.isador.btce.api.*;
 import com.isador.btce.api.constants.Pair;
@@ -47,8 +45,8 @@ public class PublicApiV3 extends AbstractApi {
     public Map<Pair, Trade[]> getTrades(Pair... pairs) throws BTCEException {
         Pair[] validPairs = checkPairs(false, pairs);
         String response = connector.get(prepareUrl("trades", validPairs));
-        processResponse(response);
-        JsonObject json = (JsonObject) parser.parse(response);
+
+        JsonObject json = processResponse(response);
 
         return Stream.of(validPairs)
                 .map(pair -> ImmutablePair.of(pair, gson.fromJson(json.get(pair.getName()), Trade[].class)))
@@ -66,7 +64,7 @@ public class PublicApiV3 extends AbstractApi {
         return pairs;
     }
 
-    private JsonElement processResponse(String json) throws BTCEException {
+    private JsonObject processResponse(String json) throws BTCEException {
         processServerResponse(json);
         JsonObject obj = parser.parse(json).getAsJsonObject();
         if (obj.has("success") && obj.get("success").getAsByte() == 0) {

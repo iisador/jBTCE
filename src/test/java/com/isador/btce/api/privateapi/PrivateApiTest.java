@@ -4,8 +4,6 @@ import com.isador.btce.api.BTCEException;
 import com.isador.btce.api.Connector;
 import com.isador.btce.api.JavaConnector;
 import com.isador.btce.api.constants.Currency;
-import com.isador.btce.api.constants.Operation;
-import com.isador.btce.api.constants.Pair;
 import com.isador.btce.api.privateapi.UserInfo.Rights;
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,8 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.isador.btce.api.LocalDateTimeDeserializer.deserialize;
-import static com.isador.btce.api.TestUtils.getErrorJson;
-import static com.isador.btce.api.TestUtils.getJson;
+import static com.isador.btce.api.TestUtils.*;
+import static com.isador.btce.api.constants.Operation.BUY;
+import static com.isador.btce.api.constants.Pair.BTC_USD;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -82,62 +81,85 @@ public class PrivateApiTest {
     public void testCreate() {
         PrivateApi api = new PrivateApi("1", "1");
 
+        assertNotNull("Default connector should be not null", api.getConnector());
         assertThat("Default connector should be JavaConnector", api.getConnector(), instanceOf(JavaConnector.class));
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testGetUserInfoInvalidResponseNull() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), nullable(Map.class))).thenReturn(null);
+
         api.getUserInfo();
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testGetUserInfoInvalidResponseEmpty() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), nullable(Map.class))).thenReturn("");
+
         api.getUserInfo();
     }
 
     @Test
+    @SuppressWarnings("unchecked")
+    public void testGetUserInfoInvalidJson() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), nullable(Map.class))).thenReturn(ahalaiMahalai());
+
+        api.getUserInfo();
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
     public void testGetUserInfoInvalidResponseNoSuccess() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"success\" field missed.");
-        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), nullable(Map.class))).thenReturn("{}");
+
         api.getUserInfo();
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testGetUserInfoInvalidResponseNoReturn() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"return\" field missed.");
-        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 1}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), nullable(Map.class))).thenReturn("{\"success\": 1}");
+
         api.getUserInfo();
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testGetUserInfoInvalidResponseNoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 0}");
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), nullable(Map.class))).thenReturn("{\"success\": 0}");
+
         api.getUserInfo();
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testGetUserInfoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
-        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getErrorJson());
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), nullable(Map.class))).thenReturn(getErrorJson());
 
         api.getUserInfo();
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testGetUserInfo() {
         UserInfo expected = new UserInfo(new Rights(1, 1, 0), getExpectedFunds(), 0, deserialize(1491468795), 0);
-        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getJson("info.json"));
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), nullable(Map.class))).thenReturn(getJson("info.json"));
 
         UserInfo actual = api.getUserInfo();
 
@@ -162,7 +184,7 @@ public class PrivateApiTest {
         thrown.expect(NullPointerException.class);
         thrown.expectMessage("Invalid trade type");
 
-        api.trade(Pair.BTC_USD, null, -1, -1);
+        api.trade(BTC_USD, null, -1, -1);
     }
 
     @Test
@@ -170,7 +192,7 @@ public class PrivateApiTest {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Invalid trade rate: -1");
 
-        api.trade(Pair.BTC_USD, Operation.BUY, -1, -1);
+        api.trade(BTC_USD, BUY, -1, -1);
     }
 
     @Test
@@ -178,7 +200,7 @@ public class PrivateApiTest {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Invalid trade amount: -1");
 
-        api.trade(Pair.BTC_USD, Operation.BUY, 1, -1);
+        api.trade(BTC_USD, BUY, 1, -1);
     }
 
     @Test
@@ -187,7 +209,7 @@ public class PrivateApiTest {
         thrown.expectMessage("Invalid server response. Null or empty response");
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
 
-        api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
+        api.trade(BTC_USD, BUY, 1, 1);
     }
 
     @Test
@@ -196,7 +218,17 @@ public class PrivateApiTest {
         thrown.expectMessage("Invalid server response. Null or empty response");
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
 
-        api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
+        api.trade(BTC_USD, BUY, 1, 1);
+    }
+
+
+    @Test
+    public void testTradeInvalidJson() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
+
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(ahalaiMahalai());
+        api.trade(BTC_USD, BUY, 1, 1);
     }
 
     @Test
@@ -205,7 +237,7 @@ public class PrivateApiTest {
         thrown.expectMessage("Invalid server response. \"success\" field missed.");
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{}");
 
-        api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
+        api.trade(BTC_USD, BUY, 1, 1);
     }
 
     @Test
@@ -214,7 +246,7 @@ public class PrivateApiTest {
         thrown.expectMessage("Invalid server response. \"return\" field missed.");
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 1}");
 
-        api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
+        api.trade(BTC_USD, BUY, 1, 1);
     }
 
     @Test
@@ -223,7 +255,7 @@ public class PrivateApiTest {
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("{\"success\": 0}");
 
-        api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
+        api.trade(BTC_USD, BUY, 1, 1);
     }
 
     @Test
@@ -232,7 +264,7 @@ public class PrivateApiTest {
         thrown.expectMessage("Some error");
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getErrorJson());
 
-        api.trade(Pair.BTC_USD, Operation.BUY, 1, 1);
+        api.trade(BTC_USD, BUY, 1, 1);
     }
 
     @Test
@@ -241,7 +273,7 @@ public class PrivateApiTest {
         TradeResult expected = new TradeResult(amount, 0, 0, getExpectedFunds());
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getJson("tradeResult.json"));
 
-        TradeResult actual = api.trade(Pair.BTC_USD, Operation.BUY, amount, 1);
+        TradeResult actual = api.trade(BTC_USD, BUY, amount, 1);
 
         assertNotNull("Trade result must be not null", actual);
         assertEquals("TradeResult.orderId doesn't match", expected.getOrderId(), actual.getOrderId());
@@ -274,6 +306,16 @@ public class PrivateApiTest {
         thrown.expectMessage("Invalid server response. Null or empty response");
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
 
+        api.cancelOrder(123);
+    }
+
+
+    @Test
+    public void testCancelOrderInvalidJson() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
+
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(ahalaiMahalai());
         api.cancelOrder(123);
     }
 
@@ -341,6 +383,15 @@ public class PrivateApiTest {
         thrown.expectMessage("Invalid server response. Null or empty response");
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
 
+        api.getTransactionsList(null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTransactionListInvalidJson() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
+
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(ahalaiMahalai());
         api.getTransactionsList(null, null, null, null, null, null, null);
     }
 
@@ -423,6 +474,15 @@ public class PrivateApiTest {
     }
 
     @Test
+    public void testGetOrderListInvalidJson() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
+
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(ahalaiMahalai());
+        api.getOrderList(null, null, null, null, null, null, null, null, null);
+    }
+
+    @Test
     public void testGetOrderListInvalidResponseNoSuccess() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"success\" field missed.");
@@ -460,7 +520,7 @@ public class PrivateApiTest {
 
     @Test
     public void testGetOrderList() {
-        Order expectedOrder = new Order(1696817430L, Pair.BTC_USD, Operation.BUY, 0.00100000, 1158.82900000, 0, deserialize(1491563567));
+        Order expectedOrder = new Order(1696817430L, BTC_USD, BUY, 0.00100000, 1158.82900000, 0, deserialize(1491563567));
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getJson("orders.json"));
 
         List<Order> orders = api.getOrderList(null, null, null, null, null, null, null, null, null);
@@ -495,6 +555,15 @@ public class PrivateApiTest {
         thrown.expectMessage("Invalid server response. Null or empty response");
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn("");
 
+        api.getTradesList(null, null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void testGetTradeHistoryInvalidJson() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
+
+        when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(ahalaiMahalai());
         api.getTradesList(null, null, null, null, null, null, null, null);
     }
 
@@ -536,9 +605,9 @@ public class PrivateApiTest {
 
     @Test
     public void testGetTradeHistoryList() {
-        TradeHistory expectedTh = new TradeHistory(Pair.BTC_USD, Operation.BUY,
-                                                   0.00100000, 1180.00000000, 1696641686,
-                                                   false, deserialize(1491555286), 97951082L);
+        TradeHistory expectedTh = new TradeHistory(BTC_USD, BUY,
+                0.00100000, 1180.00000000, 1696641686,
+                false, deserialize(1491555286), 97951082L);
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getJson("tradeHistory.json"));
 
         List<TradeHistory> trades = api.getTradesList(null, null, null, null, null, null, null, null);

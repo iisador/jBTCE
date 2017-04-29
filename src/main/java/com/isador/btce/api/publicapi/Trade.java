@@ -20,6 +20,7 @@ public final class Trade {
 
     @SerializedName(value = "date", alternate = "timestamp")
     private final LocalDateTime date;
+
     private final double price;
     private final double amount;
     private final Currency item;
