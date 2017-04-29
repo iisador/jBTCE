@@ -29,4 +29,8 @@ public class TestUtils {
             throw new RuntimeException(e);
         }
     }
+
+    public static String ahalaiMahalai() {
+        return "abracadabra";
+    }
 }

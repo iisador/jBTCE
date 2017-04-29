@@ -15,9 +15,10 @@ public final class Trade {
     @SerializedName("price_currency")
     private final Currency priceCurrency;
 
-    @SerializedName("trade_type")
+    @SerializedName(value = "trade_type", alternate = "type")
     private final TradeType type;
 
+    @SerializedName(value = "date", alternate = "timestamp")
     private final LocalDateTime date;
     private final double price;
     private final double amount;

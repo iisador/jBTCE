@@ -1,0 +1,2106 @@
+{
+  "btc_usd": [
+    {
+      "type": "bid",
+      "price": 1304.679,
+      "amount": 0.905,
+      "tid": 99673985,
+      "timestamp": 1493365526
+    },
+    {
+      "type": "ask",
+      "price": 1300.124,
+      "amount": 0.26792096,
+      "tid": 99673977,
+      "timestamp": 1493365520
+    },
+    {
+      "type": "ask",
+      "price": 1300.121,
+      "amount": 0.001,
+      "tid": 99673947,
+      "timestamp": 1493365499
+    },
+    {
+      "type": "bid",
+      "price": 1303.979,
+      "amount": 0.02039802,
+      "tid": 99673945,
+      "timestamp": 1493365498
+    },
+    {
+      "type": "ask",
+      "price": 1300.121,
+      "amount": 0.01,
+      "tid": 99673940,
+      "timestamp": 1493365495
+    },
+    {
+      "type": "ask",
+      "price": 1300.009,
+      "amount": 0.001,
+      "tid": 99673933,
+      "timestamp": 1493365492
+    },
+    {
+      "type": "bid",
+      "price": 1305.189,
+      "amount": 0.02531282,
+      "tid": 99673914,
+      "timestamp": 1493365469
+    },
+    {
+      "type": "bid",
+      "price": 1305.189,
+      "amount": 0.10566906,
+      "tid": 99673913,
+      "timestamp": 1493365469
+    },
+    {
+      "type": "bid",
+      "price": 1303.98,
+      "amount": 0.001,
+      "tid": 99673912,
+      "timestamp": 1493365469
+    },
+    {
+      "type": "bid",
+      "price": 1303.979,
+      "amount": 0.00287258,
+      "tid": 99673882,
+      "timestamp": 1493365448
+    },
+    {
+      "type": "bid",
+      "price": 1303.98,
+      "amount": 0.001,
+      "tid": 99673875,
+      "timestamp": 1493365442
+    },
+    {
+      "type": "ask",
+      "price": 1304.699,
+      "amount": 0.003,
+      "tid": 99673870,
+      "timestamp": 1493365431
+    },
+    {
+      "type": "bid",
+      "price": 1305.19,
+      "amount": 1.18892951,
+      "tid": 99673853,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1305.189,
+      "amount": 0.00768565,
+      "tid": 99673852,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1305.189,
+      "amount": 0.00768565,
+      "tid": 99673851,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1305.189,
+      "amount": 0.00768565,
+      "tid": 99673850,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1305.189,
+      "amount": 0.00768552,
+      "tid": 99673849,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1305.189,
+      "amount": 0.00768552,
+      "tid": 99673848,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1305.189,
+      "amount": 0.00768552,
+      "tid": 99673847,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1305.189,
+      "amount": 0.00768552,
+      "tid": 99673846,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1305.189,
+      "amount": 0.00768573,
+      "tid": 99673845,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1305.189,
+      "amount": 0.00768573,
+      "tid": 99673844,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1305,
+      "amount": 0.3992,
+      "tid": 99673843,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1305,
+      "amount": 0.0014,
+      "tid": 99673842,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1304.8,
+      "amount": 0.1737,
+      "tid": 99673841,
+      "timestamp": 1493365406
+    },
+    {
+      "type": "bid",
+      "price": 1304,
+      "amount": 0.0826,
+      "tid": 99673840,
+      "timestamp": 1493365405
+    },
+    {
+      "type": "ask",
+      "price": 1299,
+      "amount": 0.31173986,
+      "tid": 99673833,
+      "timestamp": 1493365393
+    },
+    {
+      "type": "ask",
+      "price": 1301.32,
+      "amount": 0.2327071,
+      "tid": 99673832,
+      "timestamp": 1493365393
+    },
+    {
+      "type": "ask",
+      "price": 1301.502,
+      "amount": 0.1532929,
+      "tid": 99673831,
+      "timestamp": 1493365393
+    },
+    {
+      "type": "ask",
+      "price": 1302.309,
+      "amount": 0.11,
+      "tid": 99673830,
+      "timestamp": 1493365393
+    },
+    {
+      "type": "ask",
+      "price": 1302.559,
+      "amount": 0.06,
+      "tid": 99673829,
+      "timestamp": 1493365393
+    },
+    {
+      "type": "ask",
+      "price": 1303,
+      "amount": 1.1127448,
+      "tid": 99673828,
+      "timestamp": 1493365393
+    },
+    {
+      "type": "ask",
+      "price": 1303.011,
+      "amount": 0.01951534,
+      "tid": 99673827,
+      "timestamp": 1493365393
+    },
+    {
+      "type": "bid",
+      "price": 1303.999,
+      "amount": 0.05035402,
+      "tid": 99673810,
+      "timestamp": 1493365354
+    },
+    {
+      "type": "ask",
+      "price": 1303.005,
+      "amount": 0.00614665,
+      "tid": 99673806,
+      "timestamp": 1493365345
+    },
+    {
+      "type": "bid",
+      "price": 1303.999,
+      "amount": 0.01300699,
+      "tid": 99673801,
+      "timestamp": 1493365318
+    },
+    {
+      "type": "ask",
+      "price": 1303,
+      "amount": 0.86904655,
+      "tid": 99673789,
+      "timestamp": 1493365308
+    },
+    {
+      "type": "ask",
+      "price": 1303.001,
+      "amount": 0.0145994,
+      "tid": 99673775,
+      "timestamp": 1493365302
+    },
+    {
+      "type": "ask",
+      "price": 1303.001,
+      "amount": 0.46408155,
+      "tid": 99673760,
+      "timestamp": 1493365295
+    },
+    {
+      "type": "ask",
+      "price": 1303,
+      "amount": 1.91820865,
+      "tid": 99673759,
+      "timestamp": 1493365289
+    },
+    {
+      "type": "bid",
+      "price": 1304,
+      "amount": 0.077,
+      "tid": 99673758,
+      "timestamp": 1493365288
+    },
+    {
+      "type": "ask",
+      "price": 1301.506,
+      "amount": 0.02475322,
+      "tid": 99673747,
+      "timestamp": 1493365248
+    },
+    {
+      "type": "bid",
+      "price": 1303.999,
+      "amount": 0.05,
+      "tid": 99673745,
+      "timestamp": 1493365241
+    },
+    {
+      "type": "ask",
+      "price": 1301.503,
+      "amount": 0.1425,
+      "tid": 99673741,
+      "timestamp": 1493365213
+    },
+    {
+      "type": "bid",
+      "price": 1304,
+      "amount": 0.01,
+      "tid": 99673740,
+      "timestamp": 1493365212
+    },
+    {
+      "type": "ask",
+      "price": 1301.505,
+      "amount": 0.0000261,
+      "tid": 99673705,
+      "timestamp": 1493365199
+    },
+    {
+      "type": "ask",
+      "price": 1303.999,
+      "amount": 0.001,
+      "tid": 99673704,
+      "timestamp": 1493365199
+    },
+    {
+      "type": "ask",
+      "price": 1301.505,
+      "amount": 0.0012,
+      "tid": 99673702,
+      "timestamp": 1493365197
+    },
+    {
+      "type": "bid",
+      "price": 1303.999,
+      "amount": 0.01,
+      "tid": 99673701,
+      "timestamp": 1493365196
+    },
+    {
+      "type": "bid",
+      "price": 1303.999,
+      "amount": 0.03,
+      "tid": 99673693,
+      "timestamp": 1493365174
+    },
+    {
+      "type": "bid",
+      "price": 1303.999,
+      "amount": 0.0693503,
+      "tid": 99673686,
+      "timestamp": 1493365166
+    },
+    {
+      "type": "ask",
+      "price": 1301.502,
+      "amount": 0.024,
+      "tid": 99673684,
+      "timestamp": 1493365160
+    },
+    {
+      "type": "bid",
+      "price": 1304,
+      "amount": 0.027,
+      "tid": 99673683,
+      "timestamp": 1493365157
+    },
+    {
+      "type": "bid",
+      "price": 1301.252,
+      "amount": 0.06,
+      "tid": 99673680,
+      "timestamp": 1493365152
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.0072929,
+      "tid": 99673679,
+      "timestamp": 1493365152
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.3,
+      "tid": 99673675,
+      "timestamp": 1493365130
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.037762,
+      "tid": 99673673,
+      "timestamp": 1493365125
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.3,
+      "tid": 99673670,
+      "timestamp": 1493365108
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.10000016,
+      "tid": 99673669,
+      "timestamp": 1493365108
+    },
+    {
+      "type": "bid",
+      "price": 1300.801,
+      "amount": 0.09999984,
+      "tid": 99673668,
+      "timestamp": 1493365108
+    },
+    {
+      "type": "bid",
+      "price": 1300.801,
+      "amount": 0.3,
+      "tid": 99673660,
+      "timestamp": 1493365088
+    },
+    {
+      "type": "ask",
+      "price": 1299.001,
+      "amount": 0.15,
+      "tid": 99673657,
+      "timestamp": 1493365073
+    },
+    {
+      "type": "bid",
+      "price": 1300.801,
+      "amount": 0.3,
+      "tid": 99673656,
+      "timestamp": 1493365070
+    },
+    {
+      "type": "bid",
+      "price": 1300.801,
+      "amount": 0.3,
+      "tid": 99673647,
+      "timestamp": 1493365050
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.401,
+      "tid": 99673645,
+      "timestamp": 1493365045
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.93287566,
+      "tid": 99673643,
+      "timestamp": 1493365042
+    },
+    {
+      "type": "bid",
+      "price": 1300.801,
+      "amount": 0.27712434,
+      "tid": 99673641,
+      "timestamp": 1493365042
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.0768759,
+      "tid": 99673637,
+      "timestamp": 1493365037
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.01270515,
+      "tid": 99673635,
+      "timestamp": 1493365036
+    },
+    {
+      "type": "ask",
+      "price": 1300.001,
+      "amount": 0.27712426,
+      "tid": 99673633,
+      "timestamp": 1493365035
+    },
+    {
+      "type": "ask",
+      "price": 1300.002,
+      "amount": 0.01487574,
+      "tid": 99673632,
+      "timestamp": 1493365035
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 1.29,
+      "tid": 99673630,
+      "timestamp": 1493365032
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.07199256,
+      "tid": 99673629,
+      "timestamp": 1493365032
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.3,
+      "tid": 99673628,
+      "timestamp": 1493365030
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.02028273,
+      "tid": 99673624,
+      "timestamp": 1493365027
+    },
+    {
+      "type": "bid",
+      "price": 1300.802,
+      "amount": 0.28578545,
+      "tid": 99673620,
+      "timestamp": 1493365023
+    },
+    {
+      "type": "bid",
+      "price": 1300.801,
+      "amount": 0.24421455,
+      "tid": 99673619,
+      "timestamp": 1493365023
+    },
+    {
+      "type": "bid",
+      "price": 1300.801,
+      "amount": 0.02642049,
+      "tid": 99673617,
+      "timestamp": 1493365020
+    },
+    {
+      "type": "ask",
+      "price": 1300.804,
+      "amount": 0.38342749,
+      "tid": 99673610,
+      "timestamp": 1493365005
+    },
+    {
+      "type": "ask",
+      "price": 1300.803,
+      "amount": 0.003,
+      "tid": 99673608,
+      "timestamp": 1493364999
+    },
+    {
+      "type": "bid",
+      "price": 1300.8,
+      "amount": 0.001,
+      "tid": 99673607,
+      "timestamp": 1493364985
+    },
+    {
+      "type": "ask",
+      "price": 1299.005,
+      "amount": 0.0506,
+      "tid": 99673605,
+      "timestamp": 1493364983
+    },
+    {
+      "type": "ask",
+      "price": 1304.999,
+      "amount": 0.012,
+      "tid": 99673603,
+      "timestamp": 1493364980
+    },
+    {
+      "type": "ask",
+      "price": 1298.522,
+      "amount": 0.01,
+      "tid": 99673591,
+      "timestamp": 1493364962
+    },
+    {
+      "type": "bid",
+      "price": 1305.585,
+      "amount": 0.00236488,
+      "tid": 99673570,
+      "timestamp": 1493364954
+    },
+    {
+      "type": "bid",
+      "price": 1300.255,
+      "amount": 0.0457051,
+      "tid": 99673535,
+      "timestamp": 1493364917
+    },
+    {
+      "type": "bid",
+      "price": 1300.255,
+      "amount": 0.0687949,
+      "tid": 99673533,
+      "timestamp": 1493364917
+    },
+    {
+      "type": "bid",
+      "price": 1300.255,
+      "amount": 0.174,
+      "tid": 99673525,
+      "timestamp": 1493364915
+    },
+    {
+      "type": "ask",
+      "price": 1298.517,
+      "amount": 0.1,
+      "tid": 99673522,
+      "timestamp": 1493364913
+    },
+    {
+      "type": "bid",
+      "price": 1298.52,
+      "amount": 2.11436554,
+      "tid": 99673516,
+      "timestamp": 1493364908
+    },
+    {
+      "type": "bid",
+      "price": 1298.52,
+      "amount": 0.02643366,
+      "tid": 99673513,
+      "timestamp": 1493364907
+    },
+    {
+      "type": "bid",
+      "price": 1298.52,
+      "amount": 0.11,
+      "tid": 99673512,
+      "timestamp": 1493364907
+    },
+    {
+      "type": "bid",
+      "price": 1298.52,
+      "amount": 0.06,
+      "tid": 99673511,
+      "timestamp": 1493364907
+    },
+    {
+      "type": "bid",
+      "price": 1298.52,
+      "amount": 0.36771508,
+      "tid": 99673510,
+      "timestamp": 1493364907
+    },
+    {
+      "type": "bid",
+      "price": 1298.52,
+      "amount": 2.14684865,
+      "tid": 99673509,
+      "timestamp": 1493364907
+    },
+    {
+      "type": "bid",
+      "price": 1298.52,
+      "amount": 0.71803163,
+      "tid": 99673508,
+      "timestamp": 1493364907
+    },
+    {
+      "type": "bid",
+      "price": 1298.52,
+      "amount": 0.93896105,
+      "tid": 99673507,
+      "timestamp": 1493364907
+    },
+    {
+      "type": "ask",
+      "price": 1298.521,
+      "amount": 0.001,
+      "tid": 99673506,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1298.522,
+      "amount": 0.00770106,
+      "tid": 99673505,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1298.522,
+      "amount": 0.00770106,
+      "tid": 99673504,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1298.522,
+      "amount": 0.00770106,
+      "tid": 99673503,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1299,
+      "amount": 0.00450763,
+      "tid": 99673502,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1299.486,
+      "amount": 0.10095214,
+      "tid": 99673501,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1299.486,
+      "amount": 1.48227039,
+      "tid": 99673500,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1299.487,
+      "amount": 0.00769534,
+      "tid": 99673499,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1299.487,
+      "amount": 0.00769534,
+      "tid": 99673498,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1299.554,
+      "amount": 0.00769494,
+      "tid": 99673497,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1303.301,
+      "amount": 0.00138999,
+      "tid": 99673496,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1304.302,
+      "amount": 0.11,
+      "tid": 99673495,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1304.552,
+      "amount": 0.06,
+      "tid": 99673494,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1305,
+      "amount": 0.054,
+      "tid": 99673493,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1305,
+      "amount": 0.021,
+      "tid": 99673492,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1305,
+      "amount": 0.069,
+      "tid": 99673491,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1305,
+      "amount": 0.02750056,
+      "tid": 99673490,
+      "timestamp": 1493364906
+    },
+    {
+      "type": "ask",
+      "price": 1305.002,
+      "amount": 0.02283488,
+      "tid": 99673489,
+      "timestamp": 1493364905
+    },
+    {
+      "type": "bid",
+      "price": 1305,
+      "amount": 0.08249944,
+      "tid": 99673478,
+      "timestamp": 1493364881
+    },
+    {
+      "type": "bid",
+      "price": 1305,
+      "amount": 0.09150056,
+      "tid": 99673477,
+      "timestamp": 1493364881
+    },
+    {
+      "type": "bid",
+      "price": 1305,
+      "amount": 0.00449944,
+      "tid": 99673476,
+      "timestamp": 1493364881
+    },
+    {
+      "type": "bid",
+      "price": 1303,
+      "amount": 0.001,
+      "tid": 99673475,
+      "timestamp": 1493364881
+    },
+    {
+      "type": "bid",
+      "price": 1304.999,
+      "amount": 0.023,
+      "tid": 99673474,
+      "timestamp": 1493364880
+    },
+    {
+      "type": "bid",
+      "price": 1304.999,
+      "amount": 0.023,
+      "tid": 99673473,
+      "timestamp": 1493364880
+    },
+    {
+      "type": "bid",
+      "price": 1304.999,
+      "amount": 0.178,
+      "tid": 99673472,
+      "timestamp": 1493364880
+    },
+    {
+      "type": "bid",
+      "price": 1304.999,
+      "amount": 0.00159416,
+      "tid": 99673470,
+      "timestamp": 1493364876
+    },
+    {
+      "type": "ask",
+      "price": 1302.55,
+      "amount": 0.0411995,
+      "tid": 99673466,
+      "timestamp": 1493364872
+    },
+    {
+      "type": "ask",
+      "price": 1303,
+      "amount": 0.19,
+      "tid": 99673463,
+      "timestamp": 1493364863
+    },
+    {
+      "type": "bid",
+      "price": 1303,
+      "amount": 1.709,
+      "tid": 99673461,
+      "timestamp": 1493364862
+    },
+    {
+      "type": "bid",
+      "price": 1304.999,
+      "amount": 0.27112084,
+      "tid": 99673453,
+      "timestamp": 1493364847
+    },
+    {
+      "type": "ask",
+      "price": 1300.254,
+      "amount": 0.08780026,
+      "tid": 99673451,
+      "timestamp": 1493364847
+    },
+    {
+      "type": "ask",
+      "price": 1300.255,
+      "amount": 0.03619974,
+      "tid": 99673450,
+      "timestamp": 1493364847
+    },
+    {
+      "type": "ask",
+      "price": 1303.999,
+      "amount": 0.82133087,
+      "tid": 99673438,
+      "timestamp": 1493364836
+    },
+    {
+      "type": "ask",
+      "price": 1303.999,
+      "amount": 0.50866913,
+      "tid": 99673437,
+      "timestamp": 1493364835
+    },
+    {
+      "type": "ask",
+      "price": 1303.999,
+      "amount": 1.33,
+      "tid": 99673436,
+      "timestamp": 1493364829
+    },
+    {
+      "type": "bid",
+      "price": 1305,
+      "amount": 0.0009937,
+      "tid": 99673421,
+      "timestamp": 1493364815
+    },
+    {
+      "type": "bid",
+      "price": 1305,
+      "amount": 6.94003849,
+      "tid": 99673420,
+      "timestamp": 1493364815
+    },
+    {
+      "type": "bid",
+      "price": 1304.99,
+      "amount": 0.07967291,
+      "tid": 99673419,
+      "timestamp": 1493364815
+    },
+    {
+      "type": "bid",
+      "price": 1304.94,
+      "amount": 0.18876414,
+      "tid": 99673418,
+      "timestamp": 1493364815
+    },
+    {
+      "type": "bid",
+      "price": 1304,
+      "amount": 0.00449944,
+      "tid": 99673417,
+      "timestamp": 1493364815
+    },
+    {
+      "type": "bid",
+      "price": 1300.7,
+      "amount": 0.11,
+      "tid": 99673416,
+      "timestamp": 1493364813
+    },
+    {
+      "type": "bid",
+      "price": 1300.45,
+      "amount": 0.06,
+      "tid": 99673411,
+      "timestamp": 1493364812
+    },
+    {
+      "type": "bid",
+      "price": 1300,
+      "amount": 0.2498,
+      "tid": 99673406,
+      "timestamp": 1493364807
+    },
+    {
+      "type": "bid",
+      "price": 1299.999,
+      "amount": 0.17,
+      "tid": 99673404,
+      "timestamp": 1493364807
+    },
+    {
+      "type": "ask",
+      "price": 1299.486,
+      "amount": 0.0298,
+      "tid": 99673403,
+      "timestamp": 1493364805
+    },
+    {
+      "type": "ask",
+      "price": 1298.7,
+      "amount": 0.0196,
+      "tid": 99673401,
+      "timestamp": 1493364802
+    },
+    {
+      "type": "bid",
+      "price": 1304.94,
+      "amount": 0.07627923,
+      "tid": 99673400,
+      "timestamp": 1493364801
+    },
+    {
+      "type": "bid",
+      "price": 1304.449,
+      "amount": 0.00769077,
+      "tid": 99673399,
+      "timestamp": 1493364801
+    },
+    {
+      "type": "ask",
+      "price": 1303.3,
+      "amount": 0.11,
+      "tid": 99673398,
+      "timestamp": 1493364799
+    },
+    {
+      "type": "ask",
+      "price": 1303.55,
+      "amount": 0.06,
+      "tid": 99673397,
+      "timestamp": 1493364798
+    },
+    {
+      "type": "ask",
+      "price": 1304.001,
+      "amount": 0.43000006,
+      "tid": 99673395,
+      "timestamp": 1493364798
+    },
+    {
+      "type": "ask",
+      "price": 1304.001,
+      "amount": 0.76,
+      "tid": 99673394,
+      "timestamp": 1493364798
+    },
+    {
+      "type": "ask",
+      "price": 1304.001,
+      "amount": 1.21,
+      "tid": 99673393,
+      "timestamp": 1493364798
+    }
+  ],
+  "btc_rur": [
+    {
+      "type": "ask",
+      "price": 72850,
+      "amount": 0.00350568,
+      "tid": 99673997,
+      "timestamp": 1493365545
+    },
+    {
+      "type": "ask",
+      "price": 72850,
+      "amount": 0.03780175,
+      "tid": 99673939,
+      "timestamp": 1493365494
+    },
+    {
+      "type": "bid",
+      "price": 73283,
+      "amount": 0.075599,
+      "tid": 99673887,
+      "timestamp": 1493365457
+    },
+    {
+      "type": "bid",
+      "price": 73250,
+      "amount": 0.69044097,
+      "tid": 99673886,
+      "timestamp": 1493365457
+    },
+    {
+      "type": "ask",
+      "price": 72850,
+      "amount": 0.4,
+      "tid": 99673815,
+      "timestamp": 1493365380
+    },
+    {
+      "type": "ask",
+      "price": 72850,
+      "amount": 0.0236227,
+      "tid": 99673798,
+      "timestamp": 1493365312
+    },
+    {
+      "type": "bid",
+      "price": 73250,
+      "amount": 0.001005,
+      "tid": 99673739,
+      "timestamp": 1493365211
+    },
+    {
+      "type": "bid",
+      "price": 73250,
+      "amount": 0.0055,
+      "tid": 99673661,
+      "timestamp": 1493365095
+    },
+    {
+      "type": "ask",
+      "price": 72850,
+      "amount": 0.0428251,
+      "tid": 99673659,
+      "timestamp": 1493365085
+    },
+    {
+      "type": "ask",
+      "price": 72850,
+      "amount": 0.0489,
+      "tid": 99673653,
+      "timestamp": 1493365057
+    },
+    {
+      "type": "ask",
+      "price": 72850,
+      "amount": 0.1918565,
+      "tid": 99673627,
+      "timestamp": 1493365029
+    },
+    {
+      "type": "bid",
+      "price": 73250,
+      "amount": 0.04339996,
+      "tid": 99673435,
+      "timestamp": 1493364828
+    },
+    {
+      "type": "bid",
+      "price": 73228.55225,
+      "amount": 0.02199572,
+      "tid": 99673434,
+      "timestamp": 1493364828
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.54894177,
+      "tid": 99673433,
+      "timestamp": 1493364828
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.00282443,
+      "tid": 99673387,
+      "timestamp": 1493364796
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.00446337,
+      "tid": 99673354,
+      "timestamp": 1493364735
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.00376691,
+      "tid": 99673175,
+      "timestamp": 1493364674
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.00341497,
+      "tid": 99673137,
+      "timestamp": 1493364611
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.00450123,
+      "tid": 99673073,
+      "timestamp": 1493364551
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.05104851,
+      "tid": 99673072,
+      "timestamp": 1493364550
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.00496918,
+      "tid": 99673004,
+      "timestamp": 1493364479
+    },
+    {
+      "type": "ask",
+      "price": 72801,
+      "amount": 0.03055422,
+      "tid": 99672997,
+      "timestamp": 1493364455
+    },
+    {
+      "type": "bid",
+      "price": 73250,
+      "amount": 0.47501303,
+      "tid": 99672992,
+      "timestamp": 1493364445
+    },
+    {
+      "type": "bid",
+      "price": 73250,
+      "amount": 0.135,
+      "tid": 99672991,
+      "timestamp": 1493364445
+    },
+    {
+      "type": "bid",
+      "price": 73247,
+      "amount": 0.07268488,
+      "tid": 99672990,
+      "timestamp": 1493364444
+    },
+    {
+      "type": "ask",
+      "price": 73246.99999,
+      "amount": 0.04,
+      "tid": 99672909,
+      "timestamp": 1493364404
+    },
+    {
+      "type": "ask",
+      "price": 72801,
+      "amount": 0.00771345,
+      "tid": 99672761,
+      "timestamp": 1493364323
+    },
+    {
+      "type": "bid",
+      "price": 73283,
+      "amount": 1.13425041,
+      "tid": 99672685,
+      "timestamp": 1493364279
+    },
+    {
+      "type": "bid",
+      "price": 73275.99984,
+      "amount": 0.80607673,
+      "tid": 99672684,
+      "timestamp": 1493364279
+    },
+    {
+      "type": "bid",
+      "price": 73270,
+      "amount": 0.08536614,
+      "tid": 99672683,
+      "timestamp": 1493364279
+    },
+    {
+      "type": "bid",
+      "price": 73269,
+      "amount": 0.06210473,
+      "tid": 99672682,
+      "timestamp": 1493364279
+    },
+    {
+      "type": "bid",
+      "price": 73282.99997,
+      "amount": 0.01438481,
+      "tid": 99672437,
+      "timestamp": 1493364104
+    },
+    {
+      "type": "ask",
+      "price": 72860,
+      "amount": 0.02645647,
+      "tid": 99672325,
+      "timestamp": 1493364069
+    },
+    {
+      "type": "bid",
+      "price": 73286,
+      "amount": 0.40283747,
+      "tid": 99672239,
+      "timestamp": 1493364011
+    },
+    {
+      "type": "bid",
+      "price": 73285.99999,
+      "amount": 0.93436253,
+      "tid": 99672238,
+      "timestamp": 1493364011
+    },
+    {
+      "type": "ask",
+      "price": 73080.1,
+      "amount": 0.001005,
+      "tid": 99671965,
+      "timestamp": 1493363891
+    },
+    {
+      "type": "bid",
+      "price": 72857.19255,
+      "amount": 0.19395081,
+      "tid": 99671821,
+      "timestamp": 1493363741
+    },
+    {
+      "type": "bid",
+      "price": 72857.19255,
+      "amount": 0.00942949,
+      "tid": 99671816,
+      "timestamp": 1493363740
+    },
+    {
+      "type": "bid",
+      "price": 72857.19255,
+      "amount": 0.01105281,
+      "tid": 99671810,
+      "timestamp": 1493363738
+    },
+    {
+      "type": "bid",
+      "price": 72857.19255,
+      "amount": 0.01105281,
+      "tid": 99671807,
+      "timestamp": 1493363737
+    },
+    {
+      "type": "bid",
+      "price": 72857.19255,
+      "amount": 0.0110506,
+      "tid": 99671802,
+      "timestamp": 1493363735
+    },
+    {
+      "type": "ask",
+      "price": 72885,
+      "amount": 0.04428788,
+      "tid": 99671737,
+      "timestamp": 1493363669
+    },
+    {
+      "type": "ask",
+      "price": 72885.00003,
+      "amount": 0.22493913,
+      "tid": 99671736,
+      "timestamp": 1493363669
+    },
+    {
+      "type": "ask",
+      "price": 72885.00004,
+      "amount": 0.19423647,
+      "tid": 99671735,
+      "timestamp": 1493363669
+    },
+    {
+      "type": "bid",
+      "price": 73300,
+      "amount": 0.05130259,
+      "tid": 99671610,
+      "timestamp": 1493363628
+    },
+    {
+      "type": "ask",
+      "price": 72880.14238,
+      "amount": 0.09,
+      "tid": 99671595,
+      "timestamp": 1493363613
+    },
+    {
+      "type": "bid",
+      "price": 73300,
+      "amount": 0.00857368,
+      "tid": 99671558,
+      "timestamp": 1493363598
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.00000001,
+      "tid": 99671508,
+      "timestamp": 1493363523
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.22633988,
+      "tid": 99671506,
+      "timestamp": 1493363523
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.03173615,
+      "tid": 99671488,
+      "timestamp": 1493363498
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.05561824,
+      "tid": 99671475,
+      "timestamp": 1493363475
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.03938176,
+      "tid": 99671474,
+      "timestamp": 1493363475
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.03592051,
+      "tid": 99671473,
+      "timestamp": 1493363473
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.93588098,
+      "tid": 99671452,
+      "timestamp": 1493363434
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.2655,
+      "tid": 99671450,
+      "timestamp": 1493363432
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.03909464,
+      "tid": 99671434,
+      "timestamp": 1493363425
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.0270722,
+      "tid": 99671426,
+      "timestamp": 1493363402
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.03860394,
+      "tid": 99671415,
+      "timestamp": 1493363394
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.05347369,
+      "tid": 99671387,
+      "timestamp": 1493363363
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.03187843,
+      "tid": 99671365,
+      "timestamp": 1493363333
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.03600375,
+      "tid": 99671363,
+      "timestamp": 1493363333
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.03005631,
+      "tid": 99671338,
+      "timestamp": 1493363303
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.04348332,
+      "tid": 99671294,
+      "timestamp": 1493363272
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.3,
+      "tid": 99671272,
+      "timestamp": 1493363265
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.03566631,
+      "tid": 99671233,
+      "timestamp": 1493363242
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.00947209,
+      "tid": 99671224,
+      "timestamp": 1493363236
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.00612361,
+      "tid": 99671218,
+      "timestamp": 1493363234
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.00612361,
+      "tid": 99671211,
+      "timestamp": 1493363234
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.00145861,
+      "tid": 99671040,
+      "timestamp": 1493363136
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.40561093,
+      "tid": 99671038,
+      "timestamp": 1493363136
+    },
+    {
+      "type": "bid",
+      "price": 73080.09999,
+      "amount": 0.4018033,
+      "tid": 99671030,
+      "timestamp": 1493363135
+    },
+    {
+      "type": "ask",
+      "price": 73080.09999,
+      "amount": 0.019,
+      "tid": 99671027,
+      "timestamp": 1493363134
+    },
+    {
+      "type": "bid",
+      "price": 73299.99999,
+      "amount": 0.02187377,
+      "tid": 99670761,
+      "timestamp": 1493362832
+    },
+    {
+      "type": "ask",
+      "price": 73299.99999,
+      "amount": 0.01222423,
+      "tid": 99670759,
+      "timestamp": 1493362827
+    },
+    {
+      "type": "bid",
+      "price": 73301.001,
+      "amount": 0.0273,
+      "tid": 99670746,
+      "timestamp": 1493362814
+    },
+    {
+      "type": "bid",
+      "price": 73299.99999,
+      "amount": 0.0661547,
+      "tid": 99670742,
+      "timestamp": 1493362809
+    },
+    {
+      "type": "bid",
+      "price": 73300,
+      "amount": 0.40233887,
+      "tid": 99670741,
+      "timestamp": 1493362808
+    },
+    {
+      "type": "bid",
+      "price": 73299.99999,
+      "amount": 0.0370785,
+      "tid": 99670736,
+      "timestamp": 1493362807
+    },
+    {
+      "type": "bid",
+      "price": 73240.4,
+      "amount": 0.008995,
+      "tid": 99670575,
+      "timestamp": 1493362577
+    },
+    {
+      "type": "ask",
+      "price": 73240.4,
+      "amount": 0.001005,
+      "tid": 99670574,
+      "timestamp": 1493362576
+    },
+    {
+      "type": "bid",
+      "price": 73299,
+      "amount": 0.035,
+      "tid": 99670557,
+      "timestamp": 1493362540
+    },
+    {
+      "type": "ask",
+      "price": 72760.37797,
+      "amount": 0.0687187,
+      "tid": 99670379,
+      "timestamp": 1493362373
+    },
+    {
+      "type": "bid",
+      "price": 73240.38412,
+      "amount": 0.011328,
+      "tid": 99670375,
+      "timestamp": 1493362362
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.02518415,
+      "tid": 99670260,
+      "timestamp": 1493362196
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.02810536,
+      "tid": 99670246,
+      "timestamp": 1493362185
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.00000001,
+      "tid": 99670222,
+      "timestamp": 1493362166
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 2.01383742,
+      "tid": 99670216,
+      "timestamp": 1493362165
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 2.41003224,
+      "tid": 99670205,
+      "timestamp": 1493362165
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.03111141,
+      "tid": 99670194,
+      "timestamp": 1493362160
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 3.33153074,
+      "tid": 99670185,
+      "timestamp": 1493362157
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.02643374,
+      "tid": 99670182,
+      "timestamp": 1493362157
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.71903699,
+      "tid": 99670176,
+      "timestamp": 1493362156
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.01082526,
+      "tid": 99670173,
+      "timestamp": 1493362155
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.01969777,
+      "tid": 99670168,
+      "timestamp": 1493362154
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.33055376,
+      "tid": 99670162,
+      "timestamp": 1493362153
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.34310802,
+      "tid": 99670145,
+      "timestamp": 1493362151
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.00843486,
+      "tid": 99670140,
+      "timestamp": 1493362150
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 1.52854658,
+      "tid": 99670130,
+      "timestamp": 1493362149
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.43739831,
+      "tid": 99670124,
+      "timestamp": 1493362147
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.00944436,
+      "tid": 99670119,
+      "timestamp": 1493362147
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 2.41328725,
+      "tid": 99670114,
+      "timestamp": 1493362145
+    },
+    {
+      "type": "bid",
+      "price": 72760.37797,
+      "amount": 0.98410274,
+      "tid": 99670108,
+      "timestamp": 1493362143
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.96851052,
+      "tid": 99670102,
+      "timestamp": 1493362141
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.03143948,
+      "tid": 99670016,
+      "timestamp": 1493362133
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.01040846,
+      "tid": 99670015,
+      "timestamp": 1493362133
+    },
+    {
+      "type": "bid",
+      "price": 72979.31591,
+      "amount": 0.08732767,
+      "tid": 99669984,
+      "timestamp": 1493362108
+    },
+    {
+      "type": "bid",
+      "price": 72979.31591,
+      "amount": 0.22800687,
+      "tid": 99669983,
+      "timestamp": 1493362108
+    },
+    {
+      "type": "bid",
+      "price": 72788.93238,
+      "amount": 0.03755137,
+      "tid": 99669981,
+      "timestamp": 1493362106
+    },
+    {
+      "type": "ask",
+      "price": 72788.93238,
+      "amount": 0.0070215,
+      "tid": 99669980,
+      "timestamp": 1493362105
+    },
+    {
+      "type": "bid",
+      "price": 72788.93239,
+      "amount": 0.02328649,
+      "tid": 99669971,
+      "timestamp": 1493362089
+    },
+    {
+      "type": "ask",
+      "price": 72788.93239,
+      "amount": 0.05009771,
+      "tid": 99669970,
+      "timestamp": 1493362088
+    },
+    {
+      "type": "bid",
+      "price": 72979.31591,
+      "amount": 0.00705967,
+      "tid": 99669910,
+      "timestamp": 1493362019
+    },
+    {
+      "type": "bid",
+      "price": 72788.93239,
+      "amount": 0.0500977,
+      "tid": 99669877,
+      "timestamp": 1493361992
+    },
+    {
+      "type": "bid",
+      "price": 72788.93239,
+      "amount": 0.00000001,
+      "tid": 99669875,
+      "timestamp": 1493361991
+    },
+    {
+      "type": "bid",
+      "price": 72788.93239,
+      "amount": 0.19681473,
+      "tid": 99669843,
+      "timestamp": 1493361950
+    },
+    {
+      "type": "bid",
+      "price": 72788.93239,
+      "amount": 0.00218242,
+      "tid": 99669804,
+      "timestamp": 1493361918
+    },
+    {
+      "type": "bid",
+      "price": 72788.93239,
+      "amount": 0.00100284,
+      "tid": 99669802,
+      "timestamp": 1493361916
+    },
+    {
+      "type": "bid",
+      "price": 72979.31591,
+      "amount": 0.01087722,
+      "tid": 99669778,
+      "timestamp": 1493361887
+    },
+    {
+      "type": "ask",
+      "price": 72979.31591,
+      "amount": 0.00290878,
+      "tid": 99669608,
+      "timestamp": 1493361685
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.01807052,
+      "tid": 99669605,
+      "timestamp": 1493361676
+    },
+    {
+      "type": "ask",
+      "price": 72979.31591,
+      "amount": 0.00649469,
+      "tid": 99669598,
+      "timestamp": 1493361665
+    },
+    {
+      "type": "ask",
+      "price": 72992.7414,
+      "amount": 0.005563,
+      "tid": 99669595,
+      "timestamp": 1493361665
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.00395449,
+      "tid": 99669562,
+      "timestamp": 1493361648
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.01501953,
+      "tid": 99669545,
+      "timestamp": 1493361642
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.00271057,
+      "tid": 99669530,
+      "timestamp": 1493361631
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.09551568,
+      "tid": 99669517,
+      "timestamp": 1493361623
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.02641966,
+      "tid": 99669508,
+      "timestamp": 1493361619
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.02641963,
+      "tid": 99669502,
+      "timestamp": 1493361617
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.01698963,
+      "tid": 99669491,
+      "timestamp": 1493361603
+    },
+    {
+      "type": "bid",
+      "price": 73000,
+      "amount": 0.0368335,
+      "tid": 99669487,
+      "timestamp": 1493361603
+    },
+    {
+      "type": "ask",
+      "price": 73000,
+      "amount": 9.7,
+      "tid": 99669482,
+      "timestamp": 1493361602
+    },
+    {
+      "type": "ask",
+      "price": 73000,
+      "amount": 0.34405746,
+      "tid": 99669480,
+      "timestamp": 1493361602
+    },
+    {
+      "type": "ask",
+      "price": 73001,
+      "amount": 0.40314516,
+      "tid": 99669479,
+      "timestamp": 1493361602
+    },
+    {
+      "type": "ask",
+      "price": 73001,
+      "amount": 0.13530096,
+      "tid": 99669478,
+      "timestamp": 1493361602
+    },
+    {
+      "type": "ask",
+      "price": 73001,
+      "amount": 0.289437,
+      "tid": 99669477,
+      "timestamp": 1493361602
+    },
+    {
+      "type": "ask",
+      "price": 73001.0015,
+      "amount": 0.631539,
+      "tid": 99669476,
+      "timestamp": 1493361602
+    },
+    {
+      "type": "ask",
+      "price": 73002,
+      "amount": 0.0011,
+      "tid": 99669475,
+      "timestamp": 1493361602
+    },
+    {
+      "type": "ask",
+      "price": 73019.925,
+      "amount": 0.02649848,
+      "tid": 99669474,
+      "timestamp": 1493361602
+    },
+    {
+      "type": "ask",
+      "price": 73026.2,
+      "amount": 0.01,
+      "tid": 99669473,
+      "timestamp": 1493361602
+    },
+    {
+      "type": "ask",
+      "price": 73081.098,
+      "amount": 0.024,
+      "tid": 99669472,
+      "timestamp": 1493361602
+    },
+    {
+      "type": "ask",
+      "price": 73200,
+      "amount": 0.12430727,
+      "tid": 99669471,
+      "timestamp": 1493361602
+    },
+    {
+      "type": "ask",
+      "price": 73257,
+      "amount": 0.70840804,
+      "tid": 99669371,
+      "timestamp": 1493361543
+    },
+    {
+      "type": "ask",
+      "price": 73550,
+      "amount": 0.0263929,
+      "tid": 99669238,
+      "timestamp": 1493361464
+    },
+    {
+      "type": "bid",
+      "price": 73550,
+      "amount": 0.60467815,
+      "tid": 99669232,
+      "timestamp": 1493361455
+    },
+    {
+      "type": "bid",
+      "price": 73500,
+      "amount": 0.00000001,
+      "tid": 99669231,
+      "timestamp": 1493361455
+    },
+    {
+      "type": "bid",
+      "price": 73500,
+      "amount": 0.02072801,
+      "tid": 99669211,
+      "timestamp": 1493361438
+    },
+    {
+      "type": "bid",
+      "price": 73466.98,
+      "amount": 0.01,
+      "tid": 99669207,
+      "timestamp": 1493361438
+    },
+    {
+      "type": "ask",
+      "price": 73257,
+      "amount": 0.20600853,
+      "tid": 99668842,
+      "timestamp": 1493361289
+    },
+    {
+      "type": "ask",
+      "price": 73300,
+      "amount": 0.001005,
+      "tid": 99668841,
+      "timestamp": 1493361289
+    },
+    {
+      "type": "ask",
+      "price": 73300,
+      "amount": 0.00002108,
+      "tid": 99668840,
+      "timestamp": 1493361289
+    }
+  ]
+}

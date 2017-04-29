@@ -127,7 +127,7 @@ public class PublicApiTest {
     public void testGetTradesNullPair() {
         thrown.expect(NullPointerException.class);
         thrown.expectMessage("Pair must be specified");
-        api.getTick(null);
+        api.getTrades(null);
     }
 
     @Test
