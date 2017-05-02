@@ -6,7 +6,6 @@ import com.isador.btce.api.JavaConnector;
 import com.isador.btce.api.constants.Currency;
 import com.isador.btce.api.constants.TradeType;
 import com.isador.btce.api.publicapi.Depth.SimpleOrder;
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,6 +20,7 @@ import java.util.stream.Stream;
 import static com.isador.btce.api.LocalDateTimeDeserializer.deserialize;
 import static com.isador.btce.api.TestUtils.*;
 import static com.isador.btce.api.constants.Pair.BTC_USD;
+import static com.isador.btce.api.publicapi.Asserts.assertTradesEquals;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.*;
@@ -122,24 +122,7 @@ public class PublicApiTest {
                 10573719.72477, 9390.70116, null);
         when(connector.get("https://btc-e.com/api/2/btc_usd/ticker")).thenReturn(getJson("ticker.json"));
 
-        Tick actual = api.getTick(BTC_USD);
-
-        assertNotNull("Tick must be not null", actual);
-        assertEquals("Actual avg value is invalid", expected.getAvg(), actual.getAvg(), 0.0000001);
-        assertEquals("Actual buy value is invalid", expected.getBuy(), actual.getBuy(), 0.0000001);
-        assertEquals("Actual high value is invalid", expected.getHigh(), actual.getHigh(), 0.0000001);
-        assertEquals("Actual last value is invalid", expected.getLast(), actual.getLast(), 0.0000001);
-        assertEquals("Actual low value is invalid", expected.getLow(), actual.getLow(), 0.0000001);
-        assertEquals("Actual sell value is invalid", expected.getSell(), actual.getSell(), 0.0000001);
-        assertEquals("Actual vol value is invalid", expected.getVol(), actual.getVol(), 0.0000001);
-        assertEquals("Actual volCur value is invalid", expected.getVolCur(), actual.getVolCur(), 0.0000001);
-        assertEquals("Actual Update time doesn't match", expected.getUpdated(), actual.getUpdated());
-        assertEquals("Actual Server time doesn't match", expected.getServerTime(), actual.getServerTime());
-        assertNull("Actual tick pair must be null", actual.getPair());
-
-        EqualsVerifier.forClass(Tick.class)
-                .withOnlyTheseFields("updated", "pair")
-                .verify();
+        Asserts.assertTicksEquals(expected, api.getTick(BTC_USD));
     }
 
     @Test
@@ -205,15 +188,7 @@ public class PublicApiTest {
         assertNotNull("Trades array should be not null", actualTrades);
         assertEquals("Trades size doesn't match", 150, actualTrades.length);
         assertFalse("Trades must not contain null elements", Stream.of(actualTrades).anyMatch(Objects::isNull));
-        Trade actualTrade = actualTrades[0];
-        assertEquals("Actual trade doesn't match", expectedTrade, actualTrade);
-        assertEquals("Trade.price is invalid", expectedTrade.getPrice(), actualTrade.getPrice(), 0.0000001);
-        assertEquals("Trade.amount is invalid", expectedTrade.getAmount(), actualTrade.getAmount(), 0.0000001);
-        assertEquals("Trade.tradeId is invalid", expectedTrade.getId(), actualTrade.getId(), 0.0000001);
-        assertEquals("Trade.item is invalid", expectedTrade.getItem(), actualTrade.getItem());
-        assertEquals("Trade.priceCurrency is invalid", expectedTrade.getPriceCurrency(), actualTrade.getPriceCurrency());
-        assertEquals("Trade.type is invalid", expectedTrade.getType(), actualTrade.getType());
-        assertEquals("Update time doesn't match", expectedTrade.getDate(), actualTrade.getDate());
+        assertTradesEquals(expectedTrade, actualTrades[0]);
     }
 
     @Test

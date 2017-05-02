@@ -26,6 +26,8 @@ import static com.isador.btce.api.constants.Pair.BTC_RUR;
 import static com.isador.btce.api.constants.Pair.BTC_USD;
 import static com.isador.btce.api.constants.TradeType.ASK;
 import static com.isador.btce.api.constants.TradeType.BID;
+import static com.isador.btce.api.publicapi.Asserts.assertTicksEquals;
+import static com.isador.btce.api.publicapi.Asserts.assertTradesEquals;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.isIn;
 import static org.junit.Assert.*;
@@ -144,20 +146,9 @@ public class PublicApiV3Test {
             assertThat("Actual pair is invalid", pair, isIn(expected.keySet()));
             assertEquals("Trades size doesn't match", 150, trades.size());
             assertFalse("Trades must not contain null elements", Stream.of(trades).anyMatch(Objects::isNull));
-            Trade expectedTrade = expected.get(pair);
-            Trade actualTrade = trades.get(0);
-            assertEquals("Actual trade doesn't match", expectedTrade, actualTrade);
-            assertEquals("Trade.price is invalid", expectedTrade.getPrice(), actualTrade.getPrice(), 0.0000001);
-            assertEquals("Trade.amount is invalid", expectedTrade.getAmount(), actualTrade.getAmount(), 0.0000001);
-            assertEquals("Trade.tradeId is invalid", expectedTrade.getId(), actualTrade.getId(), 0.0000001);
-            assertEquals("Trade.type is invalid", expectedTrade.getType(), actualTrade.getType());
-            assertEquals("Update time doesn't match", expectedTrade.getDate(), actualTrade.getDate());
-            assertEquals("Trade.item is invalid", expectedTrade.getItem(), actualTrade.getItem());
-            assertEquals("Trade.priceCurrency is invalid", expectedTrade.getPriceCurrency(), actualTrade.getPriceCurrency());
+            assertTradesEquals(expected.get(pair), trades.get(0));
         });
     }
-
-    // todo: move public artifacts asserts to common class
 
     @Test
     public void testGetTicksNoPairs() {
@@ -225,20 +216,7 @@ public class PublicApiV3Test {
         assertEquals("Actual map size doesn't match", 2, actual.size());
         actual.forEach((pair, actualTick) -> {
             assertThat("Actual pair is invalid", pair, isIn(expected.keySet()));
-            assertNotNull("Tick must be not null", actualTick);
-            Tick expectedTick = expected.get(pair);
-            assertEquals("Actual avg value is invalid", expectedTick.getAvg(), actualTick.getAvg(), 0.0000001);
-            assertEquals("Actual buy value is invalid", expectedTick.getBuy(), actualTick.getBuy(), 0.0000001);
-            assertEquals("Actual high value is invalid", expectedTick.getHigh(), actualTick.getHigh(), 0.0000001);
-            assertEquals("Actual last value is invalid", expectedTick.getLast(), actualTick.getLast(), 0.0000001);
-            assertEquals("Actual low value is invalid", expectedTick.getLow(), actualTick.getLow(), 0.0000001);
-            assertEquals("Actual sell value is invalid", expectedTick.getSell(), actualTick.getSell(), 0.0000001);
-            assertEquals("Actual vol value is invalid", expectedTick.getVol(), actualTick.getVol(), 0.0000001);
-            assertEquals("Actual volCur value is invalid", expectedTick.getVolCur(), actualTick.getVolCur(), 0.0000001);
-            assertEquals("Actual Update time doesn't match", expectedTick.getUpdated(), actualTick.getUpdated());
-            assertEquals("Actual Server time doesn't match", expectedTick.getServerTime(), actualTick.getServerTime());
-            assertNull("Actual tick pair must be null", actualTick.getPair());
+            assertTicksEquals(expected.get(pair), actualTick);
         });
     }
-
 }
