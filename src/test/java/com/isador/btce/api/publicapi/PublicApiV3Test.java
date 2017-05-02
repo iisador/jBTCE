@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -135,26 +136,24 @@ public class PublicApiV3Test {
                 BTC_RUR, new Trade(deserialize(1493365545), 72850, 0.00350568, 99673997, BTC_RUR.getSec(), BTC_RUR.getPrim(), ASK));
         when(connector.get("https://btc-e.com/api/3/trades/btc_usd-btc_rur")).thenReturn(TestUtils.getJson("v3/trades.json"));
 
-        Map<Pair, Trade[]> actual = api.getTrades(expected.keySet().toArray(new Pair[2]));
+        Map<Pair, List<Trade>> actual = api.getTrades(expected.keySet().toArray(new Pair[2]));
 
         assertNotNull("Trades map should be not null", actual);
         assertEquals("Actual map size doesn't match", 2, actual.size());
         actual.forEach((pair, trades) -> {
             assertThat("Actual pair is invalid", pair, isIn(expected.keySet()));
-            assertEquals("Trades size doesn't match", 150, trades.length);
+            assertEquals("Trades size doesn't match", 150, trades.size());
             assertFalse("Trades must not contain null elements", Stream.of(trades).anyMatch(Objects::isNull));
             Trade expectedTrade = expected.get(pair);
-            Trade actualTrade = trades[0];
+            Trade actualTrade = trades.get(0);
             assertEquals("Actual trade doesn't match", expectedTrade, actualTrade);
             assertEquals("Trade.price is invalid", expectedTrade.getPrice(), actualTrade.getPrice(), 0.0000001);
             assertEquals("Trade.amount is invalid", expectedTrade.getAmount(), actualTrade.getAmount(), 0.0000001);
             assertEquals("Trade.tradeId is invalid", expectedTrade.getId(), actualTrade.getId(), 0.0000001);
             assertEquals("Trade.type is invalid", expectedTrade.getType(), actualTrade.getType());
             assertEquals("Update time doesn't match", expectedTrade.getDate(), actualTrade.getDate());
-
-            // todo: fix need
-//            assertEquals("Trade.item is invalid", expectedTrade.getItem(), actualTrade.getItem());
-//            assertEquals("Trade.priceCurrency is invalid", expectedTrade.getPriceCurrency(), actualTrade.getPriceCurrency());
+            assertEquals("Trade.item is invalid", expectedTrade.getItem(), actualTrade.getItem());
+            assertEquals("Trade.priceCurrency is invalid", expectedTrade.getPriceCurrency(), actualTrade.getPriceCurrency());
         });
     }
 }

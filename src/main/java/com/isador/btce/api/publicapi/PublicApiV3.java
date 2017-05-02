@@ -1,18 +1,26 @@
 package com.isador.btce.api.publicapi;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.isador.btce.api.*;
+import com.isador.btce.api.constants.Currency;
 import com.isador.btce.api.constants.Pair;
+import com.isador.btce.api.constants.TradeType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.isador.btce.api.LocalDateTimeDeserializer.deserialize;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 /**
@@ -42,14 +50,14 @@ public class PublicApiV3 extends AbstractApi {
         return String.format(PUBLIC_API_TMPL, method, pairsString);
     }
 
-    public Map<Pair, Trade[]> getTrades(Pair... pairs) throws BTCEException {
+    public Map<Pair, List<Trade>> getTrades(Pair... pairs) throws BTCEException {
         Pair[] validPairs = checkPairs(false, pairs);
         String response = connector.get(prepareUrl("trades", validPairs));
 
         JsonObject json = processResponse(response);
 
         return Stream.of(validPairs)
-                .map(pair -> ImmutablePair.of(pair, gson.fromJson(json.get(pair.getName()), Trade[].class)))
+                .map(pair -> ImmutablePair.of(pair, toTradeList(pair, json.get(pair.getName()).getAsJsonArray())))
                 .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
     }
 
@@ -72,6 +80,26 @@ public class PublicApiV3 extends AbstractApi {
         }
 
         return obj;
+    }
+
+    private List<Trade> toTradeList(Pair pair, JsonElement element) {
+        JsonArray array = element.getAsJsonArray();
+
+        return StreamSupport.stream(array.spliterator(), false)
+                .map(e -> toTrade(pair, e.getAsJsonObject()))
+                .collect(toList());
+    }
+
+    private Trade toTrade(Pair pair, JsonObject jsonTrade) {
+        TradeType type = TradeType.valueOf(jsonTrade.get("type").getAsString().toUpperCase());
+        double price = jsonTrade.get("price").getAsDouble();
+        double amount = jsonTrade.get("amount").getAsDouble();
+        long id = jsonTrade.get("tid").getAsLong();
+        LocalDateTime timestamp = deserialize(jsonTrade.get("timestamp").getAsLong());
+        Currency item = pair.getPrim();
+        Currency priceCurrency = pair.getSec();
+
+        return new Trade(timestamp, price, amount, id, priceCurrency, item, type);
     }
 
     public Connector getConnector() {
