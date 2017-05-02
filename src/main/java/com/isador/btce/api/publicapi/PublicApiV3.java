@@ -43,11 +43,29 @@ public class PublicApiV3 extends AbstractApi {
         this.connector = requireNonNull(connector, "Connector instance should be not null");
     }
 
-    private String prepareUrl(String method, Pair... pairs) {
-        String pairsString = Stream.of(pairs)
-                .map(Pair::getName)
-                .collect(Collectors.joining("-"));
-        return String.format(PUBLIC_API_TMPL, method, pairsString);
+    public Map<Pair, Tick> getTicks(Pair... pairs) throws BTCEException {
+        Pair[] validPairs = checkPairs(false, pairs);
+        String response = connector.get(prepareUrl("ticker", validPairs));
+
+        JsonObject json = processResponse(response);
+
+        return Stream.of(validPairs)
+                .map(pair -> ImmutablePair.of(pair, toTick(pair, json.get(pair.getName()).getAsJsonObject())))
+                .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
+    }
+
+    private Tick toTick(Pair pair, JsonObject jsonTick) {
+        Double high = jsonTick.get("high").getAsDouble();
+        Double low = jsonTick.get("low").getAsDouble();
+        Double avg = jsonTick.get("avg").getAsDouble();
+        Double vol = jsonTick.get("vol").getAsDouble();
+        Double volCur = jsonTick.get("vol_cur").getAsDouble();
+        Double last = jsonTick.get("last").getAsDouble();
+        Double buy = jsonTick.get("buy").getAsDouble();
+        Double sell = jsonTick.get("sell").getAsDouble();
+        LocalDateTime updated = deserialize(jsonTick.get("updated").getAsLong());
+
+        return new Tick(avg, buy, high, last, low, sell, null, updated, vol, volCur, pair);
     }
 
     public Map<Pair, List<Trade>> getTrades(Pair... pairs) throws BTCEException {
@@ -59,6 +77,33 @@ public class PublicApiV3 extends AbstractApi {
         return Stream.of(validPairs)
                 .map(pair -> ImmutablePair.of(pair, toTradeList(pair, json.get(pair.getName()).getAsJsonArray())))
                 .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
+    }
+
+    private List<Trade> toTradeList(Pair pair, JsonElement element) {
+        JsonArray array = element.getAsJsonArray();
+
+        return StreamSupport.stream(array.spliterator(), false)
+                .map(e -> toTrade(pair, e.getAsJsonObject()))
+                .collect(toList());
+    }
+
+    private Trade toTrade(Pair pair, JsonObject jsonTrade) {
+        TradeType type = TradeType.valueOf(jsonTrade.get("type").getAsString().toUpperCase());
+        double price = jsonTrade.get("price").getAsDouble();
+        double amount = jsonTrade.get("amount").getAsDouble();
+        long id = jsonTrade.get("tid").getAsLong();
+        LocalDateTime timestamp = deserialize(jsonTrade.get("timestamp").getAsLong());
+        Currency item = pair.getPrim();
+        Currency priceCurrency = pair.getSec();
+
+        return new Trade(timestamp, price, amount, id, priceCurrency, item, type);
+    }
+
+    private String prepareUrl(String method, Pair... pairs) {
+        String pairsString = Stream.of(pairs)
+                .map(Pair::getName)
+                .collect(Collectors.joining("-"));
+        return String.format(PUBLIC_API_TMPL, method, pairsString);
     }
 
     private Pair[] checkPairs(boolean removeDuplicates, Pair... pairs) {
@@ -80,26 +125,6 @@ public class PublicApiV3 extends AbstractApi {
         }
 
         return obj;
-    }
-
-    private List<Trade> toTradeList(Pair pair, JsonElement element) {
-        JsonArray array = element.getAsJsonArray();
-
-        return StreamSupport.stream(array.spliterator(), false)
-                .map(e -> toTrade(pair, e.getAsJsonObject()))
-                .collect(toList());
-    }
-
-    private Trade toTrade(Pair pair, JsonObject jsonTrade) {
-        TradeType type = TradeType.valueOf(jsonTrade.get("type").getAsString().toUpperCase());
-        double price = jsonTrade.get("price").getAsDouble();
-        double amount = jsonTrade.get("amount").getAsDouble();
-        long id = jsonTrade.get("tid").getAsLong();
-        LocalDateTime timestamp = deserialize(jsonTrade.get("timestamp").getAsLong());
-        Currency item = pair.getPrim();
-        Currency priceCurrency = pair.getSec();
-
-        return new Trade(timestamp, price, amount, id, priceCurrency, item, type);
     }
 
     public Connector getConnector() {
