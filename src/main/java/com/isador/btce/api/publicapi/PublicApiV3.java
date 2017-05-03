@@ -54,6 +54,17 @@ public class PublicApiV3 extends AbstractApi {
                 .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
     }
 
+    public Map<Pair, Depth> getDepths(Pair... pairs) throws BTCEException {
+        Pair[] validPairs = checkPairs(false, pairs);
+        String response = connector.get(prepareUrl("depth", validPairs));
+
+        JsonObject json = processResponse(response);
+
+        return Stream.of(validPairs)
+                .map(pair -> ImmutablePair.of(pair, gson.fromJson(json.get(pair.getName()), Depth.class)))
+                .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
+    }
+
     public Map<Pair, List<Trade>> getTrades(Pair... pairs) throws BTCEException {
         Pair[] validPairs = checkPairs(false, pairs);
         String response = connector.get(prepareUrl("trades", validPairs));

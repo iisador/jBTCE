@@ -12,7 +12,7 @@ public class TickTest {
     @Test
     public void testEqualsHashCode() {
         EqualsVerifier.forClass(Tick.class)
-                .withOnlyTheseFields("updated", "pair")
+                .withOnlyTheseFields("updated")
                 .verify();
     }
 }

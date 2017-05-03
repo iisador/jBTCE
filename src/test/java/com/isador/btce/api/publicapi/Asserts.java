@@ -1,7 +1,8 @@
 package com.isador.btce.api.publicapi;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import com.isador.btce.api.publicapi.Depth.SimpleOrder;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by isador
@@ -32,6 +33,23 @@ public class Asserts {
         assertEquals("Update time doesn't match", expected.getDate(), actual.getDate());
         assertEquals("Trade.item is invalid", expected.getItem(), actual.getItem());
         assertEquals("Trade.priceCurrency is invalid", expected.getPriceCurrency(), actual.getPriceCurrency());
+    }
+
+    public static void assertDepthsEquals(Depth expected, Depth actual) {
+        assertNotNull("Depth must be not null", actual);
+        assertNotNull("Depth.asks must be not null", actual.getAsks());
+        assertEquals("Depth.asks length doesn't match", 150, actual.getAsks().length);
+        assertArrayEquals("Actual asks doesn't match", expected.getAsks(), actual.getAsks());
+        assertNotNull("Depth.bids must be not null", actual.getBids());
+        assertEquals("Depth.bids length doesn't match", 150, actual.getBids().length);
+        assertArrayEquals("Actual bids doesn't match", expected.getBids(), actual.getBids());
+        assertSimpleOrdersEquals(expected.getAsks()[0], actual.getAsks()[0]);
+    }
+
+    public static void assertSimpleOrdersEquals(SimpleOrder expected, SimpleOrder actual) {
+        basicAssert(SimpleOrder.class, expected, actual);
+        assertEquals("Actual order amount doesn't match", expected.getAmount(), actual.getAmount(), 0.000001);
+        assertEquals("Actual order price doesn't match", expected.getPrice(), actual.getPrice(), 0.000001);
     }
 
     public static <T> void basicAssert(Class<T> typeClass, T expected, T actual) {

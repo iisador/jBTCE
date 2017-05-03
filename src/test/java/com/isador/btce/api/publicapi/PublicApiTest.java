@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 import static com.isador.btce.api.LocalDateTimeDeserializer.deserialize;
 import static com.isador.btce.api.TestUtils.*;
 import static com.isador.btce.api.constants.Pair.BTC_USD;
+import static com.isador.btce.api.publicapi.Asserts.assertDepthsEquals;
 import static com.isador.btce.api.publicapi.Asserts.assertTradesEquals;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.greaterThan;
@@ -251,18 +252,7 @@ public class PublicApiTest {
 
         Depth actual = api.getDepth(BTC_USD);
 
-        assertNotNull("Depth must be not null", actual);
-        assertNotNull("Depth.asks must be not null", actual.getAsks());
-        assertNotNull("Depth.bids must be not null", actual.getBids());
-        assertArrayEquals("Actual asks doesn't match", expected.getAsks(), actual.getAsks());
-        assertArrayEquals("Actual bids doesn't match", expected.getBids(), actual.getBids());
-
-        Depth.SimpleOrder expectedOrder = expected.getAsks()[0];
-        Depth.SimpleOrder actualOrder = actual.getAsks()[0];
-
-        assertEquals("Actual order doesn't match", expectedOrder, actualOrder);
-        assertEquals("Actual order amount doesn't match", expectedOrder.getAmount(), actualOrder.getAmount(), 0.000001);
-        assertEquals("Actual order price doesn't match", expectedOrder.getPrice(), actualOrder.getPrice(), 0.000001);
+        assertDepthsEquals(expected, actual);
     }
 
     @Test
