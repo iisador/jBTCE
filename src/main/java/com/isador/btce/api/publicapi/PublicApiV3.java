@@ -43,6 +43,17 @@ public class PublicApiV3 extends AbstractApi {
         this.connector = requireNonNull(connector, "Connector instance should be not null");
     }
 
+    public Map<Pair, Double> getFees(Pair... pairs) throws BTCEException {
+        Pair[] validPairs = checkPairs(false, pairs);
+        String response = connector.get(prepareUrl("fee", validPairs));
+
+        JsonObject json = processResponse(response);
+
+        return Stream.of(validPairs)
+                .map(pair -> ImmutablePair.of(pair, json.get(pair.getName()).getAsDouble()))
+                .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
+    }
+
     public Map<Pair, Tick> getTicks(Pair... pairs) throws BTCEException {
         Pair[] validPairs = checkPairs(false, pairs);
         String response = connector.get(prepareUrl("ticker", validPairs));

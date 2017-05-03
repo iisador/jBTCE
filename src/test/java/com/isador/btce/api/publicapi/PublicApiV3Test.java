@@ -27,9 +27,7 @@ import static com.isador.btce.api.constants.Pair.BTC_RUR;
 import static com.isador.btce.api.constants.Pair.BTC_USD;
 import static com.isador.btce.api.constants.TradeType.ASK;
 import static com.isador.btce.api.constants.TradeType.BID;
-import static com.isador.btce.api.publicapi.Asserts.assertDepthsEquals;
-import static com.isador.btce.api.publicapi.Asserts.assertTicksEquals;
-import static com.isador.btce.api.publicapi.Asserts.assertTradesEquals;
+import static com.isador.btce.api.publicapi.Asserts.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.isIn;
 import static org.junit.Assert.*;
@@ -285,6 +283,76 @@ public class PublicApiV3Test {
         actual.forEach((pair, actualDepth) -> {
             assertThat("Actual depth is invalid", pair, isIn(expected.keySet()));
             assertDepthsEquals(expected.get(pair), actualDepth);
+        });
+    }
+
+
+    @Test
+    public void testGetFeesNoPairs() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Pairs must be defined");
+
+        api.getFees();
+    }
+
+    @Test
+    public void testGetFeesInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.get("https://btc-e.com/api/3/fee/btc_usd")).thenReturn(null);
+
+        api.getFees(BTC_USD);
+    }
+
+    @Test
+    public void testGetFeesInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.get("https://btc-e.com/api/3/fee/btc_usd")).thenReturn("");
+
+        api.getFees(BTC_USD);
+    }
+
+    @Test
+    public void testGetFeesInvalidJson() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
+        when(connector.get("https://btc-e.com/api/3/fee/btc_usd")).thenReturn(ahalaiMahalai());
+
+        api.getFees(BTC_USD);
+    }
+
+    @Test
+    public void testGetFeesInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.get("https://btc-e.com/api/3/fee/btc_usd")).thenReturn("{\"success\": 0}");
+
+        api.getFees(BTC_USD);
+    }
+
+    @Test
+    public void testGetFeesError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Some error");
+        when(connector.get("https://btc-e.com/api/3/fee/btc_usd")).thenReturn(getErrorJson());
+
+        api.getFees(BTC_USD);
+    }
+
+    @Test
+    public void testGetFees() {
+        Map<Pair, Double> expected = ImmutableMap.of(BTC_USD, 0.2,
+                BTC_RUR, 0.2);
+        when(connector.get("https://btc-e.com/api/3/fee/btc_usd-btc_rur")).thenReturn(TestUtils.getJson("v3/fee.json"));
+
+        Map<Pair, Double> actual = api.getFees(expected.keySet().toArray(new Pair[2]));
+
+        assertNotNull("Fees map should be not null", actual);
+        assertEquals("Actual map size doesn't match", 2, actual.size());
+        actual.forEach((pair, actualFee) -> {
+            assertThat("Actual depth is invalid", pair, isIn(expected.keySet()));
+            assertEquals("Actual fee doesn't match", expected.get(pair), actualFee, 0.000001);
         });
     }
 
