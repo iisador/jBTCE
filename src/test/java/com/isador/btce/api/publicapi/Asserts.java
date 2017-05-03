@@ -21,7 +21,6 @@ public class Asserts {
         assertEquals("Actual volCur value is invalid", expected.getVolCur(), actual.getVolCur(), 0.0000001);
         assertEquals("Actual Update time doesn't match", expected.getUpdated(), actual.getUpdated());
         assertEquals("Actual Server time doesn't match", expected.getServerTime(), actual.getServerTime());
-        assertEquals("Actual tick pair doesn't equals", expected.getPair(), actual.getPair());
     }
 
     public static void assertTradesEquals(Trade expected, Trade actual) {

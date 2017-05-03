@@ -206,8 +206,8 @@ public class PublicApiV3Test {
     @Test
     public void testGetTicks() {
         Map<Pair, Tick> expected = ImmutableMap.of(
-                BTC_USD, new Tick(1364.8815, 1424, 1425, 1424.544, 1304.763, 1418.001, null, deserialize(1493724687), 11600857.10276, 8495.85241, BTC_USD),
-                BTC_RUR, new Tick(75851, 78614.60518, 78600, 78600, 73102, 78500, null, deserialize(1493724687), 38167773.12839, 505.17796, BTC_RUR));
+                BTC_USD, new Tick(1364.8815, 1424, 1425, 1424.544, 1304.763, 1418.001, null, deserialize(1493724687), 11600857.10276, 8495.85241),
+                BTC_RUR, new Tick(75851, 78614.60518, 78600, 78600, 73102, 78500, null, deserialize(1493724687), 38167773.12839, 505.17796));
         when(connector.get("https://btc-e.com/api/3/ticker/btc_usd-btc_rur")).thenReturn(TestUtils.getJson("v3/ticker.json"));
 
         Map<Pair, Tick> actual = api.getTicks(expected.keySet().toArray(new Pair[2]));

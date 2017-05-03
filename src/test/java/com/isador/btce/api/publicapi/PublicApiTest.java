@@ -119,7 +119,7 @@ public class PublicApiTest {
         Tick expected = new Tick(1128.0015, 1154.849, 1155.003,
                 1150.504, 1101, 1150.504,
                 deserialize(1491478858), deserialize(1491478857),
-                10573719.72477, 9390.70116, null);
+                10573719.72477, 9390.70116);
         when(connector.get("https://btc-e.com/api/2/btc_usd/ticker")).thenReturn(getJson("ticker.json"));
 
         Asserts.assertTicksEquals(expected, api.getTick(BTC_USD));

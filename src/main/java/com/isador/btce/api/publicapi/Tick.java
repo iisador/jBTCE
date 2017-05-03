@@ -1,7 +1,6 @@
 package com.isador.btce.api.publicapi;
 
 import com.google.gson.annotations.SerializedName;
-import com.isador.btce.api.constants.Pair;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -22,9 +21,8 @@ public final class Tick {
     private final double sell;
     private final double vol;
     private final LocalDateTime updated;
-    private final Pair pair;
 
-    Tick(double avg, double buy, double high, double last, double low, double sell, LocalDateTime serverTime, LocalDateTime updated, double vol, double volCur, Pair pair) {
+    Tick(double avg, double buy, double high, double last, double low, double sell, LocalDateTime serverTime, LocalDateTime updated, double vol, double volCur) {
         this.avg = avg;
         this.buy = buy;
         this.high = high;
@@ -35,7 +33,6 @@ public final class Tick {
         this.updated = updated;
         this.vol = vol;
         this.volCur = volCur;
-        this.pair = pair;
     }
 
     public double getAvg() {
@@ -78,11 +75,6 @@ public final class Tick {
         return volCur;
     }
 
-    public Pair getPair() {
-        return pair;
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -92,13 +84,12 @@ public final class Tick {
             return false;
         }
         Tick tick = (Tick) o;
-        return Objects.equals(updated, tick.updated) &&
-                Objects.equals(pair, tick.pair);
+        return Objects.equals(updated, tick.updated);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(updated, pair);
+        return Objects.hash(updated);
     }
 
     @Override
@@ -112,7 +103,6 @@ public final class Tick {
                 ", sell=" + sell +
                 ", vol=" + vol +
                 ", updated=" + updated +
-                ", pair=" + pair +
                 ", volCur=" + volCur +
                 ", serverTime=" + serverTime +
                 '}';

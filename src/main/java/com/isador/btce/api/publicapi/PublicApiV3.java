@@ -50,22 +50,8 @@ public class PublicApiV3 extends AbstractApi {
         JsonObject json = processResponse(response);
 
         return Stream.of(validPairs)
-                .map(pair -> ImmutablePair.of(pair, toTick(pair, json.get(pair.getName()).getAsJsonObject())))
+                .map(pair -> ImmutablePair.of(pair, gson.fromJson(json.get(pair.getName()), Tick.class)))
                 .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
-    }
-
-    private Tick toTick(Pair pair, JsonObject jsonTick) {
-        Double high = jsonTick.get("high").getAsDouble();
-        Double low = jsonTick.get("low").getAsDouble();
-        Double avg = jsonTick.get("avg").getAsDouble();
-        Double vol = jsonTick.get("vol").getAsDouble();
-        Double volCur = jsonTick.get("vol_cur").getAsDouble();
-        Double last = jsonTick.get("last").getAsDouble();
-        Double buy = jsonTick.get("buy").getAsDouble();
-        Double sell = jsonTick.get("sell").getAsDouble();
-        LocalDateTime updated = deserialize(jsonTick.get("updated").getAsLong());
-
-        return new Tick(avg, buy, high, last, low, sell, null, updated, vol, volCur, pair);
     }
 
     public Map<Pair, List<Trade>> getTrades(Pair... pairs) throws BTCEException {
