@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
  * Created by isador
  * on 05.04.17
  */
-public class JavaConnector implements Connector {
+public class DefaultConnector implements Connector {
 
-    private static final Logger LOG = LoggerFactory.getLogger(JavaConnector.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultConnector.class);
 
     @Override
     public String post(String url, String body, Map<String, String> headers) throws BTCEException {

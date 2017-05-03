@@ -3,7 +3,7 @@ package com.isador.btce.api.publicapi;
 import com.google.common.collect.ImmutableMap;
 import com.isador.btce.api.BTCEException;
 import com.isador.btce.api.Connector;
-import com.isador.btce.api.JavaConnector;
+import com.isador.btce.api.DefaultConnector;
 import com.isador.btce.api.TestUtils;
 import com.isador.btce.api.constants.Pair;
 import com.isador.btce.api.publicapi.Depth.SimpleOrder;
@@ -58,7 +58,7 @@ public class PublicApiV3Test {
         PublicApiV3 api = new PublicApiV3();
 
         assertNotNull("Connector must be not null", api.getConnector());
-        assertThat("Invalid connector class", api.getConnector(), instanceOf(JavaConnector.class));
+        assertThat("Invalid connector class", api.getConnector(), instanceOf(DefaultConnector.class));
     }
 
     @Test

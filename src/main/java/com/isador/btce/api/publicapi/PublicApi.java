@@ -22,7 +22,7 @@ public class PublicApi extends AbstractApi {
     private Connector connector;
 
     public PublicApi() {
-        this(new JavaConnector());
+        this(new DefaultConnector());
     }
 
     public PublicApi(Connector connector) {

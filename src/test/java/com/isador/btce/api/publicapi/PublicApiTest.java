@@ -2,7 +2,7 @@ package com.isador.btce.api.publicapi;
 
 import com.isador.btce.api.BTCEException;
 import com.isador.btce.api.Connector;
-import com.isador.btce.api.JavaConnector;
+import com.isador.btce.api.DefaultConnector;
 import com.isador.btce.api.constants.Currency;
 import com.isador.btce.api.constants.TradeType;
 import com.isador.btce.api.publicapi.Depth.SimpleOrder;
@@ -51,7 +51,7 @@ public class PublicApiTest {
         PublicApi api = new PublicApi();
 
         assertNotNull("Connector must be not null", api.getConnector());
-        assertThat("Invalid connector class", api.getConnector(), instanceOf(JavaConnector.class));
+        assertThat("Invalid connector class", api.getConnector(), instanceOf(DefaultConnector.class));
     }
 
     @Test

@@ -34,7 +34,7 @@ public class PublicApiV3 extends AbstractApi {
     private final Connector connector;
 
     public PublicApiV3() {
-        this(new JavaConnector());
+        this(new DefaultConnector());
     }
 
     public PublicApiV3(Connector connector) {

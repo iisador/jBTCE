@@ -15,8 +15,8 @@ Provides full access to public and private API.
 
 Features
 =========
-* Provides access to [fee](https://btc-e.com/api/2/btc_usd/fee) api
-* Public v2 API: [ticker](https://btc-e.com/api/2/btc_usd/ticker), [trades](https://btc-e.com/api/2/btc_usd/trades), [depth](https://btc-e.com/api/2/btc_usd/depth)
+* Public v2 API: [ticker](https://btc-e.com/api/2/btc_usd/ticker), [trades](https://btc-e.com/api/2/btc_usd/trades), [depth](https://btc-e.com/api/2/btc_usd/depth), [fee](https://btc-e.com/api/2/btc_usd/fee)
+* Public V3 API: [ticker](https://btc-e.com/api/3/ticker/btc_usd-btc-rur), [trades](https://btc-e.com/api/3/trades/btc_usd-btc-rur), [depth](https://btc-e.com/api/3/depth/btc_usd-btc-rur), [fee](https://btc-e.com/api/3/fee/btc_usd-btc-rur)
 * Private API
   - getInfo
   - OrderList (some attributes doesn't work on btc-e side)
@@ -29,10 +29,8 @@ How-To
 ======
 use Public api:
 ```java
-// Create connector instance first. Used JavaConnector or implement your own
-Connector connector = new JavaConnector();
-
-PublicApi api = new PublicApi(connector);
+// Create public api using default connector
+PublicApi api = new PublicApi();
 Tick tick = api.getTick(BTC_USD);
 System.out.println(tick);
 ```
@@ -41,16 +39,12 @@ or Private api:
 ```java
 String key = "...";
 String secret = "...";
-Connector connector = new JavaConnector();
 
-// Initialize connector with key and secret to setup mac
-connector.init(key, secret);
-
-PrivateApi api = new PrivateApi(connector);
+// Create private api using default connector
+PrivateApi api = new PrivateApi(key, secret);
 UserInfo info = api.getUserInfo();
 System.out.println(info);
 ```
 
 Next release goals:
-* Public V3 support
 * Logging support

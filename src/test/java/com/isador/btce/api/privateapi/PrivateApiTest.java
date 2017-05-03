@@ -2,7 +2,7 @@ package com.isador.btce.api.privateapi;
 
 import com.isador.btce.api.BTCEException;
 import com.isador.btce.api.Connector;
-import com.isador.btce.api.JavaConnector;
+import com.isador.btce.api.DefaultConnector;
 import com.isador.btce.api.constants.Currency;
 import com.isador.btce.api.privateapi.UserInfo.Rights;
 import org.junit.Before;
@@ -82,7 +82,7 @@ public class PrivateApiTest {
         PrivateApi api = new PrivateApi("1", "1");
 
         assertNotNull("Default connector should be not null", api.getConnector());
-        assertThat("Default connector should be JavaConnector", api.getConnector(), instanceOf(JavaConnector.class));
+        assertThat("Default connector should be DefaultConnector", api.getConnector(), instanceOf(DefaultConnector.class));
     }
 
     @Test

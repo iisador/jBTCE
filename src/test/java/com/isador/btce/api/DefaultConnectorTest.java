@@ -18,13 +18,13 @@ import static org.mockserver.model.HttpResponse.response;
  * Only public API tests
  * on 07.04.17
  */
-public class JavaConnectorTest {
+public class DefaultConnectorTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
     private ClientAndServer server;
 
-    private JavaConnector connector = new JavaConnector();
+    private DefaultConnector connector = new DefaultConnector();
 
     @Before
     public void setUp() throws Exception {

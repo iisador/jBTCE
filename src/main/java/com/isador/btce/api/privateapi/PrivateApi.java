@@ -39,7 +39,7 @@ public class PrivateApi extends AbstractApi {
     private Map<String, String> headers;
 
     public PrivateApi(String key, String secret) {
-        this(key, secret, new JavaConnector());
+        this(key, secret, new DefaultConnector());
     }
 
     public PrivateApi(String key, String secret, Connector connector) {
