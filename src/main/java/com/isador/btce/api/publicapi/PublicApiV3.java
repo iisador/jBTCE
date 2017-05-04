@@ -29,7 +29,7 @@ import static java.util.stream.Collectors.toMap;
  */
 public class PublicApiV3 extends AbstractApi {
 
-    private static final String PUBLIC_API_TMPL = "https://btc-e.com/api/3/%s/%s";
+    private static final String PUBLIC_API_TEMPLATE = "https://btc-e.com/api/3/%s/%s";
 
     private final Connector connector;
 
@@ -111,7 +111,7 @@ public class PublicApiV3 extends AbstractApi {
         String pairsString = Stream.of(pairs)
                 .map(Pair::getName)
                 .collect(Collectors.joining("-"));
-        return String.format(PUBLIC_API_TMPL, method, pairsString);
+        return String.format(PUBLIC_API_TEMPLATE, method, pairsString);
     }
 
     private Pair[] checkPairs(boolean removeDuplicates, Pair... pairs) {
@@ -119,7 +119,7 @@ public class PublicApiV3 extends AbstractApi {
         checkArgument(pairs.length > 0, "Pairs must be defined");
 
         if (removeDuplicates) {
-            // todo: remove duplicates from array
+            pairs = Stream.of(pairs).distinct().toArray(Pair[]::new);
         }
 
         return pairs;

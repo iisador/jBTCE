@@ -4,11 +4,33 @@
 
     <groupId>com.isador</groupId>
     <artifactId>jbtce</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0.1</version>
+
     <packaging>jar</packaging>
 
-    <name>jbtce</name>
-    <url>http://maven.apache.org</url>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>BTC-E public and private api implementation</description>
+    <url>https://github.com/iisador/jBTCE</url>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Max I.</name>
+            <email>i.isador.max89@gmail.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/iisador/jBTCE.git</connection>
+        <developerConnection>scm:git:ssh://github.com:iisador/jBTCE.git</developerConnection>
+        <url>https://github.com/iisador/jBTCE</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

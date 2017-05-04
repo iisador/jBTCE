@@ -16,7 +16,7 @@ Provides full access to public and private API.
 Features
 =========
 * Public v2 API: [ticker](https://btc-e.com/api/2/btc_usd/ticker), [trades](https://btc-e.com/api/2/btc_usd/trades), [depth](https://btc-e.com/api/2/btc_usd/depth), [fee](https://btc-e.com/api/2/btc_usd/fee)
-* Public V3 API: [ticker](https://btc-e.com/api/3/ticker/btc_usd-btc-rur), [trades](https://btc-e.com/api/3/trades/btc_usd-btc-rur), [depth](https://btc-e.com/api/3/depth/btc_usd-btc-rur), [fee](https://btc-e.com/api/3/fee/btc_usd-btc-rur)
+* Public v3 API: [ticker](https://btc-e.com/api/3/ticker/btc_usd-btc-rur), [trades](https://btc-e.com/api/3/trades/btc_usd-btc-rur), [depth](https://btc-e.com/api/3/depth/btc_usd-btc-rur), [fee](https://btc-e.com/api/3/fee/btc_usd-btc-rur)
 * Private API
   - getInfo
   - OrderList (some attributes doesn't work on btc-e side)
@@ -27,7 +27,7 @@ Features
 
 How-To
 ======
-use Public api:
+use Public v2 api:
 ```java
 // Create public api using default connector
 PublicApi api = new PublicApi();
@@ -35,6 +35,15 @@ Tick tick = api.getTick(BTC_USD);
 System.out.println(tick);
 ```
 
+use Public v3 api:
+```java
+// Create public api using default connector
+PublicApiV3 api = new PublicApiV3();
+        Map<Pair, Tick> ticks = api.getTicks(BTC_USD, BTC_RUR);
+        ticks.entrySet().stream()
+                .map(e -> String.format("%s: %s", e.getKey(), e.getValue()))
+                .forEach(System.out::println);
+```
 or Private api:
 ```java
 String key = "...";
