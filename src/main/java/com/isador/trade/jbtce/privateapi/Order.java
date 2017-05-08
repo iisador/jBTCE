@@ -1,5 +1,6 @@
 package com.isador.trade.jbtce.privateapi;
 
+import com.google.gson.annotations.SerializedName;
 import com.isador.trade.jbtce.constants.Operation;
 import com.isador.trade.jbtce.constants.Pair;
 
@@ -7,13 +8,15 @@ import java.time.LocalDateTime;
 
 public final class Order {
 
+    @SerializedName("timestamp_created")
+    private final LocalDateTime timestampCreated;
+
     private final long id;
     private final Pair pair;
     private final Operation type;
     private final double amount;
     private final double rate;
     private final int status;
-    private final LocalDateTime timestampCreated;
 
     Order(long id, Pair pair, Operation type, double amount, double rate, int status, LocalDateTime timestampCreated) {
         this.id = id;

@@ -1,5 +1,6 @@
 package com.isador.trade.jbtce.privateapi;
 
+import com.google.gson.annotations.SerializedName;
 import com.isador.trade.jbtce.constants.Currency;
 
 import java.time.LocalDateTime;
@@ -7,13 +8,15 @@ import java.util.Objects;
 
 public final class Transaction {
 
+    @SerializedName("desc")
+    private final String description;
+
     private final int type;
     private final double amount;
     private final Currency currency;
     private final int status;
     private final LocalDateTime timestamp;
     private final long id;
-    private final String description;
 
     Transaction(int type, double amount, Currency currency, int status, LocalDateTime timestamp, long id, String description) {
         this.type = type;

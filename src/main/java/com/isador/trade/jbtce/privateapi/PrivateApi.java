@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.isador.trade.jbtce.*;
-import com.isador.trade.jbtce.constants.Currency;
 import com.isador.trade.jbtce.constants.Operation;
 import com.isador.trade.jbtce.constants.Pair;
 import com.isador.trade.jbtce.constants.Sort;
@@ -20,12 +19,10 @@ import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.isador.trade.jbtce.LocalDateTimeDeserializer.deserialize;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 
@@ -111,8 +108,11 @@ public class PrivateApi extends AbstractApi {
 
         String json = call("OrderList", map);
         JsonObject response = (JsonObject) processResponse(json);
+
+        // stupid orders return format
         return response.entrySet().stream()
-                .map(this::toOrder)
+                .peek(e -> e.getValue().getAsJsonObject().addProperty("id", e.getKey()))
+                .map(e -> gson.fromJson(e.getValue(), Order.class))
                 .collect(Collectors.toList());
     }
 
@@ -132,7 +132,8 @@ public class PrivateApi extends AbstractApi {
         String json = call("TransHistory", map);
         JsonObject response = (JsonObject) processResponse(json);
         return response.entrySet().stream()
-                .map(this::toTransaction)
+                .peek(e -> e.getValue().getAsJsonObject().addProperty("id", e.getKey()))
+                .map(e -> gson.fromJson(e.getValue(), Transaction.class))
                 .collect(Collectors.toList());
     }
 
@@ -153,7 +154,8 @@ public class PrivateApi extends AbstractApi {
         String json = call("TradeHistory", map);
         JsonObject response = (JsonObject) processResponse(json);
         return response.entrySet().stream()
-                .map(this::toTradeHistory)
+                .peek(e -> e.getValue().getAsJsonObject().addProperty("id", e.getKey()))
+                .map(e -> gson.fromJson(e.getValue(), TradeHistory.class))
                 .collect(Collectors.toList());
     }
 
@@ -164,49 +166,6 @@ public class PrivateApi extends AbstractApi {
         String json = call("CancelOrder", map);
         JsonElement response = processResponse(json);
         return gson.fromJson(response, CancelOrderResult.class);
-    }
-
-    private Order toOrder(Entry<String, JsonElement> entry) {
-        JsonObject jsonOrder = entry.getValue().getAsJsonObject();
-
-        long id = Long.parseLong(entry.getKey());
-        Pair pair = Pair.valueOf(jsonOrder.get("pair").getAsString().toUpperCase());
-        Operation type = Operation.valueOf(jsonOrder.get("type").getAsString().toUpperCase());
-        double amount = jsonOrder.get("amount").getAsDouble();
-        double rate = jsonOrder.get("rate").getAsDouble();
-        int status = jsonOrder.get("status").getAsInt();
-        LocalDateTime timestampCreated = deserialize(jsonOrder.get("timestamp_created").getAsLong());
-
-        return new Order(id, pair, type, amount, rate, status, timestampCreated);
-    }
-
-    private Transaction toTransaction(Entry<String, JsonElement> entry) {
-        JsonObject jsonTransaction = entry.getValue().getAsJsonObject();
-
-        long id = Long.parseLong(entry.getKey());
-        int type = jsonTransaction.get("type").getAsInt();
-        double amount = jsonTransaction.get("amount").getAsDouble();
-        Currency currency = Currency.valueOf(jsonTransaction.get("currency").getAsString().toUpperCase());
-        String desc = jsonTransaction.get("desc").getAsString();
-        int status = jsonTransaction.get("status").getAsInt();
-        LocalDateTime timestamp = deserialize(jsonTransaction.get("timestamp").getAsLong());
-
-        return new Transaction(type, amount, currency, status, timestamp, id, desc);
-    }
-
-    private TradeHistory toTradeHistory(Entry<String, JsonElement> entry) {
-        JsonObject jsonTh = entry.getValue().getAsJsonObject();
-
-        long id = Long.parseLong(entry.getKey());
-        Pair pair = Pair.valueOf(jsonTh.get("pair").getAsString().toUpperCase());
-        Operation type = Operation.valueOf(jsonTh.get("type").getAsString().toUpperCase());
-        double amount = jsonTh.get("amount").getAsDouble();
-        double rate = jsonTh.get("rate").getAsDouble();
-        long orderId = jsonTh.get("order_id").getAsLong();
-        boolean yourOrder = jsonTh.get("is_your_order").getAsInt() == 1;
-        LocalDateTime timestamp = deserialize(jsonTh.get("timestamp").getAsLong());
-
-        return new TradeHistory(pair, type, amount, rate, orderId, yourOrder, timestamp, id);
     }
 
     private JsonElement processResponse(String json) throws BTCEException {

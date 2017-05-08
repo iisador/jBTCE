@@ -1,5 +1,6 @@
 package com.isador.trade.jbtce.privateapi;
 
+import com.google.gson.annotations.SerializedName;
 import com.isador.trade.jbtce.constants.Operation;
 import com.isador.trade.jbtce.constants.Pair;
 
@@ -12,16 +13,20 @@ import java.util.Objects;
  */
 public final class TradeHistory {
 
+    @SerializedName("order_id")
+    private final long orderId;
+
+    @SerializedName("is_your_order")
+    private final int yourOrder;
+
     private final Pair pair;
     private final Operation type;
     private final double amount;
     private final double rate;
-    private final long orderId;
-    private final boolean yourOrder;
     private final LocalDateTime timestamp;
     private final long id;
 
-    TradeHistory(Pair pair, Operation type, double amount, double rate, long orderId, boolean yourOrder, LocalDateTime timestamp, long id) {
+    TradeHistory(Pair pair, Operation type, double amount, double rate, long orderId, int yourOrder, LocalDateTime timestamp, long id) {
         this.pair = pair;
         this.type = type;
         this.amount = amount;
@@ -53,7 +58,7 @@ public final class TradeHistory {
     }
 
     public boolean isYourOrder() {
-        return yourOrder;
+        return yourOrder == 1;
     }
 
     public LocalDateTime getTimestamp() {

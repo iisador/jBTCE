@@ -606,7 +606,7 @@ public class PrivateApiTest {
     public void testGetTradeHistoryList() {
         TradeHistory expectedTh = new TradeHistory(BTC_USD, BUY,
                 0.00100000, 1180.00000000, 1696641686,
-                false, deserialize(1491555286), 97951082L);
+                0, deserialize(1491555286), 97951082L);
         when(connector.post(eq(PrivateApi.PRIVATE_API_URL), anyString(), anyMap())).thenReturn(getJson("tradeHistory.json"));
 
         List<TradeHistory> trades = api.getTradesList(null, null, null, null, null, null, null, null);
