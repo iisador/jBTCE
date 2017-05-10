@@ -15,19 +15,20 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.isador.trade.jbtce.LocalDateTimeDeserializer.deserialize;
-import static com.isador.trade.jbtce.TestUtils.ahalaiMahalai;
-import static com.isador.trade.jbtce.TestUtils.getErrorJson;
-import static com.isador.trade.jbtce.constants.Pair.BTC_RUR;
-import static com.isador.trade.jbtce.constants.Pair.BTC_USD;
+import static com.isador.trade.jbtce.TestUtils.*;
+import static com.isador.trade.jbtce.constants.Pair.*;
 import static com.isador.trade.jbtce.constants.TradeType.ASK;
 import static com.isador.trade.jbtce.constants.TradeType.BID;
 import static com.isador.trade.jbtce.publicapi.Asserts.*;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.isIn;
 import static org.junit.Assert.*;
@@ -354,6 +355,99 @@ public class PublicApiV3Test {
             assertThat("Actual depth is invalid", pair, isIn(expected.keySet()));
             assertEquals("Actual fee doesn't match", expected.get(pair), actualFee, 0.000001);
         });
+    }
+
+    @Test
+    public void testGetInfoInvalidResponseNull() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.get("https://btc-e.com/api/3/info")).thenReturn(null);
+
+        api.getInfo();
+    }
+
+    @Test
+    public void testGetInfoInvalidResponseEmpty() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. Null or empty response");
+        when(connector.get("https://btc-e.com/api/3/info")).thenReturn("");
+
+        api.getInfo();
+    }
+
+    @Test
+    public void testGetInfoInvalidJson() {
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
+        when(connector.get("https://btc-e.com/api/3/info")).thenReturn(ahalaiMahalai());
+
+        api.getInfo();
+    }
+
+    @Test
+    public void testGetInfo() {
+        BTCEInfo expected = new BTCEInfo(deserialize(1494399104), getExpectedPairsInfo());
+        when(connector.get("https://btc-e.com/api/3/info")).thenReturn(getJson("v3/info.json"));
+
+        BTCEInfo actual = api.getInfo();
+
+        assertNotNull("Actual btceinfo must be not null", actual);
+        assertEquals("Actual btceinfo doesn't equals", expected, actual);
+        assertEquals("Actual btceinfo server time doesn't equals", expected.getServerTime(), actual.getServerTime());
+        assertEquals("Actual btceinfo has more pairs that expected", expected.getPairInfoList().size(), actual.getPairInfoList().size());
+        Map<Pair, PairInfo> actualPairsInfoMap = actual.getPairInfoList().stream()
+                .collect(toMap(PairInfo::getPair, identity()));
+        expected.getPairInfoList().forEach(expectedPi -> {
+            PairInfo actualPi = actualPairsInfoMap.get(expectedPi.getPair());
+            assertPairsInfoEquals(expectedPi, actualPi);
+        });
+    }
+
+    private void assertPairsInfoEquals(PairInfo expected, PairInfo actual) {
+        basicAssert(PairInfo.class, expected, actual);
+
+        assertEquals(String.format("Actual %s pair info decimalPlaces doesn't match", actual.getPair()), expected.getDecimalPlaces(), actual.getDecimalPlaces());
+        assertEquals(String.format("Actual %s pair info fee doesn't match", actual.getPair()), expected.getFee(), actual.getFee(), 0.0000001);
+        assertEquals(String.format("Actual %s pair info hidden doesn't match", actual.getPair()), expected.isHidden(), actual.isHidden());
+        assertEquals(String.format("Actual %s pair info maxPrice doesn't match", actual.getPair()), expected.getMaxPrice(), actual.getMaxPrice(), 0.0000001);
+        assertEquals(String.format("Actual %s pair info minPrica doesn't match", actual.getPair()), expected.getMinPrice(), actual.getMinPrice(), 0.0000001);
+        assertEquals(String.format("Actual %s pair info minAmount doesn't match", actual.getPair()), expected.getMinAmount(), actual.getMinAmount(), 0.0000001);
+        assertEquals(String.format("Actual %s pair info pair doesn't match", actual.getPair()), expected.getPair(), actual.getPair());
+
+
+        assertEquals(expected.getDecimalPlaces(), actual.getDecimalPlaces());
+    }
+
+    private List<PairInfo> getExpectedPairsInfo() {
+        return Arrays.asList(
+                new PairInfo(3, 0.1, 10_000, 0.001, 0, 0.2, BTC_USD),
+                new PairInfo(5, 1, 1_000_000, 0.001, 0, 0.2, BTC_RUR),
+                new PairInfo(5, 0.1, 10000, 0.001, 0, 0.2, BTC_EUR),
+                new PairInfo(5, 0.0001, 10, 0.01, 0, 0.2, LTC_BTC),
+                new PairInfo(6, 0.0001, 1000, 0.1, 0, 0.2, LTC_USD),
+                new PairInfo(5, 0.01, 100_000, 0.01, 0, 0.2, LTC_RUR),
+                new PairInfo(3, 0.0001, 1000, 0.01, 0, 0.2, LTC_EUR),
+                new PairInfo(5, 0.0001, 10, 0.1, 0, 0.2, NMC_BTC),
+                new PairInfo(3, 0.001, 100, 0.1, 0, 0.2, NMC_USD),
+                new PairInfo(5, 0.0001, 10, 0.1, 0, 0.2, NVC_BTC),
+                new PairInfo(3, 0.001, 1000, 0.1, 0, 0.2, NVC_USD),
+                new PairInfo(5, 25, 150, 0.1, 0, 0.2, USD_RUR),
+                new PairInfo(5, 0.5, 2, 0.1, 0, 0.2, EUR_USD),
+                new PairInfo(5, 30, 200, 0.1, 0, 0.2, EUR_RUR),
+                new PairInfo(5, 0.0001, 10, 0.1, 0, 0.2, PPC_BTC),
+                new PairInfo(3, 0.001, 100, 0.1, 0, 0.2, PPC_USD),
+                new PairInfo(5, 0.0001, 10, 0.1, 0, 0.2, DSH_BTC),
+                new PairInfo(5, 0.1, 1000, 0.1, 0, 0.2, DSH_USD),
+                new PairInfo(3, 1, 100_000, 0.1, 0, 0.2, DSH_RUR),
+                new PairInfo(3, 0.1, 1000, 0.1, 0, 0.2, DSH_EUR),
+                new PairInfo(3, 0.1, 600, 0.1, 0, 0.2, DSH_LTC),
+                new PairInfo(3, 0.1, 600, 0.1, 0, 0.2, DSH_ETH),
+                new PairInfo(5, 0.0001, 10, 0.1, 0, 0.2, ETH_BTC),
+                new PairInfo(5, 0.0001, 1000, 0.1, 0, 0.2, ETH_USD),
+                new PairInfo(5, 0.0001, 1000, 0.1, 0, 0.2, ETH_EUR),
+                new PairInfo(5, 0.0001, 1000, 0.1, 0, 0.2, ETH_LTC),
+                new PairInfo(5, 0.0001, 100_000, 0.1, 0, 0.2, ETH_RUR)
+        );
     }
 
     // pfff, govnische

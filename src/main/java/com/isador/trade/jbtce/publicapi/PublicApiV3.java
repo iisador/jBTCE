@@ -29,6 +29,7 @@ import static java.util.stream.Collectors.toMap;
 public class PublicApiV3 extends AbstractApi {
 
     private static final String PUBLIC_API_TEMPLATE = "https://btc-e.com/api/3/%s/%s";
+    private static final String PUBLIC_API_INFO = "https://btc-e.com/api/3/info";
 
     private final Connector connector;
 
@@ -38,8 +39,20 @@ public class PublicApiV3 extends AbstractApi {
 
     public PublicApiV3(Connector connector) {
         super(ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
-                Depth.SimpleOrder.class, new SimpleOrderDeserializer()));
+                Depth.SimpleOrder.class, new SimpleOrderDeserializer(),
+                BTCEInfo.class, new BtceInfoDeserilizer()));
         this.connector = requireNonNull(connector, "Connector instance should be not null");
+    }
+
+    public BTCEInfo getInfo() throws BTCEException {
+        String response = connector.get(PUBLIC_API_INFO);
+        processServerResponse(response);
+
+        try {
+            return gson.fromJson(response, BTCEInfo.class);
+        } catch (ClassCastException e) {
+            throw new IllegalStateException(String.format("Not a JSON Object: \"%s\"", response));
+        }
     }
 
     public Map<Pair, Double> getFees(Pair... pairs) throws BTCEException {
