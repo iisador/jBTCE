@@ -65,9 +65,12 @@ public class PublicApiV3 extends AbstractApi {
     }
 
     public Map<Pair, Depth> getDepths(Pair... pairs) throws BTCEException {
-        Pair[] validPairs = checkPairs(false, pairs);
-        String response = connector.get(prepareUrl("depth", validPairs));
+        return getDepths(null, pairs);
+    }
 
+    public Map<Pair, Depth> getDepths(Integer limit, Pair... pairs) throws BTCEException {
+        Pair[] validPairs = checkPairs(false, pairs);
+        String response = connector.get(prepareUrl("depth", limit, validPairs));
         JsonObject json = processResponse(response);
 
         return Stream.of(validPairs)
@@ -76,8 +79,12 @@ public class PublicApiV3 extends AbstractApi {
     }
 
     public Map<Pair, List<Trade>> getTrades(Pair... pairs) throws BTCEException {
+        return getTrades(null, pairs);
+    }
+
+    public Map<Pair, List<Trade>> getTrades(Integer limit, Pair... pairs) throws BTCEException {
         Pair[] validPairs = checkPairs(false, pairs);
-        String response = connector.get(prepareUrl("trades", validPairs));
+        String response = connector.get(prepareUrl("trades", limit, validPairs));
 
         JsonObject json = processResponse(response);
 
@@ -111,6 +118,16 @@ public class PublicApiV3 extends AbstractApi {
                 .map(Pair::getName)
                 .collect(Collectors.joining("-"));
         return String.format(PUBLIC_API_TEMPLATE, method, pairsString);
+    }
+
+    private String prepareUrl(String method, Integer limit, Pair... pairs) {
+        String url = prepareUrl(method, pairs);
+
+        if (limit != null) {
+            url += "?limit=" + limit;
+        }
+
+        return url;
     }
 
     private Pair[] checkPairs(boolean removeDuplicates, Pair... pairs) {
