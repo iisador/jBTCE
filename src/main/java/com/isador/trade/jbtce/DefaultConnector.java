@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -22,48 +21,47 @@ public class DefaultConnector implements Connector {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultConnector.class);
 
     @Override
-    public String post(String url, String body, Map<String, String> headers) throws BTCEException {
-        LOG.debug("POST: '{}'", url);
-        try {
-            HttpURLConnection uc = (HttpURLConnection) new URL(url).openConnection();
-            uc.setRequestMethod("POST");
-
-            if (headers != null && !headers.isEmpty()) {
-                LOG.debug("HEADERS:");
-                headers.entrySet().forEach(e -> {
-                    LOG.debug("'{}' - '{}'", e.getKey(), e.getValue());
-                    uc.addRequestProperty(e.getKey(), e.getValue());
-                });
-            }
-
-            if (body != null) {
-                LOG.debug("BODY: '{}'", body);
-                uc.setDoOutput(true);
-                try (PrintWriter out = new PrintWriter(uc.getOutputStream())) {
-                    out.write(body);
-                    out.flush();
-                    out.close();
-                }
-            }
-
-            return getResponse(uc);
+    public String post(String url, String body, Map<String, String> headers) {
+        try{
+            return call(url, "POST", headers, body);
         } catch (IOException e) {
-            throw new BTCEException(e);
+            throw new ConnectorException(e);
         }
     }
 
     @Override
-    public String get(String url) throws BTCEException {
-        LOG.debug("GET: '{}'", url);
-        try {
-            return getResponse(new URL(url).openConnection());
+    public String get(String url, Map<String, String> headers) throws ConnectorException {
+        try{
+            return call(url, "GET", headers, null);
         } catch (IOException e) {
-            throw new BTCEException(e);
+            throw new ConnectorException(e);
         }
     }
 
-    private String getResponse(URLConnection urlConnection) throws IOException {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))) {
+    private String call(String url, String method, Map<String, String> headers, String body) throws IOException {
+        LOG.debug("{}: '{}'", method, url);
+        HttpURLConnection uc = (HttpURLConnection) new URL(url).openConnection();
+        uc.setRequestMethod(method);
+
+        if (headers != null && !headers.isEmpty()) {
+            LOG.debug("HEADERS:");
+            headers.forEach((key, value) -> {
+                LOG.debug("'{}' - '{}'", key, value);
+                uc.addRequestProperty(key, value);
+            });
+        }
+
+        if (body != null && !body.isEmpty()) {
+            LOG.debug("BODY: '{}'", body);
+            uc.setDoOutput(true);
+            try (PrintWriter out = new PrintWriter(uc.getOutputStream())) {
+                out.write(body);
+                out.flush();
+                out.close();
+            }
+        }
+
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()))) {
             String response = in.lines().collect(Collectors.joining());
 
             LOG.debug("RESPONSE: '{}'", response);

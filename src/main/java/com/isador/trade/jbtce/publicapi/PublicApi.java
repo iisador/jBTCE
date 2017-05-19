@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.isador.trade.jbtce.*;
 import com.isador.trade.jbtce.constants.Pair;
+import com.isador.trade.jbtce.publicapi.Depth.SimpleOrder;
 
 import java.time.LocalDateTime;
 
@@ -17,61 +18,51 @@ import static java.util.Objects.requireNonNull;
  */
 public class PublicApi extends AbstractApi {
 
-    private static final String PUBLIC_API_URL_TEMPLATE = "https://btc-e.com/api/2/%s/%s";
-
-    private Connector connector;
+    private static final String PUBLIC_API_URL_TEMPLATE = "api/2/%s/%s";
 
     public PublicApi() {
-        this(new DefaultConnector());
+        this(new ServerProvider(), new DefaultConnector());
     }
 
-    public PublicApi(Connector connector) {
-        super(ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
-                Depth.SimpleOrder.class, new SimpleOrderDeserializer()));
-        this.connector = requireNonNull(connector, "Connector instance should be not null");
-    }
-
-    public Connector getConnector() {
-        return connector;
-    }
-
-    public void setConnector(Connector connector) {
-        this.connector = connector;
+    public PublicApi(ServerProvider serverProvider, Connector connector) {
+        super(serverProvider, connector, ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
+                SimpleOrder.class, new SimpleOrderDeserializer()));
     }
 
     public Tick getTick(Pair pair) throws BTCEException {
         checkPair(pair);
-        JsonObject obj = (JsonObject) processResponse(connector.get(String.format(PUBLIC_API_URL_TEMPLATE, pair.getName(), "ticker")));
+        JsonObject obj = (JsonObject) call(pair, "ticker");
         return gson.fromJson(obj.get("ticker"), Tick.class);
     }
 
     public Trade[] getTrades(Pair pair) throws BTCEException {
         checkPair(pair);
-        JsonArray obj = (JsonArray) processResponse(connector.get(String.format(PUBLIC_API_URL_TEMPLATE, pair.getName(), "trades")));
+        JsonArray obj = (JsonArray) call(pair, "trades");
 
         return gson.fromJson(obj, Trade[].class);
     }
 
     public Depth getDepth(Pair pair) throws BTCEException {
         checkPair(pair);
-        JsonObject obj = (JsonObject) processResponse(connector.get(String.format(PUBLIC_API_URL_TEMPLATE, pair.getName(), "depth")));
+        JsonObject obj = (JsonObject) call(pair, "depth");
         return gson.fromJson(obj, Depth.class);
     }
 
     public double getFee(Pair pair) throws BTCEException {
         checkPair(pair);
-        JsonObject obj = (JsonObject) processResponse(connector.get(String.format(PUBLIC_API_URL_TEMPLATE, pair.getName(), "fee")));
+        JsonObject obj = (JsonObject) call(pair, "fee");
         return obj.get("trade").getAsDouble();
     }
 
-    private JsonElement processResponse(String json) throws BTCEException {
-        processServerResponse(json);
-        JsonElement el = parser.parse(json);
-        if (el.isJsonArray()) {
-            return el.getAsJsonArray();
+    private JsonElement call(Pair pair, String methodName) throws BTCEException {
+        String preparedUrlPath = String.format(PUBLIC_API_URL_TEMPLATE, pair.getName(), methodName);
+        JsonElement response = processServerResponse(connector -> connector.get(createUrl(preparedUrlPath), headers));
+
+        if (response.isJsonArray()) {
+            return response.getAsJsonArray();
         }
 
-        JsonObject obj = el.getAsJsonObject();
+        JsonObject obj = response.getAsJsonObject();
         if (obj.has("success") && obj.get("success").getAsByte() == 0) {
             throw new BTCEException(get(obj, "error").getAsString());
         }

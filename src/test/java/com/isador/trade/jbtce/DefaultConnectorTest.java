@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockserver.integration.ClientAndServer;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpRequest.request;
@@ -39,22 +41,23 @@ public class DefaultConnectorTest {
     @Test
     public void testGet() {
         server.when(request()
-                            .withMethod("GET"))
+                .withMethod("GET"))
                 .respond(response()
-                                 .withStatusCode(200)
-                                 .withBody("ok"));
+                        .withStatusCode(200)
+                        .withHeader("key1", "val1")
+                        .withBody("ok"));
 
-        String response = connector.get("http://localhost:7071");
+        String response = connector.get("http://localhost:7071", ImmutableMap.of("key1", "val1"));
         assertEquals("Invalid request was created", response, "ok");
     }
 
     @Test
     public void testPost() {
         server.when(request()
-                            .withMethod("POST"))
+                .withMethod("POST"))
                 .respond(response()
-                                 .withStatusCode(200)
-                                 .withBody("ok"));
+                        .withStatusCode(200)
+                        .withBody("ok"));
 
         String response = connector.post("http://localhost:7071", null, null);
         assertEquals("Invalid request was created", response, "ok");
@@ -63,12 +66,12 @@ public class DefaultConnectorTest {
     @Test
     public void testPostWithHeaders() {
         server.when(request()
-                            .withMethod("POST")
-                            .withHeader("key1", "val1")
-                            .withHeader("key2", "val2"))
+                .withMethod("POST")
+                .withHeader("key1", "val1")
+                .withHeader("key2", "val2"))
                 .respond(response()
-                                 .withStatusCode(200)
-                                 .withBody("ok"));
+                        .withStatusCode(200)
+                        .withBody("ok"));
 
         String response = connector.post("http://localhost:7071", null, ImmutableMap.of("key1", "val1", "key2", "val2"));
         assertEquals("Invalid request was created", response, "ok");
@@ -77,22 +80,22 @@ public class DefaultConnectorTest {
     @Test
     public void testPostWithBody() {
         server.when(request()
-                            .withMethod("POST")
-                            .withBody("someBody"))
+                .withMethod("POST")
+                .withBody("someBody"))
                 .respond(response()
-                                 .withStatusCode(200)
-                                 .withBody("ok"));
+                        .withStatusCode(200)
+                        .withBody("ok"));
 
         String response = connector.post("http://localhost:7071", "someBody", null);
         assertEquals("Invalid request was created", response, "ok");
     }
 
-    @Test(expected = BTCEException.class)
+    @Test(expected = ConnectorException.class)
     public void testGetInvalidUrl() {
-        connector.get("invalid bla bla bla");
+        connector.get("invalid bla bla bla", null);
     }
 
-    @Test(expected = BTCEException.class)
+    @Test(expected = ConnectorException.class)
     public void testPostInvalidUrl() {
         connector.post("invalid bla bla bla", null, null);
     }

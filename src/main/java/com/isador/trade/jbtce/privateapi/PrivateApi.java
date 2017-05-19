@@ -28,22 +28,19 @@ import static java.util.stream.Collectors.joining;
 
 public class PrivateApi extends AbstractApi {
 
-    static final String PRIVATE_API_URL = "https://btc-e.com/tapi";
+    static final String PRIVATE_API_URL = "tapi";
     private static final AtomicLong nonce = new AtomicLong(System.currentTimeMillis() / 1000);
     private final Mac mac;
-    private Connector connector;
-    private Map<String, String> headers;
 
     public PrivateApi(String key, String secret) {
-        this(key, secret, new DefaultConnector());
+        this(key, secret, new ServerProvider(), new DefaultConnector());
     }
 
-    public PrivateApi(String key, String secret, Connector connector) {
-        super(ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
+    public PrivateApi(String key, String secret, ServerProvider serverProvider, Connector connector) {
+        super(serverProvider, connector, ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
                 Funds.class, new FundsDeserializer()));
         requireNonNull(key, "Key must be specified");
         requireNonNull(secret, "Secret must be specified");
-        this.connector = requireNonNull(connector, "Connector must be specified");
 
         // Init mac
         try {
@@ -55,23 +52,11 @@ public class PrivateApi extends AbstractApi {
         }
 
         // Init headers
-        headers = ImmutableMap.of(
-                "Key", key,
-                "User-Agent", "jBTCEv2"
-        );
-    }
-
-    public Connector getConnector() {
-        return connector;
-    }
-
-    public void setConnector(Connector connector) {
-        this.connector = connector;
+        headers.put("Key", key);
     }
 
     public UserInfo getUserInfo() throws BTCEException {
-        String json = call("getInfo", null);
-        JsonElement response = processResponse(json);
+        JsonElement response = call("getInfo", null);
         return gson.fromJson(response, UserInfo.class);
     }
 
@@ -85,8 +70,8 @@ public class PrivateApi extends AbstractApi {
                 "type", operation.name().toLowerCase(),
                 "rate", rate,
                 "amount", amount);
-        String json = call("Trade", map);
-        JsonElement response = processResponse(json);
+
+        JsonElement response = call("Trade", map);
         return gson.fromJson(response, TradeResult.class);
     }
 
@@ -106,8 +91,7 @@ public class PrivateApi extends AbstractApi {
                 .active(active)
                 .build();
 
-        String json = call("OrderList", map);
-        JsonObject response = (JsonObject) processResponse(json);
+        JsonObject response = (JsonObject) call("OrderList", map);
 
         // stupid orders return format
         return response.entrySet().stream()
@@ -129,8 +113,7 @@ public class PrivateApi extends AbstractApi {
                 .end(end)
                 .build();
 
-        String json = call("TransHistory", map);
-        JsonObject response = (JsonObject) processResponse(json);
+        JsonObject response = (JsonObject) call("TransHistory", map);
         return response.entrySet().stream()
                 .peek(e -> e.getValue().getAsJsonObject().addProperty("id", e.getKey()))
                 .map(e -> gson.fromJson(e.getValue(), Transaction.class))
@@ -151,8 +134,7 @@ public class PrivateApi extends AbstractApi {
                 .pair(pair)
                 .build();
 
-        String json = call("TradeHistory", map);
-        JsonObject response = (JsonObject) processResponse(json);
+        JsonObject response = (JsonObject) call("TradeHistory", map);
         return response.entrySet().stream()
                 .peek(e -> e.getValue().getAsJsonObject().addProperty("id", e.getKey()))
                 .map(e -> gson.fromJson(e.getValue(), TradeHistory.class))
@@ -163,25 +145,22 @@ public class PrivateApi extends AbstractApi {
         checkArgument(orderId > 0, "Invalid oderId: %s", orderId);
 
         Map<String, Object> map = ImmutableMap.of("order_id", orderId);
-        String json = call("CancelOrder", map);
-        JsonElement response = processResponse(json);
+        JsonElement response = call("CancelOrder", map);
         return gson.fromJson(response, CancelOrderResult.class);
     }
 
-    private JsonElement processResponse(String json) throws BTCEException {
-        processServerResponse(json);
-        JsonObject obj = parser.parse(json).getAsJsonObject();
-        if (get(obj, "success").getAsByte() == 0) {
-            throw new BTCEException(get(obj, "error").getAsString());
-        }
-
-        return get(obj, "return");
-    }
-
-    private String call(String method, Map<String, Object> additionalParameters) throws BTCEException {
+    private JsonElement call(String method, Map<String, Object> additionalParameters) throws BTCEException {
         String body = getBody(method, additionalParameters);
         Map<String, String> headers = getHeaders(body);
-        return connector.post(PRIVATE_API_URL, body, headers);
+
+        JsonObject response = processServerResponse(connector -> connector.post(createUrl(PRIVATE_API_URL), body, headers))
+                .getAsJsonObject();
+
+        if (get(response, "success").getAsByte() == 0) {
+            throw new BTCEException(get(response, "error").getAsString());
+        }
+
+        return get(response, "return");
     }
 
     private String getBody(String method, Map<String, Object> additionalParameters) {

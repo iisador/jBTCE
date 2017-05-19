@@ -1,10 +1,7 @@
 package com.isador.trade.jbtce.publicapi;
 
 import com.google.common.collect.ImmutableMap;
-import com.isador.trade.jbtce.BTCEException;
-import com.isador.trade.jbtce.Connector;
-import com.isador.trade.jbtce.DefaultConnector;
-import com.isador.trade.jbtce.TestUtils;
+import com.isador.trade.jbtce.*;
 import com.isador.trade.jbtce.constants.Pair;
 import com.isador.trade.jbtce.publicapi.Depth.SimpleOrder;
 import org.junit.Before;
@@ -15,14 +12,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.isador.trade.jbtce.LocalDateTimeDeserializer.deserialize;
-import static com.isador.trade.jbtce.TestUtils.*;
+import static com.isador.trade.jbtce.TestUtils.getErrorJson;
+import static com.isador.trade.jbtce.TestUtils.getJson;
 import static com.isador.trade.jbtce.constants.Pair.*;
 import static com.isador.trade.jbtce.constants.TradeType.ASK;
 import static com.isador.trade.jbtce.constants.TradeType.BID;
@@ -47,11 +42,16 @@ public class PublicApiV3Test {
     @Mock
     private Connector connector;
 
+    @Mock
+    private ServerProvider serverProvider;
+
     private PublicApiV3 api;
+    private Map<String, String> headers = Collections.singletonMap("User-Agent", "jBTCEv2");
 
     @Before
     public void setUp() throws Exception {
-        api = new PublicApiV3(connector);
+        when(serverProvider.getCurrentServer()).thenReturn("https://btc-e.com/");
+        api = new PublicApiV3(serverProvider, connector);
     }
 
     @Test
@@ -60,14 +60,6 @@ public class PublicApiV3Test {
 
         assertNotNull("Connector must be not null", api.getConnector());
         assertThat("Invalid connector class", api.getConnector(), instanceOf(DefaultConnector.class));
-    }
-
-    @Test
-    public void testCreateWithNullConnector() {
-        thrown.expect(NullPointerException.class);
-        thrown.expectMessage("Connector instance should be not null");
-
-        new PublicApiV3(null);
     }
 
     @Test
@@ -88,37 +80,10 @@ public class PublicApiV3Test {
     }
 
     @Test
-    public void testGetTradesInvalidResponseNull() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get("https://btc-e.com/api/3/trades/btc_usd")).thenReturn(null);
-
-        api.getTrades(BTC_USD);
-    }
-
-    @Test
-    public void testGetTradesInvalidResponseEmpty() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get("https://btc-e.com/api/3/trades/btc_usd")).thenReturn("");
-
-        api.getTrades(BTC_USD);
-    }
-
-    @Test
-    public void testGetTradesInvalidJson() {
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
-        when(connector.get("https://btc-e.com/api/3/trades/btc_usd")).thenReturn(ahalaiMahalai());
-
-        api.getTrades(BTC_USD);
-    }
-
-    @Test
     public void testGetTradesInvalidResponseNoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.get("https://btc-e.com/api/3/trades/btc_usd")).thenReturn("{\"success\": 0}");
+        when(connector.get("https://btc-e.com/api/3/trades/btc_usd", headers)).thenReturn("{\"success\": 0}");
 
         api.getTrades(BTC_USD);
     }
@@ -127,7 +92,7 @@ public class PublicApiV3Test {
     public void testGetTradesError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
-        when(connector.get("https://btc-e.com/api/3/trades/btc_usd")).thenReturn(getErrorJson());
+        when(connector.get("https://btc-e.com/api/3/trades/btc_usd", headers)).thenReturn(getErrorJson());
 
         api.getTrades(BTC_USD);
     }
@@ -136,9 +101,9 @@ public class PublicApiV3Test {
     public void testGetTrades() {
         Map<Pair, Trade> expected = ImmutableMap.of(
                 BTC_USD, new Trade(deserialize(1493365526), 1304.679, 0.905, 99673985, BTC_USD.getSec(), BTC_USD.getPrim(), BID), BTC_RUR, new Trade(deserialize(1493365545), 72850, 0.00350568, 99673997, BTC_RUR.getSec(), BTC_RUR.getPrim(), ASK));
-        when(connector.get("https://btc-e.com/api/3/trades/btc_usd-btc_rur")).thenReturn(TestUtils.getJson("v3/trades.json"));
+        when(connector.get("https://btc-e.com/api/3/trades/btc_usd-btc_rur?limit=15", headers)).thenReturn(TestUtils.getJson("v3/trades.json"));
 
-        Map<Pair, List<Trade>> actual = api.getTrades(expected.keySet().toArray(new Pair[2]));
+        Map<Pair, List<Trade>> actual = api.getTrades(15, expected.keySet().toArray(new Pair[2]));
 
         assertNotNull("Trades map should be not null", actual);
         assertEquals("Actual map size doesn't match", 2, actual.size());
@@ -159,37 +124,10 @@ public class PublicApiV3Test {
     }
 
     @Test
-    public void testGetTicksInvalidResponseNull() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get("https://btc-e.com/api/3/ticker/btc_usd")).thenReturn(null);
-
-        api.getTicks(BTC_USD);
-    }
-
-    @Test
-    public void testGetTicksInvalidResponseEmpty() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get("https://btc-e.com/api/3/ticker/btc_usd")).thenReturn("");
-
-        api.getTicks(BTC_USD);
-    }
-
-    @Test
-    public void testGetTicksInvalidJson() {
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
-        when(connector.get("https://btc-e.com/api/3/ticker/btc_usd")).thenReturn(ahalaiMahalai());
-
-        api.getTicks(BTC_USD);
-    }
-
-    @Test
     public void testGetTicksInvalidResponseNoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.get("https://btc-e.com/api/3/ticker/btc_usd")).thenReturn("{\"success\": 0}");
+        when(connector.get("https://btc-e.com/api/3/ticker/btc_usd", headers)).thenReturn("{\"success\": 0}");
 
         api.getTicks(BTC_USD);
     }
@@ -198,7 +136,7 @@ public class PublicApiV3Test {
     public void testGetTicksError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
-        when(connector.get("https://btc-e.com/api/3/ticker/btc_usd")).thenReturn(getErrorJson());
+        when(connector.get("https://btc-e.com/api/3/ticker/btc_usd", headers)).thenReturn(getErrorJson());
 
         api.getTicks(BTC_USD);
     }
@@ -207,7 +145,7 @@ public class PublicApiV3Test {
     public void testGetTicks() {
         Map<Pair, Tick> expected = ImmutableMap.of(
                 BTC_USD, new Tick(1364.8815, 1424, 1425, 1424.544, 1304.763, 1418.001, null, deserialize(1493724687), 11600857.10276, 8495.85241), BTC_RUR, new Tick(75851, 78614.60518, 78600, 78600, 73102, 78500, null, deserialize(1493724687), 38167773.12839, 505.17796));
-        when(connector.get("https://btc-e.com/api/3/ticker/btc_usd-btc_rur")).thenReturn(TestUtils.getJson("v3/ticker.json"));
+        when(connector.get("https://btc-e.com/api/3/ticker/btc_usd-btc_rur", headers)).thenReturn(TestUtils.getJson("v3/ticker.json"));
 
         Map<Pair, Tick> actual = api.getTicks(expected.keySet().toArray(new Pair[2]));
 
@@ -228,37 +166,10 @@ public class PublicApiV3Test {
     }
 
     @Test
-    public void testGetDepthsInvalidResponseNull() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get("https://btc-e.com/api/3/depth/btc_usd")).thenReturn(null);
-
-        api.getDepths(BTC_USD);
-    }
-
-    @Test
-    public void testGetDepthsInvalidResponseEmpty() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get("https://btc-e.com/api/3/depth/btc_usd")).thenReturn("");
-
-        api.getDepths(BTC_USD);
-    }
-
-    @Test
-    public void testGetDepthsInvalidJson() {
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
-        when(connector.get("https://btc-e.com/api/3/depth/btc_usd")).thenReturn(ahalaiMahalai());
-
-        api.getDepths(BTC_USD);
-    }
-
-    @Test
     public void testGetDepthsInvalidResponseNoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.get("https://btc-e.com/api/3/depth/btc_usd")).thenReturn("{\"success\": 0}");
+        when(connector.get("https://btc-e.com/api/3/depth/btc_usd", headers)).thenReturn("{\"success\": 0}");
 
         api.getDepths(BTC_USD);
     }
@@ -267,7 +178,7 @@ public class PublicApiV3Test {
     public void testGetDepthsError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
-        when(connector.get("https://btc-e.com/api/3/depth/btc_usd")).thenReturn(getErrorJson());
+        when(connector.get("https://btc-e.com/api/3/depth/btc_usd", headers)).thenReturn(getErrorJson());
 
         api.getDepths(BTC_USD);
     }
@@ -275,9 +186,9 @@ public class PublicApiV3Test {
     @Test
     public void testGetDepths() {
         Map<Pair, Depth> expected = getExpectedDepths();
-        when(connector.get("https://btc-e.com/api/3/depth/btc_usd-btc_rur")).thenReturn(TestUtils.getJson("v3/depth.json"));
+        when(connector.get("https://btc-e.com/api/3/depth/btc_usd-btc_rur?limit=15", headers)).thenReturn(TestUtils.getJson("v3/depth.json"));
 
-        Map<Pair, Depth> actual = api.getDepths(expected.keySet().toArray(new Pair[2]));
+        Map<Pair, Depth> actual = api.getDepths(15, expected.keySet().toArray(new Pair[2]));
 
         assertNotNull("Depths map should be not null", actual);
         assertEquals("Actual map size doesn't match", 2, actual.size());
@@ -297,37 +208,10 @@ public class PublicApiV3Test {
     }
 
     @Test
-    public void testGetFeesInvalidResponseNull() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get("https://btc-e.com/api/3/fee/btc_usd")).thenReturn(null);
-
-        api.getFees(BTC_USD);
-    }
-
-    @Test
-    public void testGetFeesInvalidResponseEmpty() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get("https://btc-e.com/api/3/fee/btc_usd")).thenReturn("");
-
-        api.getFees(BTC_USD);
-    }
-
-    @Test
-    public void testGetFeesInvalidJson() {
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
-        when(connector.get("https://btc-e.com/api/3/fee/btc_usd")).thenReturn(ahalaiMahalai());
-
-        api.getFees(BTC_USD);
-    }
-
-    @Test
     public void testGetFeesInvalidResponseNoError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
-        when(connector.get("https://btc-e.com/api/3/fee/btc_usd")).thenReturn("{\"success\": 0}");
+        when(connector.get("https://btc-e.com/api/3/fee/btc_usd", headers)).thenReturn("{\"success\": 0}");
 
         api.getFees(BTC_USD);
     }
@@ -336,7 +220,7 @@ public class PublicApiV3Test {
     public void testGetFeesError() {
         thrown.expect(BTCEException.class);
         thrown.expectMessage("Some error");
-        when(connector.get("https://btc-e.com/api/3/fee/btc_usd")).thenReturn(getErrorJson());
+        when(connector.get("https://btc-e.com/api/3/fee/btc_usd", headers)).thenReturn(getErrorJson());
 
         api.getFees(BTC_USD);
     }
@@ -345,7 +229,7 @@ public class PublicApiV3Test {
     public void testGetFees() {
         Map<Pair, Double> expected = ImmutableMap.of(BTC_USD, 0.2,
                 BTC_RUR, 0.2);
-        when(connector.get("https://btc-e.com/api/3/fee/btc_usd-btc_rur")).thenReturn(TestUtils.getJson("v3/fee.json"));
+        when(connector.get("https://btc-e.com/api/3/fee/btc_usd-btc_rur", headers)).thenReturn(TestUtils.getJson("v3/fee.json"));
 
         Map<Pair, Double> actual = api.getFees(expected.keySet().toArray(new Pair[2]));
 
@@ -358,36 +242,9 @@ public class PublicApiV3Test {
     }
 
     @Test
-    public void testGetInfoInvalidResponseNull() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get("https://btc-e.com/api/3/info")).thenReturn(null);
-
-        api.getInfo();
-    }
-
-    @Test
-    public void testGetInfoInvalidResponseEmpty() {
-        thrown.expect(BTCEException.class);
-        thrown.expectMessage("Invalid server response. Null or empty response");
-        when(connector.get("https://btc-e.com/api/3/info")).thenReturn("");
-
-        api.getInfo();
-    }
-
-    @Test
-    public void testGetInfoInvalidJson() {
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("Not a JSON Object: \"" + ahalaiMahalai() + "\"");
-        when(connector.get("https://btc-e.com/api/3/info")).thenReturn(ahalaiMahalai());
-
-        api.getInfo();
-    }
-
-    @Test
     public void testGetInfo() {
         BTCEInfo expected = new BTCEInfo(deserialize(1494399104), getExpectedPairsInfo());
-        when(connector.get("https://btc-e.com/api/3/info")).thenReturn(getJson("v3/info.json"));
+        when(connector.get("https://btc-e.com/api/3/info/", headers)).thenReturn(getJson("v3/info.json"));
 
         BTCEInfo actual = api.getInfo();
 

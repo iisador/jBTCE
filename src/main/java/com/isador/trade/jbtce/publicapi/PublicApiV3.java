@@ -8,6 +8,7 @@ import com.isador.trade.jbtce.*;
 import com.isador.trade.jbtce.constants.Currency;
 import com.isador.trade.jbtce.constants.Pair;
 import com.isador.trade.jbtce.constants.TradeType;
+import com.isador.trade.jbtce.publicapi.Depth.SimpleOrder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.time.LocalDateTime;
@@ -28,38 +29,26 @@ import static java.util.stream.Collectors.toMap;
  */
 public class PublicApiV3 extends AbstractApi {
 
-    private static final String PUBLIC_API_TEMPLATE = "https://btc-e.com/api/3/%s/%s";
-    private static final String PUBLIC_API_INFO = "https://btc-e.com/api/3/info";
-
-    private final Connector connector;
+    private static final String PUBLIC_API_TEMPLATE = "api/3/%s/%s";
 
     public PublicApiV3() {
-        this(new DefaultConnector());
+        this(new ServerProvider(), new DefaultConnector());
     }
 
-    public PublicApiV3(Connector connector) {
-        super(ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
-                Depth.SimpleOrder.class, new SimpleOrderDeserializer(),
+    public PublicApiV3(ServerProvider serverProvider, Connector connector) {
+        super(serverProvider, connector, ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
+                SimpleOrder.class, new SimpleOrderDeserializer(),
                 BTCEInfo.class, new BtceInfoDeserilizer()));
-        this.connector = requireNonNull(connector, "Connector instance should be not null");
     }
 
     public BTCEInfo getInfo() throws BTCEException {
-        String response = connector.get(PUBLIC_API_INFO);
-        processServerResponse(response);
-
-        try {
-            return gson.fromJson(response, BTCEInfo.class);
-        } catch (ClassCastException e) {
-            throw new IllegalStateException(String.format("Not a JSON Object: \"%s\"", response));
-        }
+        JsonObject response = call("info", null);
+        return gson.fromJson(response, BTCEInfo.class);
     }
 
     public Map<Pair, Double> getFees(Pair... pairs) throws BTCEException {
         Pair[] validPairs = checkPairs(false, pairs);
-        String response = connector.get(prepareUrl("fee", validPairs));
-
-        JsonObject json = processResponse(response);
+        JsonObject json = call("fee", null, validPairs);
 
         return Stream.of(validPairs)
                 .map(pair -> ImmutablePair.of(pair, json.get(pair.getName()).getAsDouble()))
@@ -68,9 +57,7 @@ public class PublicApiV3 extends AbstractApi {
 
     public Map<Pair, Tick> getTicks(Pair... pairs) throws BTCEException {
         Pair[] validPairs = checkPairs(false, pairs);
-        String response = connector.get(prepareUrl("ticker", validPairs));
-
-        JsonObject json = processResponse(response);
+        JsonObject json = call("ticker", null, validPairs);
 
         return Stream.of(validPairs)
                 .map(pair -> ImmutablePair.of(pair, gson.fromJson(json.get(pair.getName()), Tick.class)))
@@ -83,8 +70,7 @@ public class PublicApiV3 extends AbstractApi {
 
     public Map<Pair, Depth> getDepths(Integer limit, Pair... pairs) throws BTCEException {
         Pair[] validPairs = checkPairs(false, pairs);
-        String response = connector.get(prepareUrl("depth", limit, validPairs));
-        JsonObject json = processResponse(response);
+        JsonObject json = call("depth", limit, validPairs);
 
         return Stream.of(validPairs)
                 .map(pair -> ImmutablePair.of(pair, gson.fromJson(json.get(pair.getName()), Depth.class)))
@@ -97,9 +83,7 @@ public class PublicApiV3 extends AbstractApi {
 
     public Map<Pair, List<Trade>> getTrades(Integer limit, Pair... pairs) throws BTCEException {
         Pair[] validPairs = checkPairs(false, pairs);
-        String response = connector.get(prepareUrl("trades", limit, validPairs));
-
-        JsonObject json = processResponse(response);
+        JsonObject json = call("trades", limit, validPairs);
 
         return Stream.of(validPairs)
                 .map(pair -> ImmutablePair.of(pair, toTradeList(pair, json.get(pair.getName()).getAsJsonArray())))
@@ -126,45 +110,37 @@ public class PublicApiV3 extends AbstractApi {
         return new Trade(timestamp, price, amount, id, priceCurrency, item, type);
     }
 
-    private String prepareUrl(String method, Pair... pairs) {
-        String pairsString = Stream.of(pairs)
-                .map(Pair::getName)
-                .collect(Collectors.joining("-"));
-        return String.format(PUBLIC_API_TEMPLATE, method, pairsString);
-    }
-
-    private String prepareUrl(String method, Integer limit, Pair... pairs) {
-        String url = prepareUrl(method, pairs);
-
-        if (limit != null) {
-            url += "?limit=" + limit;
-        }
-
-        return url;
-    }
-
     private Pair[] checkPairs(boolean removeDuplicates, Pair... pairs) {
         requireNonNull(pairs, "Pairs must be specified");
         checkArgument(pairs.length > 0, "Pairs must be defined");
 
-        if (removeDuplicates) {
-            pairs = Stream.of(pairs).distinct().toArray(Pair[]::new);
-        }
+//        if (removeDuplicates) {
+//            pairs = Stream.of(pairs).distinct().toArray(Pair[]::new);
+//        }
 
         return pairs;
     }
 
-    private JsonObject processResponse(String json) throws BTCEException {
-        processServerResponse(json);
-        JsonObject obj = parser.parse(json).getAsJsonObject();
-        if (obj.has("success") && obj.get("success").getAsByte() == 0) {
-            throw new BTCEException(get(obj, "error").getAsString());
+    private JsonObject call(String method, Integer limit, Pair... pairs) throws BTCEException {
+        String preparedUrlPath = prepareUrl(method, limit, pairs);
+        JsonObject response = processServerResponse(connector -> connector.get(createUrl(preparedUrlPath), headers))
+                .getAsJsonObject();
+
+        if (response.has("success") && response.get("success").getAsByte() == 0) {
+            throw new BTCEException(get(response, "error").getAsString());
         }
 
-        return obj;
+        return response;
     }
 
-    public Connector getConnector() {
-        return connector;
+    private String prepareUrl(String method, Integer limit, Pair... pairs) {
+        String pairsString = Stream.of(pairs)
+                .map(Pair::getName)
+                .collect(Collectors.joining("-"));
+        String url = String.format(PUBLIC_API_TEMPLATE, method, pairsString);
+        if (limit != null) {
+            url += "?limit=" + limit;
+        }
+        return url;
     }
 }

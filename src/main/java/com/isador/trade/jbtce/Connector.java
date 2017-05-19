@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public interface Connector {
 
-    String get(String url) throws BTCEException;
+    String get(String url, Map<String, String> headers) throws ConnectorException;
 
-    String post(String url, String body, Map<String, String> headers) throws BTCEException;
+    String post(String url, String body, Map<String, String> headers) throws ConnectorException;
 }
