@@ -28,7 +28,7 @@ import static java.util.stream.Collectors.joining;
 
 public class PrivateApi extends AbstractApi {
 
-    static final String PRIVATE_API_URL = "tapi";
+    private static final String PRIVATE_API_URL = "tapi";
     private static final AtomicLong nonce = new AtomicLong(System.currentTimeMillis() / 1000);
     private final Mac mac;
 

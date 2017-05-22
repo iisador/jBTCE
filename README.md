@@ -14,7 +14,8 @@ Trade api wrapper to www.btc-e.com.
 Provides full access to public and private API.
 
 Features
-=========
+========
+* Mirrors support (https://btc-e.com, https://btc-e.nz)
 * Public v2 API: [ticker](https://btc-e.com/api/2/btc_usd/ticker), [trades](https://btc-e.com/api/2/btc_usd/trades), [depth](https://btc-e.com/api/2/btc_usd/depth), [fee](https://btc-e.com/api/2/btc_usd/fee)
 * Public v3 API: [ticker](https://btc-e.com/api/3/ticker/btc_usd-btc-rur), [trades](https://btc-e.com/api/3/trades/btc_usd-btc-rur), [depth](https://btc-e.com/api/3/depth/btc_usd-btc-rur), [fee](https://btc-e.com/api/3/fee/btc_usd-btc-rur), [info](https://btc-e.com/api/3/info)
 * Private API

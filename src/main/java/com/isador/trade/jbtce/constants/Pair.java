@@ -2,6 +2,9 @@ package com.isador.trade.jbtce.constants;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static com.isador.trade.jbtce.constants.Currency.*;
 
 public enum Pair {
@@ -51,5 +54,15 @@ public enum Pair {
 
     public String getName() {
         return toString().toLowerCase();
+    }
+
+    public static String toUrlString(Pair[] pairs) {
+        if (pairs == null || pairs.length == 0) {
+            return "";
+        }
+
+        return Stream.of(pairs)
+                .map(Pair::getName)
+                .collect(Collectors.joining("-"));
     }
 }

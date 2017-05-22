@@ -64,8 +64,9 @@ public class PublicApiV3Test {
 
     @Test
     public void testGetTradesNullPairs() {
-        thrown.expect(NullPointerException.class);
-        thrown.expectMessage("Pairs must be specified");
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Empty pair list");
+        when(connector.get("https://btc-e.com/api/3/trades/", headers)).thenReturn(getEmptyPairsListErrorJson());
 
         api.getTrades(null);
     }
@@ -73,8 +74,9 @@ public class PublicApiV3Test {
 
     @Test
     public void testGetTradesNoPairs() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Pairs must be defined");
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Empty pair list");
+        when(connector.get("https://btc-e.com/api/3/trades/", headers)).thenReturn(getEmptyPairsListErrorJson());
 
         api.getTrades();
     }
@@ -116,9 +118,19 @@ public class PublicApiV3Test {
     }
 
     @Test
+    public void testGetTicksNullPairs() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Empty pair list");
+        when(connector.get("https://btc-e.com/api/3/ticker/", headers)).thenReturn(getEmptyPairsListErrorJson());
+
+        api.getTicks(null);
+    }
+
+    @Test
     public void testGetTicksNoPairs() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Pairs must be defined");
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Empty pair list");
+        when(connector.get("https://btc-e.com/api/3/ticker/", headers)).thenReturn(getEmptyPairsListErrorJson());
 
         api.getTicks();
     }
@@ -158,9 +170,19 @@ public class PublicApiV3Test {
     }
 
     @Test
+    public void testGetDepthsNullPairs() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Empty pair list");
+        when(connector.get("https://btc-e.com/api/3/depth/", headers)).thenReturn(getEmptyPairsListErrorJson());
+
+        api.getDepths(null);
+    }
+
+    @Test
     public void testGetDepthsNoPairs() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Pairs must be defined");
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Empty pair list");
+        when(connector.get("https://btc-e.com/api/3/depth/", headers)).thenReturn(getEmptyPairsListErrorJson());
 
         api.getDepths();
     }
@@ -200,9 +222,19 @@ public class PublicApiV3Test {
 
 
     @Test
+    public void testGetFeesNullPairs() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Empty pair list");
+        when(connector.get("https://btc-e.com/api/3/fee/", headers)).thenReturn(getEmptyPairsListErrorJson());
+
+        api.getFees(null);
+    }
+
+    @Test
     public void testGetFeesNoPairs() {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Pairs must be defined");
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Empty pair list");
+        when(connector.get("https://btc-e.com/api/3/fee/", headers)).thenReturn(getEmptyPairsListErrorJson());
 
         api.getFees();
     }
@@ -258,6 +290,10 @@ public class PublicApiV3Test {
             PairInfo actualPi = actualPairsInfoMap.get(expectedPi.getPair());
             assertPairsInfoEquals(expectedPi, actualPi);
         });
+    }
+
+    private String getEmptyPairsListErrorJson() {
+        return "{\"success\":0, \"error\":\"Empty pair list\"}";
     }
 
     private void assertPairsInfoEquals(PairInfo expected, PairInfo actual) {

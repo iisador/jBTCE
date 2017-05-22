@@ -14,12 +14,9 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -47,19 +44,17 @@ public class PublicApiV3 extends AbstractApi {
     }
 
     public Map<Pair, Double> getFees(Pair... pairs) throws BTCEException {
-        Pair[] validPairs = checkPairs(false, pairs);
-        JsonObject json = call("fee", null, validPairs);
+        JsonObject json = call("fee", null, pairs);
 
-        return Stream.of(validPairs)
+        return Stream.of(pairs)
                 .map(pair -> ImmutablePair.of(pair, json.get(pair.getName()).getAsDouble()))
                 .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
     }
 
     public Map<Pair, Tick> getTicks(Pair... pairs) throws BTCEException {
-        Pair[] validPairs = checkPairs(false, pairs);
-        JsonObject json = call("ticker", null, validPairs);
+        JsonObject json = call("ticker", null, pairs);
 
-        return Stream.of(validPairs)
+        return Stream.of(pairs)
                 .map(pair -> ImmutablePair.of(pair, gson.fromJson(json.get(pair.getName()), Tick.class)))
                 .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
     }
@@ -69,10 +64,9 @@ public class PublicApiV3 extends AbstractApi {
     }
 
     public Map<Pair, Depth> getDepths(Integer limit, Pair... pairs) throws BTCEException {
-        Pair[] validPairs = checkPairs(false, pairs);
-        JsonObject json = call("depth", limit, validPairs);
+        JsonObject json = call("depth", limit, pairs);
 
-        return Stream.of(validPairs)
+        return Stream.of(pairs)
                 .map(pair -> ImmutablePair.of(pair, gson.fromJson(json.get(pair.getName()), Depth.class)))
                 .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
     }
@@ -82,10 +76,9 @@ public class PublicApiV3 extends AbstractApi {
     }
 
     public Map<Pair, List<Trade>> getTrades(Integer limit, Pair... pairs) throws BTCEException {
-        Pair[] validPairs = checkPairs(false, pairs);
-        JsonObject json = call("trades", limit, validPairs);
+        JsonObject json = call("trades", limit, pairs);
 
-        return Stream.of(validPairs)
+        return Stream.of(pairs)
                 .map(pair -> ImmutablePair.of(pair, toTradeList(pair, json.get(pair.getName()).getAsJsonArray())))
                 .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
     }
@@ -110,17 +103,6 @@ public class PublicApiV3 extends AbstractApi {
         return new Trade(timestamp, price, amount, id, priceCurrency, item, type);
     }
 
-    private Pair[] checkPairs(boolean removeDuplicates, Pair... pairs) {
-        requireNonNull(pairs, "Pairs must be specified");
-        checkArgument(pairs.length > 0, "Pairs must be defined");
-
-//        if (removeDuplicates) {
-//            pairs = Stream.of(pairs).distinct().toArray(Pair[]::new);
-//        }
-
-        return pairs;
-    }
-
     private JsonObject call(String method, Integer limit, Pair... pairs) throws BTCEException {
         String preparedUrlPath = prepareUrl(method, limit, pairs);
         JsonObject response = processServerResponse(connector -> connector.get(createUrl(preparedUrlPath), headers))
@@ -134,10 +116,7 @@ public class PublicApiV3 extends AbstractApi {
     }
 
     private String prepareUrl(String method, Integer limit, Pair... pairs) {
-        String pairsString = Stream.of(pairs)
-                .map(Pair::getName)
-                .collect(Collectors.joining("-"));
-        String url = String.format(PUBLIC_API_TEMPLATE, method, pairsString);
+        String url = String.format(PUBLIC_API_TEMPLATE, method, Pair.toUrlString(pairs));
         if (limit != null) {
             url += "?limit=" + limit;
         }
