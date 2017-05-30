@@ -14,7 +14,7 @@ public final class UserInfo {
     private final int openOrdersCount;
     private final int transactionCount;
 
-    UserInfo(Rights rights, Funds funds, int openOrdersCount, LocalDateTime serverTime, int transactionCount) {
+    public UserInfo(Rights rights, Funds funds, int openOrdersCount, LocalDateTime serverTime, int transactionCount) {
         this.rights = rights;
         this.funds = funds;
         this.openOrdersCount = openOrdersCount;
@@ -56,7 +56,7 @@ public final class UserInfo {
         private final int trade;
         private final int withdraw;
 
-        Rights(int info, int trade, int withdraw) {
+        public Rights(int info, int trade, int withdraw) {
             this.info = info;
             this.trade = trade;
             this.withdraw = withdraw;

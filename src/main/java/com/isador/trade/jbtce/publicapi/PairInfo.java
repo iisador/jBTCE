@@ -27,7 +27,7 @@ public final class PairInfo {
     private final double fee;
     private final Pair pair;
 
-    PairInfo(int decimalPlaces, double minPrice, double maxPrice, double minAmount, int hidden, double fee, Pair pair) {
+    public PairInfo(int decimalPlaces, double minPrice, double maxPrice, double minAmount, int hidden, double fee, Pair pair) {
         this.decimalPlaces = decimalPlaces;
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;

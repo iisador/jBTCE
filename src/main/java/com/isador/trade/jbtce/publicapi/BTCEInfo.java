@@ -14,7 +14,7 @@ public final class BTCEInfo {
     private final LocalDateTime serverTime;
     private final List<PairInfo> pairInfoList;
 
-    BTCEInfo(LocalDateTime serverTime, List<PairInfo> pairInfoList) {
+    public BTCEInfo(LocalDateTime serverTime, List<PairInfo> pairInfoList) {
         this.serverTime = serverTime;
         this.pairInfoList = pairInfoList;
     }

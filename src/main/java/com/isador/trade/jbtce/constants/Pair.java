@@ -56,6 +56,10 @@ public enum Pair {
         return toString().toLowerCase();
     }
 
+    public static Pair from(Currency prim, Currency sec) {
+        return valueOf(String.format("%s_%s", prim.name(), sec.name()));
+    }
+
     public static String toUrlString(Pair[] pairs) {
         if (pairs == null || pairs.length == 0) {
             return "";

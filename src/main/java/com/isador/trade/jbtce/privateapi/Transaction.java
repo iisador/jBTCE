@@ -18,7 +18,7 @@ public final class Transaction {
     private final LocalDateTime timestamp;
     private final long id;
 
-    Transaction(int type, double amount, Currency currency, int status, LocalDateTime timestamp, long id, String description) {
+    public Transaction(int type, double amount, Currency currency, int status, LocalDateTime timestamp, long id, String description) {
         this.type = type;
         this.amount = amount;
         this.currency = currency;

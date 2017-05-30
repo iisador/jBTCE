@@ -24,7 +24,7 @@ public final class Trade {
     private final double amount;
     private final Currency item;
 
-    Trade(LocalDateTime date, double price, double amount, long id, Currency priceCurrency, Currency item, TradeType type) {
+    public Trade(LocalDateTime date, double price, double amount, long id, Currency priceCurrency, Currency item, TradeType type) {
         this.date = date;
         this.price = price;
         this.amount = amount;

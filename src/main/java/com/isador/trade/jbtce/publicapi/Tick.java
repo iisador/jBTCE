@@ -22,7 +22,7 @@ public final class Tick {
     private final double vol;
     private final LocalDateTime updated;
 
-    Tick(double avg, double buy, double high, double last, double low, double sell, LocalDateTime serverTime, LocalDateTime updated, double vol, double volCur) {
+    public Tick(double avg, double buy, double high, double last, double low, double sell, LocalDateTime serverTime, LocalDateTime updated, double vol, double volCur) {
         this.avg = avg;
         this.buy = buy;
         this.high = high;

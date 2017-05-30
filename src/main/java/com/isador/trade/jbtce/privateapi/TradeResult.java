@@ -11,7 +11,7 @@ public final class TradeResult {
     private final double remains;
     private final Funds funds;
 
-    TradeResult(double received, double remains, long orderId, Funds funds) {
+    public TradeResult(double received, double remains, long orderId, Funds funds) {
         this.received = received;
         this.remains = remains;
         this.orderId = orderId;

@@ -26,7 +26,7 @@ public final class TradeHistory {
     private final LocalDateTime timestamp;
     private final long id;
 
-    TradeHistory(Pair pair, Operation type, double amount, double rate, long orderId, int yourOrder, LocalDateTime timestamp, long id) {
+    public TradeHistory(Pair pair, Operation type, double amount, double rate, long orderId, int yourOrder, LocalDateTime timestamp, long id) {
         this.pair = pair;
         this.type = type;
         this.amount = amount;

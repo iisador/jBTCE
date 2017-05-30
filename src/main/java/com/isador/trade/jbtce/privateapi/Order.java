@@ -18,7 +18,7 @@ public final class Order {
     private final double rate;
     private final int status;
 
-    Order(long id, Pair pair, Operation type, double amount, double rate, int status, LocalDateTime timestampCreated) {
+    public Order(long id, Pair pair, Operation type, double amount, double rate, int status, LocalDateTime timestampCreated) {
         this.id = id;
         this.pair = pair;
         this.type = type;
