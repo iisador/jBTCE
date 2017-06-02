@@ -126,7 +126,7 @@ public class PublicApiTest {
 
     @Test
     public void testGetTrades() {
-        Trade expectedTrade = new Trade(deserialize(1491542177), 1178, 1.78, 97938795, Currency.USD, Currency.BTC, TradeType.BID);
+        Trade expectedTrade = new Trade(deserialize(1491542177), 1178, 1.78, 97938795, Currency.USD, Currency.BTC, TradeType.BUY);
         when(connector.get("https://btc-e.com/api/2/btc_usd/trades", headers)).thenReturn(getJson("trades.json"));
 
         Trade[] actualTrades = api.getTrades(BTC_USD);

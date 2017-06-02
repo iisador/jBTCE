@@ -4,9 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.isador.trade.jbtce.*;
-import com.isador.trade.jbtce.constants.Operation;
 import com.isador.trade.jbtce.constants.Pair;
 import com.isador.trade.jbtce.constants.Sort;
+import com.isador.trade.jbtce.constants.TradeType;
+import com.isador.trade.jbtce.TradeTypeDeserializer;
 import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.Mac;
@@ -38,7 +39,8 @@ public class PrivateApi extends AbstractApi {
 
     public PrivateApi(String key, String secret, ServerProvider serverProvider, Connector connector) {
         super(serverProvider, connector, ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
-                Funds.class, new FundsDeserializer()));
+                Funds.class, new FundsDeserializer(),
+                TradeType.class, new TradeTypeDeserializer()));
         requireNonNull(key, "Key must be specified");
         requireNonNull(secret, "Secret must be specified");
 
@@ -60,14 +62,14 @@ public class PrivateApi extends AbstractApi {
         return gson.fromJson(response, UserInfo.class);
     }
 
-    public TradeResult trade(Pair pair, Operation operation, double rate, double amount) throws BTCEException {
+    public TradeResult trade(Pair pair, TradeType type, double rate, double amount) throws BTCEException {
         requireNonNull(pair, "Invalid trade pair");
-        requireNonNull(operation, "Invalid trade type");
+        requireNonNull(type, "Invalid trade type");
         checkArgument(rate > 0, "Invalid trade rate: %s", rate);
         checkArgument(amount > 0, "Invalid trade amount: %s", amount);
 
         Map<String, Object> map = ImmutableMap.of("pair", pair.getName(),
-                "type", operation.name().toLowerCase(),
+                "type", type.name().toLowerCase(),
                 "rate", rate,
                 "amount", amount);
 

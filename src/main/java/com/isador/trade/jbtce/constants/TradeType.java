@@ -1,11 +1,30 @@
 package com.isador.trade.jbtce.constants;
 
-import com.google.gson.annotations.SerializedName;
-
+/**
+ * Created by isador
+ * on 07.04.17
+ */
 public enum TradeType {
-    @SerializedName("ask")
-    ASK,
+    BUY("bid"),
+    SELL("ask");
 
-    @SerializedName("bid")
-    BID
+    private String operationName;
+
+    TradeType(String operationName) {
+        this.operationName = operationName;
+    }
+
+    public static TradeType parse(String s) {
+        if ("bid".equalsIgnoreCase(s) || "buy".equalsIgnoreCase(s)) {
+            return BUY;
+        }
+        if ("ask".equalsIgnoreCase(s) || "sell".equalsIgnoreCase(s)) {
+            return SELL;
+        }
+        throw new IllegalArgumentException("Invalid arg of Operation");
+    }
+
+    public String getOperationName() {
+        return operationName;
+    }
 }

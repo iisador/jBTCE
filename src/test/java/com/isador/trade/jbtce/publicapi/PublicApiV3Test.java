@@ -19,8 +19,8 @@ import static com.isador.trade.jbtce.LocalDateTimeDeserializer.deserialize;
 import static com.isador.trade.jbtce.TestUtils.getErrorJson;
 import static com.isador.trade.jbtce.TestUtils.getJson;
 import static com.isador.trade.jbtce.constants.Pair.*;
-import static com.isador.trade.jbtce.constants.TradeType.ASK;
-import static com.isador.trade.jbtce.constants.TradeType.BID;
+import static com.isador.trade.jbtce.constants.TradeType.SELL;
+import static com.isador.trade.jbtce.constants.TradeType.BUY;
 import static com.isador.trade.jbtce.publicapi.Asserts.*;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
@@ -102,7 +102,7 @@ public class PublicApiV3Test {
     @Test
     public void testGetTrades() {
         Map<Pair, Trade> expected = ImmutableMap.of(
-                BTC_USD, new Trade(deserialize(1493365526), 1304.679, 0.905, 99673985, BTC_USD.getSec(), BTC_USD.getPrim(), BID), BTC_RUR, new Trade(deserialize(1493365545), 72850, 0.00350568, 99673997, BTC_RUR.getSec(), BTC_RUR.getPrim(), ASK));
+                BTC_USD, new Trade(deserialize(1493365526), 1304.679, 0.905, 99673985, BTC_USD.getSec(), BTC_USD.getPrim(), BUY), BTC_RUR, new Trade(deserialize(1493365545), 72850, 0.00350568, 99673997, BTC_RUR.getSec(), BTC_RUR.getPrim(), SELL));
         when(connector.get("https://btc-e.com/api/3/trades/btc_usd-btc_rur?limit=15", headers)).thenReturn(TestUtils.getJson("v3/trades.json"));
 
         Map<Pair, List<Trade>> actual = api.getTrades(15, expected.keySet().toArray(new Pair[2]));

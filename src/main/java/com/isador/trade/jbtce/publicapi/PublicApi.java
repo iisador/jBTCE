@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.isador.trade.jbtce.*;
 import com.isador.trade.jbtce.constants.Pair;
+import com.isador.trade.jbtce.constants.TradeType;
 import com.isador.trade.jbtce.publicapi.Depth.SimpleOrder;
 
 import java.time.LocalDateTime;
@@ -26,7 +27,8 @@ public class PublicApi extends AbstractApi {
 
     public PublicApi(ServerProvider serverProvider, Connector connector) {
         super(serverProvider, connector, ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
-                SimpleOrder.class, new SimpleOrderDeserializer()));
+                SimpleOrder.class, new SimpleOrderDeserializer(),
+                TradeType.class, new TradeTypeDeserializer()));
     }
 
     public Tick getTick(Pair pair) throws BTCEException {

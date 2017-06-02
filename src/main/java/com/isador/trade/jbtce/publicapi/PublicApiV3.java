@@ -92,7 +92,7 @@ public class PublicApiV3 extends AbstractApi {
     }
 
     private Trade toTrade(Pair pair, JsonObject jsonTrade) {
-        TradeType type = TradeType.valueOf(jsonTrade.get("type").getAsString().toUpperCase());
+        TradeType type = TradeType.parse(jsonTrade.get("type").getAsString().toUpperCase());
         double price = jsonTrade.get("price").getAsDouble();
         double amount = jsonTrade.get("amount").getAsDouble();
         long id = jsonTrade.get("tid").getAsLong();
