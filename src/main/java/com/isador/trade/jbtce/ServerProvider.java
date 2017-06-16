@@ -81,8 +81,7 @@ public class ServerProvider {
 
     private boolean isServerReachable(String server) {
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(String.format(TEST_URL_TEMPLATE, server)).openConnection();
-            urlConnection.setRequestProperty("User-Agent", "jBTCEv2");
+            HttpURLConnection urlConnection = prepareConnection(new URL(String.format(TEST_URL_TEMPLATE, server)));
             urlConnection.connect();
             try (BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))) {
                 String response = in.lines().collect(Collectors.joining());
@@ -92,5 +91,11 @@ public class ServerProvider {
             LOG.warn("Server '{}' not available", server, e);
         }
         return false;
+    }
+
+    private HttpURLConnection prepareConnection(URL url) throws IOException {
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        AbstractApi.DEFAULT_HEADERS.forEach(urlConnection::setRequestProperty);
+        return urlConnection;
     }
 }

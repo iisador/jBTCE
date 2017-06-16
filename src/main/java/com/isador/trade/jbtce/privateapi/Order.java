@@ -16,9 +16,9 @@ public final class Order {
     private final TradeType type;
     private final double amount;
     private final double rate;
-    private final int status;
+    private final OrderStatus status;
 
-    public Order(long id, Pair pair, TradeType type, double amount, double rate, int status, LocalDateTime timestampCreated) {
+    public Order(long id, Pair pair, TradeType type, double amount, double rate, OrderStatus status, LocalDateTime timestampCreated) {
         this.id = id;
         this.pair = pair;
         this.type = type;
@@ -48,7 +48,7 @@ public final class Order {
         return rate;
     }
 
-    public int getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 

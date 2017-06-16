@@ -17,15 +17,15 @@ import static java.util.Objects.requireNonNull;
  * Created by isador
  * on 03.04.17
  */
-public class PublicApi extends AbstractApi {
+public class PublicApiV2 extends AbstractApi {
 
     private static final String PUBLIC_API_URL_TEMPLATE = "api/2/%s/%s";
 
-    public PublicApi() {
+    public PublicApiV2() {
         this(new ServerProvider(), new DefaultConnector());
     }
 
-    public PublicApi(ServerProvider serverProvider, Connector connector) {
+    public PublicApiV2(ServerProvider serverProvider, Connector connector) {
         super(serverProvider, connector, ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
                 SimpleOrder.class, new SimpleOrderDeserializer(),
                 TradeType.class, new TradeTypeDeserializer()));

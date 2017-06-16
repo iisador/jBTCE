@@ -1,5 +1,6 @@
 package com.isador.trade.jbtce;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 public abstract class AbstractApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultConnector.class);
+    public static final Map<String, String> DEFAULT_HEADERS = ImmutableMap.of(
+            "User-Agent", "jBTCEv2"
+    );
+
     protected final Gson gson;
     protected final JsonParser parser;
     protected Connector connector;
@@ -26,16 +31,14 @@ public abstract class AbstractApi {
     private ServerProvider serverProvider;
 
     public AbstractApi() {
-        headers = new HashMap<>();
-        headers.put("User-Agent", "jBTCEv2");
+        headers = new HashMap<>(DEFAULT_HEADERS);
 
         gson = new GsonBuilder().create();
         parser = new JsonParser();
     }
 
-    public AbstractApi(Map<Type, JsonDeserializer> deserializersMap) {
-        headers = new HashMap<>();
-        headers.put("User-Agent", "jBTCEv2");
+    public AbstractApi(Map<? extends Type, ? extends JsonDeserializer> deserializersMap) {
+        headers = new HashMap<>(DEFAULT_HEADERS);
 
         GsonBuilder builder = new GsonBuilder();
         if (deserializersMap != null && deserializersMap.size() > 0) {
@@ -48,7 +51,7 @@ public abstract class AbstractApi {
         parser = new JsonParser();
     }
 
-    public AbstractApi(ServerProvider serverProvider, Connector connector, Map<Type, JsonDeserializer> deserializersMap) {
+    public AbstractApi(ServerProvider serverProvider, Connector connector, Map<? extends Type, ? extends JsonDeserializer> deserializersMap) {
         this(deserializersMap);
 
         this.connector = connector;

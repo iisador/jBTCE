@@ -1,13 +1,17 @@
 package com.isador.trade.jbtce.privateapi;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap.Builder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.isador.trade.jbtce.*;
 import com.isador.trade.jbtce.constants.Pair;
 import com.isador.trade.jbtce.constants.Sort;
 import com.isador.trade.jbtce.constants.TradeType;
-import com.isador.trade.jbtce.TradeTypeDeserializer;
+import com.isador.trade.jbtce.privateapi.deserializer.FundsDeserializer;
+import com.isador.trade.jbtce.privateapi.deserializer.OrderStatusDeserializer;
+import com.isador.trade.jbtce.privateapi.deserializer.TransactionStatusDeserializer;
+import com.isador.trade.jbtce.privateapi.deserializer.TransactionTypeDeserializer;
 import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.Mac;
@@ -37,10 +41,17 @@ public class PrivateApi extends AbstractApi {
         this(key, secret, new ServerProvider(), new DefaultConnector());
     }
 
+    @SuppressWarnings("unchecked")
     public PrivateApi(String key, String secret, ServerProvider serverProvider, Connector connector) {
-        super(serverProvider, connector, ImmutableMap.of(LocalDateTime.class, new LocalDateTimeDeserializer(),
-                Funds.class, new FundsDeserializer(),
-                TradeType.class, new TradeTypeDeserializer()));
+        super(serverProvider, connector, new Builder()
+                .put(LocalDateTime.class, new LocalDateTimeDeserializer())
+                .put(Funds.class, new FundsDeserializer())
+                .put(TradeType.class, new TradeTypeDeserializer())
+                .put(OrderStatus.class, new OrderStatusDeserializer())
+                .put(TransactionType.class, new TransactionTypeDeserializer())
+                .put(TransactionStatus.class, new TransactionStatusDeserializer())
+                .build());
+
         requireNonNull(key, "Key must be specified");
         requireNonNull(secret, "Secret must be specified");
 
@@ -55,6 +66,16 @@ public class PrivateApi extends AbstractApi {
 
         // Init headers
         headers.put("Key", key);
+    }
+
+    public static void main(String[] args) {
+        String key = "S1ZPZD88-FPT2LW1T-3OUVSVCE-FR8TVJI0-Q56V60E7";
+        String secret = "4132495ff64f0c963d475083e177589024a91c5fb55b7ed93d95dff2c04e76e0";
+
+        PrivateApi tapi = new PrivateApi(key, secret);
+        List<Order> orders = tapi.getOrderList(null, null, null, null, null, null, null, null, null);
+
+        orders.forEach(System.out::println);
     }
 
     public UserInfo getUserInfo() throws BTCEException {
@@ -102,6 +123,19 @@ public class PrivateApi extends AbstractApi {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Returns user transactions history
+     *
+     * @param fromNum transaction number from which to read
+     * @param count   transactions count
+     * @param fromId  from <code>transactionId</code> (inclusive)
+     * @param endId   end <code>transactionId</code> (inclusive)
+     * @param sort    <code>ASC</code> when using <code>since</code> or <code>end</code>
+     * @param since   list transactions after timestamp
+     * @param end     list transactions before this timestamp
+     * @return list of user transactions
+     * @throws BTCEException if no such fromId\endId\since
+     */
     public List<Transaction> getTransactionsList(Long fromNum, Integer count, Long fromId,
                                                  Long endId, Sort sort, LocalDateTime since,
                                                  LocalDateTime end) throws BTCEException {

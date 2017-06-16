@@ -1,7 +1,8 @@
-package com.isador.trade.jbtce.privateapi;
+package com.isador.trade.jbtce.privateapi.deserializer;
 
 import com.google.gson.*;
 import com.isador.trade.jbtce.constants.Currency;
+import com.isador.trade.jbtce.privateapi.Funds;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 

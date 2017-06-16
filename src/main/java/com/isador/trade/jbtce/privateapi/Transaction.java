@@ -11,14 +11,14 @@ public final class Transaction {
     @SerializedName("desc")
     private final String description;
 
-    private final int type;
+    private final TransactionType type;
     private final double amount;
     private final Currency currency;
-    private final int status;
+    private final TransactionStatus status;
     private final LocalDateTime timestamp;
     private final long id;
 
-    public Transaction(int type, double amount, Currency currency, int status, LocalDateTime timestamp, long id, String description) {
+    public Transaction(TransactionType type, double amount, Currency currency, TransactionStatus status, LocalDateTime timestamp, long id, String description) {
         this.type = type;
         this.amount = amount;
         this.currency = currency;
@@ -28,7 +28,7 @@ public final class Transaction {
         this.description = description;
     }
 
-    public int getType() {
+    public TransactionType getType() {
         return type;
     }
 
@@ -40,7 +40,7 @@ public final class Transaction {
         return currency;
     }
 
-    public int getStatus() {
+    public TransactionStatus getStatus() {
         return status;
     }
 

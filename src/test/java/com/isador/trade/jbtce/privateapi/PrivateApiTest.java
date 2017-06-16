@@ -23,6 +23,9 @@ import static com.isador.trade.jbtce.TestUtils.getErrorJson;
 import static com.isador.trade.jbtce.TestUtils.getJson;
 import static com.isador.trade.jbtce.constants.Pair.BTC_USD;
 import static com.isador.trade.jbtce.constants.TradeType.BUY;
+import static com.isador.trade.jbtce.privateapi.OrderStatus.ACTIVE;
+import static com.isador.trade.jbtce.privateapi.TransactionStatus.SUCCESSFUL;
+import static com.isador.trade.jbtce.privateapi.TransactionType.CREDIT;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -319,7 +322,7 @@ public class PrivateApiTest {
 
     @Test
     public void testGetTransactionList() {
-        Transaction expectedTransaction = new Transaction(4, 1.09920000, Currency.USD, 2, deserialize(1491904521), 3574749223L, "Cancel order :order:1703917256:");
+        Transaction expectedTransaction = new Transaction(CREDIT, 1.09920000, Currency.USD, SUCCESSFUL, deserialize(1491904521), 3574749223L, "Cancel order :order:1703917256:");
         when(connector.post(eq("https://btc-e.com/tapi"),
                 anyString(),
 //                eq("from_id=0&method=TradeHistory&count=5&end_id=5&from=0&end=1491555286&nonce=1495180901&order=ASC&since=1491555286"),
@@ -382,7 +385,7 @@ public class PrivateApiTest {
 
     @Test
     public void testGetOrderList() {
-        Order expectedOrder = new Order(1696817430L, BTC_USD, BUY, 0.00100000, 1158.82900000, 0, deserialize(1491563567));
+        Order expectedOrder = new Order(1696817430L, BTC_USD, BUY, 0.00100000, 1158.82900000, ACTIVE, deserialize(1491563567));
         when(connector.post(eq("https://btc-e.com/tapi"),
                 anyString(),
 //                eq("from_id=0&method=TradeHistory&count=5&end_id=5&from=0&end=1491555286&nonce=1495180901&pair=btc_usd&order=ASC&since=1491555286&active=1"),

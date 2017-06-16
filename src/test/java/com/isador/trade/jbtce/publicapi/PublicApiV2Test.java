@@ -4,7 +4,6 @@ import com.isador.trade.jbtce.BTCEException;
 import com.isador.trade.jbtce.Connector;
 import com.isador.trade.jbtce.DefaultConnector;
 import com.isador.trade.jbtce.ServerProvider;
-import com.isador.trade.jbtce.constants.Currency;
 import com.isador.trade.jbtce.constants.TradeType;
 import org.junit.Before;
 import org.junit.Rule;
@@ -22,6 +21,8 @@ import java.util.stream.Stream;
 import static com.isador.trade.jbtce.LocalDateTimeDeserializer.deserialize;
 import static com.isador.trade.jbtce.TestUtils.getErrorJson;
 import static com.isador.trade.jbtce.TestUtils.getJson;
+import static com.isador.trade.jbtce.constants.Currency.BTC;
+import static com.isador.trade.jbtce.constants.Currency.USD;
 import static com.isador.trade.jbtce.constants.Pair.BTC_USD;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.greaterThan;
@@ -33,7 +34,7 @@ import static org.mockito.Mockito.when;
  * on 06.04.2017.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class PublicApiTest {
+public class PublicApiV2Test {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -44,18 +45,18 @@ public class PublicApiTest {
     @Mock
     private ServerProvider serverProvider;
 
-    private PublicApi api;
+    private PublicApiV2 api;
     private Map<String, String> headers = Collections.singletonMap("User-Agent", "jBTCEv2");
 
     @Before
     public void setUp() throws Exception {
         when(serverProvider.getCurrentServer()).thenReturn("https://btc-e.com/");
-        api = new PublicApi(serverProvider, connector);
+        api = new PublicApiV2(serverProvider, connector);
     }
 
     @Test
     public void testCreate() {
-        PublicApi api = new PublicApi();
+        PublicApiV2 api = new PublicApiV2();
 
         assertNotNull("Connector must be not null", api.getConnector());
         assertThat("Invalid connector class", api.getConnector(), instanceOf(DefaultConnector.class));
@@ -126,7 +127,7 @@ public class PublicApiTest {
 
     @Test
     public void testGetTrades() {
-        Trade expectedTrade = new Trade(deserialize(1491542177), 1178, 1.78, 97938795, Currency.USD, Currency.BTC, TradeType.BUY);
+        Trade expectedTrade = new Trade(deserialize(1491542177), 1178, 1.78, 97938795, USD, BTC, TradeType.BUY);
         when(connector.get("https://btc-e.com/api/2/btc_usd/trades", headers)).thenReturn(getJson("trades.json"));
 
         Trade[] actualTrades = api.getTrades(BTC_USD);
