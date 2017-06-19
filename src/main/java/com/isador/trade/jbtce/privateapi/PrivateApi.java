@@ -68,16 +68,6 @@ public class PrivateApi extends AbstractApi {
         headers.put("Key", key);
     }
 
-    public static void main(String[] args) {
-        String key = "S1ZPZD88-FPT2LW1T-3OUVSVCE-FR8TVJI0-Q56V60E7";
-        String secret = "4132495ff64f0c963d475083e177589024a91c5fb55b7ed93d95dff2c04e76e0";
-
-        PrivateApi tapi = new PrivateApi(key, secret);
-        List<Order> orders = tapi.getOrderList(null, null, null, null, null, null, null, null, null);
-
-        orders.forEach(System.out::println);
-    }
-
     public UserInfo getUserInfo() throws BTCEException {
         JsonElement response = call("getInfo", null);
         return gson.fromJson(response, UserInfo.class);
