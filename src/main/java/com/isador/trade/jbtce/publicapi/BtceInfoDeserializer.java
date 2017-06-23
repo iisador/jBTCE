@@ -12,10 +12,12 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Created by isador
- * on 10.05.17
+ * Server info deserializer for Gson.
+ *
+ * @author isador
+ * @since 2.0.1
  */
-public class BtceInfoDeserilizer implements JsonDeserializer<BTCEInfo> {
+public class BtceInfoDeserializer implements JsonDeserializer<BTCEInfo> {
 
     @Override
     public BTCEInfo deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

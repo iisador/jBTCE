@@ -4,6 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDateTime;
 
+/**
+ * User info holder
+ *
+ * @author isador
+ * @since 2.0.1
+ */
 public final class UserInfo {
 
     @SerializedName("server_time")
@@ -22,22 +28,37 @@ public final class UserInfo {
         this.transactionCount = transactionCount;
     }
 
+    /**
+     * @return Your account balance available for trading. Doesn’t include funds on your open orders
+     */
     public Funds getFunds() {
         return funds;
     }
 
+    /**
+     * @return The number of your open orders
+     */
     public int getOpenOrdersCount() {
         return openOrdersCount;
     }
 
+    /**
+     * @return The privileges of the current API key. At this time the privilege to withdraw is not used anywhere
+     */
     public Rights getRights() {
         return rights;
     }
 
+    /**
+     * @return Server time
+     */
     public LocalDateTime getServerTime() {
         return serverTime;
     }
 
+    /**
+     * @return Deprecated, is equal to 0
+     */
     public int getTransactionCount() {
         return transactionCount;
     }
@@ -50,6 +71,9 @@ public final class UserInfo {
                 + rights + "]";
     }
 
+    /**
+     * User rights holder
+     */
     public static final class Rights {
 
         private final int info;
@@ -62,14 +86,25 @@ public final class UserInfo {
             this.withdraw = withdraw;
         }
 
+        /**
+         * @return info methods allowed
+         */
         public int getInfo() {
             return info;
         }
 
+        /**
+         * @return trade allowed
+         */
         public int getTrade() {
             return trade;
         }
 
+        /**
+         * At this time the privilege to withdraw is not used anywhere
+         *
+         * @return withdraw allowed
+         */
         public int getWithdraw() {
             return withdraw;
         }

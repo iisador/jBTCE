@@ -4,6 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
+/**
+ * Cancel order response holder
+ *
+ * @author isador
+ * @since 2.0.1
+ */
 public final class CancelOrderResult {
 
     @SerializedName("order_id")
@@ -16,10 +22,16 @@ public final class CancelOrderResult {
         this.funds = funds;
     }
 
+    /**
+     * @return ID of canceled order
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * @return balance upon request
+     */
     public Funds getFunds() {
         return funds;
     }

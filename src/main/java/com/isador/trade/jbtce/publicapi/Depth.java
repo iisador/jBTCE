@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Created by isador
- * on 31.03.17
+ * Depth holder
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public final class Depth {
 
@@ -13,15 +15,21 @@ public final class Depth {
     private final SimpleOrder[] bids;
 
     public Depth(SimpleOrder[] asks,
-          SimpleOrder[] bids) {
+                 SimpleOrder[] bids) {
         this.asks = asks;
         this.bids = bids;
     }
 
+    /**
+     * @return Sell orders
+     */
     public SimpleOrder[] getAsks() {
         return asks;
     }
 
+    /**
+     * @return Buy orders
+     */
     public SimpleOrder[] getBids() {
         return bids;
     }
@@ -34,6 +42,9 @@ public final class Depth {
                 '}';
     }
 
+    /**
+     * Price/amount holder
+     */
     public static final class SimpleOrder {
 
         private final double price;
@@ -44,10 +55,16 @@ public final class Depth {
             this.amount = amount;
         }
 
+        /**
+         * @return order price
+         */
         public double getPrice() {
             return price;
         }
 
+        /**
+         * @return order amount
+         */
         public double getAmount() {
             return amount;
         }
@@ -70,7 +87,8 @@ public final class Depth {
             return Objects.hash(price, amount);
         }
 
-        @Override public String toString() {
+        @Override
+        public String toString() {
             return "SimpleOrder{" +
                     "price=" + price +
                     ", amount=" + amount +

@@ -5,6 +5,12 @@ import com.google.gson.annotations.SerializedName;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Tick holder
+ *
+ * @author isador
+ * @since 2.0.1
+ */
 public final class Tick {
 
     @SerializedName("vol_cur")
@@ -35,42 +41,74 @@ public final class Tick {
         this.volCur = volCur;
     }
 
+    /**
+     * @return average price
+     */
     public double getAvg() {
         return avg;
     }
 
+    /**
+     * @return buy price
+     */
     public double getBuy() {
         return buy;
     }
 
+    /**
+     * @return maximum price
+     */
     public double getHigh() {
         return high;
     }
 
+    /**
+     * @return the price of the last trade
+     */
     public double getLast() {
         return last;
     }
 
+    /**
+     * @return minimum price
+     */
     public double getLow() {
         return low;
     }
 
+    /**
+     * @return sell price
+     */
     public double getSell() {
         return sell;
     }
 
+    /**
+     * Available only with {@code PublicApiV2}
+     *
+     * @return server time
+     */
     public LocalDateTime getServerTime() {
         return serverTime;
     }
 
+    /**
+     * @return last update of cache
+     */
     public LocalDateTime getUpdated() {
         return updated;
     }
 
+    /**
+     * @return trade volume
+     */
     public double getVol() {
         return vol;
     }
 
+    /**
+     * @return trade volume in currency
+     */
     public double getVolCur() {
         return volCur;
     }

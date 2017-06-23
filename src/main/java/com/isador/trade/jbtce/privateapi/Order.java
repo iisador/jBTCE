@@ -6,6 +6,12 @@ import com.isador.trade.jbtce.constants.TradeType;
 
 import java.time.LocalDateTime;
 
+/**
+ * Order holder
+ *
+ * @author isador
+ * @since 2.0.1
+ */
 public final class Order {
 
     @SerializedName("timestamp_created")
@@ -15,43 +21,79 @@ public final class Order {
     private final Pair pair;
     private final TradeType type;
     private final double amount;
+
+    @SerializedName("start_amount")
+    private final double startAmount;
     private final double rate;
     private final OrderStatus status;
 
-    public Order(long id, Pair pair, TradeType type, double amount, double rate, OrderStatus status, LocalDateTime timestampCreated) {
+    public Order(long id, Pair pair, TradeType type, double startAmount, double amount, double rate, OrderStatus status, LocalDateTime timestampCreated) {
         this.id = id;
         this.pair = pair;
         this.type = type;
+        this.startAmount = startAmount;
         this.amount = amount;
         this.rate = rate;
         this.status = status;
         this.timestampCreated = timestampCreated;
     }
+//    timestamp_created: .
+//
+//            status:
 
+    /**
+     * @return order ID
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * @return The pair on which the order was created
+     */
     public Pair getPair() {
         return pair;
     }
 
+    /**
+     * @return Order type, buy/sell
+     */
     public TradeType getType() {
         return type;
     }
 
+    /**
+     * @return The initial amount at the time of order creation
+     */
+    public double getStartAmount() {
+        return startAmount;
+    }
+
+    /**
+     * @return The remaining amount of currency to be bought/sold
+     */
     public double getAmount() {
         return amount;
     }
 
+    /**
+     * @return Sell/Buy price
+     */
     public double getRate() {
         return rate;
     }
 
+    /**
+     * @return order status
+     * @see OrderStatus
+     */
     public OrderStatus getStatus() {
         return status;
     }
 
+    /**
+     * @return The time when the order was created
+     */
     public LocalDateTime getTimestampCreated() {
         return timestampCreated;
     }

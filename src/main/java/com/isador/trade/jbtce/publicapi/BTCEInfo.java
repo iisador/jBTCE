@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by isador
- * on 10.05.17
+ * Server info holder
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public final class BTCEInfo {
 
@@ -19,10 +21,16 @@ public final class BTCEInfo {
         this.pairInfoList = pairInfoList;
     }
 
+    /**
+     * @return Server time
+     */
     public LocalDateTime getServerTime() {
         return serverTime;
     }
 
+    /**
+     * @return pairs info list
+     */
     public List<PairInfo> getPairInfoList() {
         return Collections.unmodifiableList(pairInfoList);
     }

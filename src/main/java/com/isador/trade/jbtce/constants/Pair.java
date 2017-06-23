@@ -7,6 +7,12 @@ import java.util.stream.Stream;
 
 import static com.isador.trade.jbtce.constants.Currency.*;
 
+/**
+ * Available pairs. Pair is a combination of two currencies.
+ *
+ * @author isador
+ * @since 2.0.1
+ */
 public enum Pair {
     @SerializedName("btc_usd")BTC_USD(BTC, USD),
     @SerializedName("btc_rur")BTC_RUR(BTC, RUR),
@@ -44,6 +50,35 @@ public enum Pair {
         this.sec = sec;
     }
 
+    /**
+     * Construct pair from two currencies
+     *
+     * @param prim primary currency
+     * @param sec  secondary currency
+     * @return Pair object regarding provided currencies
+     * @throws IllegalArgumentException if no such pair
+     */
+    public static Pair from(Currency prim, Currency sec) {
+        return valueOf(String.format("%s_%s", prim.name(), sec.name()));
+    }
+
+    /**
+     * Prepare pairs for PublicV3 API url.
+     * Ex. toUrlString(BTC_USD, EUR_USD, ETH_USD) will return 'btc_usd-eur_usd-eth_usd'
+     *
+     * @param pairs pair construct from
+     * @return empty string if {@code pairs == null} or pairs is empty
+     */
+    public static String toUrlString(Pair[] pairs) {
+        if (pairs == null || pairs.length == 0) {
+            return "";
+        }
+
+        return Stream.of(pairs)
+                .map(Pair::getName)
+                .collect(Collectors.joining("-"));
+    }
+
     public Currency getPrim() {
         return prim;
     }
@@ -54,19 +89,5 @@ public enum Pair {
 
     public String getName() {
         return toString().toLowerCase();
-    }
-
-    public static Pair from(Currency prim, Currency sec) {
-        return valueOf(String.format("%s_%s", prim.name(), sec.name()));
-    }
-
-    public static String toUrlString(Pair[] pairs) {
-        if (pairs == null || pairs.length == 0) {
-            return "";
-        }
-
-        return Stream.of(pairs)
-                .map(Pair::getName)
-                .collect(Collectors.joining("-"));
     }
 }

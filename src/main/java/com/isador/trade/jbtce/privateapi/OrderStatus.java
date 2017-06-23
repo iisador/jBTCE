@@ -1,9 +1,29 @@
 package com.isador.trade.jbtce.privateapi;
 
 /**
- * Created by isador
- * on 16.06.17
+ * Order status enum implementation
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public enum OrderStatus {
-    ACTIVE, EXECUTED, CANCELED, PARTIALLY_EXECUTED
+    /**
+     * active
+     */
+    ACTIVE,
+
+    /**
+     * executed order
+     */
+    EXECUTED,
+
+    /**
+     * canceled
+     */
+    CANCELED,
+
+    /**
+     * canceled, but was partially executed
+     */
+    PARTIALLY_EXECUTED
 }

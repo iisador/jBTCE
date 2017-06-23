@@ -6,8 +6,11 @@ import com.isador.trade.jbtce.constants.Pair;
 import java.util.Objects;
 
 /**
- * Created by isador
- * on 10.05.17
+ * Pair info holder
+ *
+ * @author isador
+ * @see BTCEInfo
+ * @since 2.0.1
  */
 public final class PairInfo {
 
@@ -37,30 +40,55 @@ public final class PairInfo {
         this.pair = pair;
     }
 
+    /**
+     * @return number of decimals allowed during trading
+     */
     public int getDecimalPlaces() {
         return decimalPlaces;
     }
 
+    /**
+     * @return minimum price allowed during trading
+     */
     public double getMinPrice() {
         return minPrice;
     }
 
+    /**
+     * @return maximum price allowed during trading
+     */
     public double getMaxPrice() {
         return maxPrice;
     }
 
+    /**
+     * @return minimum sell / buy transaction size
+     */
     public double getMinAmount() {
         return minAmount;
     }
 
+    /**
+     * A hidden pair remains active but is not displayed in the list of pairs on the main page
+     *
+     * @return whether the pair is hidden
+     */
     public boolean isHidden() {
         return hidden == 1;
     }
 
+    /**
+     * The Commission is displayed for all users, it will not change even if it was reduced on your account in case of promotional pricing
+     *
+     * @return commission for this pair
+     */
     public double getFee() {
         return fee;
     }
 
+    /**
+     * @return pair
+     */
     public Pair getPair() {
         return pair;
     }

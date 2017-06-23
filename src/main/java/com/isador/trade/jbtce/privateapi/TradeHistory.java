@@ -8,8 +8,10 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * Created by isador
- * on 12.04.17
+ * Trade history holder
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public final class TradeHistory {
 
@@ -37,34 +39,58 @@ public final class TradeHistory {
         this.id = id;
     }
 
+    /**
+     * @return The pair on which the trade was executed
+     */
     public Pair getPair() {
         return pair;
     }
 
+    /**
+     * @return Trade type, buy/sell
+     */
     public TradeType getType() {
         return type;
     }
 
+    /**
+     * @return The amount of currency was bought/sold
+     */
     public double getAmount() {
         return amount;
     }
 
+    /**
+     * @return Sell/Buy price
+     */
     public double getRate() {
         return rate;
     }
 
+    /**
+     * @return order ID
+     */
     public long getOrderId() {
         return orderId;
     }
 
+    /**
+     * @return True if order_id is your order, otherwise is false
+     */
     public boolean isYourOrder() {
         return yourOrder == 1;
     }
 
+    /**
+     * @return Trade execution time
+     */
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
+    /**
+     * @return trade ID
+     */
     public long getId() {
         return id;
     }

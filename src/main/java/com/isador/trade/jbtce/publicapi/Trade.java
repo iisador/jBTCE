@@ -7,6 +7,12 @@ import com.isador.trade.jbtce.constants.TradeType;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Trade holder
+ *
+ * @author isador
+ * @since 2.0.1
+ */
 public final class Trade {
 
     @SerializedName("tid")
@@ -34,30 +40,51 @@ public final class Trade {
         this.type = type;
     }
 
+    /**
+     * @return trade date
+     */
     public LocalDateTime getDate() {
         return date;
     }
 
+    /**
+     * @return Buy price/Sell price
+     */
     public double getPrice() {
         return price;
     }
 
+    /**
+     * @return the amount of asset bought/sold
+     */
     public double getAmount() {
         return amount;
     }
 
+    /**
+     * @return trade ID
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * @return trade price currency
+     */
     public Currency getPriceCurrency() {
         return priceCurrency;
     }
 
+    /**
+     * @return trade item
+     */
     public Currency getItem() {
         return item;
     }
 
+    /**
+     * @return trade type
+     */
     public TradeType getType() {
         return type;
     }

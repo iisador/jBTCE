@@ -6,6 +6,12 @@ import com.isador.trade.jbtce.constants.Currency;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Transaction holder
+ *
+ * @author isador
+ * @since 2.0.1
+ */
 public final class Transaction {
 
     @SerializedName("desc")
@@ -28,30 +34,52 @@ public final class Transaction {
         this.description = description;
     }
 
+    /**
+     *
+     * @return Transaction type
+     */
     public TransactionType getType() {
         return type;
     }
 
+    /**
+     * @return Transaction amount
+     */
     public double getAmount() {
         return amount;
     }
 
+    /**
+     * @return Transaction currency
+     */
     public Currency getCurrency() {
         return currency;
     }
 
+    /**
+     * @return Transaction status
+     */
     public TransactionStatus getStatus() {
         return status;
     }
 
+    /**
+     * @return Transaction time
+     */
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
+    /**
+     * @return Transaction ID
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * @return Transaction description
+     */
     public String getDescription() {
         return description;
     }

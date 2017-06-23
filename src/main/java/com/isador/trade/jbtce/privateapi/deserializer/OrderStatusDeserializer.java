@@ -9,8 +9,12 @@ import com.isador.trade.jbtce.privateapi.OrderStatus;
 import java.lang.reflect.Type;
 
 /**
- * Created by isador
- * on 16.06.17
+ * Order status deserializer. Using Enum ordered conversion
+ *
+ * @author isador
+ * @see OrderStatus
+ * @see JsonDeserializer
+ * @since 2.0.1
  */
 public class OrderStatusDeserializer implements JsonDeserializer<OrderStatus> {
 

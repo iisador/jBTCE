@@ -1,9 +1,23 @@
 package com.isador.trade.jbtce.privateapi;
 
 /**
- * Created by isador
- * on 16.06.17
+ * Transaction type implementation
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public enum TransactionType {
-    UNKNOWN, DEPOSIT, WITHDRAWAL, NONE, CREDIT, DEBIT
+    /**
+     * Not used. Looks like dirty hackT_T
+     */
+    NONE0,
+    DEPOSIT,
+    WITHDRAWAL,
+
+    /**
+     * Not used. Looks like dirty hackT_T
+     */
+    NONE3,
+    CREDIT,
+    DEBIT
 }

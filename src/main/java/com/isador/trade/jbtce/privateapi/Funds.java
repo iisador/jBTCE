@@ -4,6 +4,12 @@ import com.isador.trade.jbtce.constants.Currency;
 
 import java.util.Map;
 
+/**
+ * User funds implementation
+ *
+ * @author isador
+ * @since 2.0.1
+ */
 public final class Funds {
 
     private final Map<Currency, Double> fundsMap;
@@ -12,6 +18,12 @@ public final class Funds {
         this.fundsMap = fundsMap;
     }
 
+    /**
+     * Return current balance
+     *
+     * @param currency currency to return
+     * @return 0.0 if no info about <code>currency</code>
+     */
     public double getFund(Currency currency) {
         return fundsMap.getOrDefault(currency, 0.0);
     }

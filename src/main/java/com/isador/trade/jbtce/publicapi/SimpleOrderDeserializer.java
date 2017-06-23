@@ -6,8 +6,10 @@ import com.isador.trade.jbtce.publicapi.Depth.SimpleOrder;
 import java.lang.reflect.Type;
 
 /**
- * Created by isador
- * on 07.04.17
+ * Order deserializer. Used to convert json response in depth method
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public class SimpleOrderDeserializer implements JsonDeserializer<SimpleOrder> {
 

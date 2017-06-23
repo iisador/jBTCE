@@ -1,8 +1,10 @@
 package com.isador.trade.jbtce.constants;
 
 /**
- * Created by isador
- * on 07.04.17
+ * Trade type aggregator. Contains operation name BUY -&gt; bid, SELL -&gt; ask
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public enum TradeType {
     BUY("bid"),
@@ -14,6 +16,13 @@ public enum TradeType {
         this.operationName = operationName;
     }
 
+    /**
+     * Get tradeType object from string.
+     *
+     * @param s tradeType or operationName. Case insensitive.
+     * @return tradeType object
+     * @throws IllegalArgumentException if input string is invalid.
+     */
     public static TradeType parse(String s) {
         if ("bid".equalsIgnoreCase(s) || "buy".equalsIgnoreCase(s)) {
             return BUY;

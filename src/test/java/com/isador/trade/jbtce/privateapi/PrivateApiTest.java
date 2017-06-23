@@ -325,7 +325,6 @@ public class PrivateApiTest {
         Transaction expectedTransaction = new Transaction(CREDIT, 1.09920000, Currency.USD, SUCCESSFUL, deserialize(1491904521), 3574749223L, "Cancel order :order:1703917256:");
         when(connector.post(eq("https://btc-e.com/tapi"),
                 anyString(),
-//                eq("from_id=0&method=TradeHistory&count=5&end_id=5&from=0&end=1491555286&nonce=1495180901&order=ASC&since=1491555286"),
                 anyMap())).thenReturn(getJson("transactionHistory.json"));
 
         List<Transaction> transactions = api.getTransactionsList(0L, 5, 0L, 5L, Sort.ASC, deserialize(1491555286), deserialize(1491555286));
@@ -385,13 +384,72 @@ public class PrivateApiTest {
 
     @Test
     public void testGetOrderList() {
-        Order expectedOrder = new Order(1696817430L, BTC_USD, BUY, 0.00100000, 1158.82900000, ACTIVE, deserialize(1491563567));
+        Order expectedOrder = new Order(1696817430L, BTC_USD, BUY, 0, 0.00100000, 1158.82900000, ACTIVE, deserialize(1491563567));
         when(connector.post(eq("https://btc-e.com/tapi"),
                 anyString(),
-//                eq("from_id=0&method=TradeHistory&count=5&end_id=5&from=0&end=1491555286&nonce=1495180901&pair=btc_usd&order=ASC&since=1491555286&active=1"),
                 anyMap())).thenReturn(getJson("orders.json"));
 
         List<Order> orders = api.getOrderList(0L, 5, 0L, 5L, Sort.ASC, deserialize(1491555286), deserialize(1491555286), BTC_USD, true);
+
+        assertNotNull("Order list must be not null", orders);
+        assertFalse("Order list must be non empty", orders.isEmpty());
+        orders.forEach(order -> assertNotNull("Order list should not contain null elements", order));
+
+        Order actualOrder = orders.get(0);
+        assertEquals("Actual order doesn't match", expectedOrder, actualOrder);
+        assertEquals("Actual order id doesn't match", expectedOrder.getId(), actualOrder.getId());
+        assertEquals("Actual order amount doesn't match", expectedOrder.getAmount(), actualOrder.getAmount(), 0.000001);
+        assertEquals("Actual order status doesn't match", expectedOrder.getStatus(), actualOrder.getStatus());
+        assertEquals("Actual order type doesn't match", expectedOrder.getType(), actualOrder.getType());
+        assertEquals("Actual order pair doesn't match", expectedOrder.getPair(), actualOrder.getPair());
+        assertEquals("Actual order rate doesn't match", expectedOrder.getRate(), actualOrder.getRate(), 0.000001);
+        assertEquals("Actual order timestamp doesn't match", expectedOrder.getTimestampCreated(), actualOrder.getTimestampCreated());
+    }
+
+    @Test
+    public void testGetActiveOrdersInvalidResponseNoSuccess() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"success\" field missed.");
+        when(connector.post(eq("https://btc-e.com/tapi"), anyString(), anyMap())).thenReturn("{}");
+
+        api.getActiveOrders(null);
+    }
+
+    @Test
+    public void testGetActiveOrdersInvalidResponseNoReturn() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"return\" field missed.");
+        when(connector.post(eq("https://btc-e.com/tapi"), anyString(), anyMap())).thenReturn("{\"success\": 1}");
+
+        api.getActiveOrders(null);
+    }
+
+    @Test
+    public void testGetActiveOrdersInvalidResponseNoError() {
+        thrown.expect(BTCEException.class);
+        thrown.expectMessage("Invalid server response. \"error\" field missed.");
+        when(connector.post(eq("https://btc-e.com/tapi"), anyString(), anyMap())).thenReturn("{\"success\": 0}");
+
+        api.getActiveOrders(null);
+    }
+
+    @Test
+    public void testGetActiveOrdersEmptyResponse() {
+        when(connector.post(eq("https://btc-e.com/tapi"), anyString(), anyMap())).thenReturn("{\"success\": 1, \"return\": {}}");
+
+        List<Order> list = api.getActiveOrders(null);
+
+        assertTrue("Order list must be empty", list.isEmpty());
+    }
+
+    @Test
+    public void testGetActiveOrders() {
+        Order expectedOrder = new Order(1696817430L, BTC_USD, BUY, 0, 0.00100000, 1158.82900000, ACTIVE, deserialize(1491563567));
+        when(connector.post(eq("https://btc-e.com/tapi"),
+                anyString(),
+                anyMap())).thenReturn(getJson("activeOrders.json"));
+
+        List<Order> orders = api.getActiveOrders(BTC_USD);
 
         assertNotNull("Order list must be not null", orders);
         assertFalse("Order list must be non empty", orders.isEmpty());
@@ -414,7 +472,7 @@ public class PrivateApiTest {
         thrown.expectMessage("Invalid server response. \"success\" field missed.");
         when(connector.post(eq("https://btc-e.com/tapi"), anyString(), anyMap())).thenReturn("{}");
 
-        api.getTradesList(null, null, null, null, null, null, null, null);
+        api.getTradeHistory(null, null, null, null, null, null, null, null);
     }
 
     @Test
@@ -423,7 +481,7 @@ public class PrivateApiTest {
         thrown.expectMessage("Invalid server response. \"return\" field missed.");
         when(connector.post(eq("https://btc-e.com/tapi"), anyString(), anyMap())).thenReturn("{\"success\": 1}");
 
-        api.getTradesList(null, null, null, null, null, null, null, null);
+        api.getTradeHistory(null, null, null, null, null, null, null, null);
     }
 
     @Test
@@ -432,14 +490,14 @@ public class PrivateApiTest {
         thrown.expectMessage("Invalid server response. \"error\" field missed.");
         when(connector.post(eq("https://btc-e.com/tapi"), anyString(), anyMap())).thenReturn("{\"success\": 0}");
 
-        api.getTradesList(null, null, null, null, null, null, null, null);
+        api.getTradeHistory(null, null, null, null, null, null, null, null);
     }
 
     @Test
     public void testGetTradeHistoryListEmptyResponse() {
         when(connector.post(eq("https://btc-e.com/tapi"), anyString(), anyMap())).thenReturn("{\"success\": 1, \"return\": {}}");
 
-        List<TradeHistory> list = api.getTradesList(null, null, null, null, null, null, null, null);
+        List<TradeHistory> list = api.getTradeHistory(null, null, null, null, null, null, null, null);
 
         assertTrue("Trade history list must be empty", list.isEmpty());
     }
@@ -451,11 +509,10 @@ public class PrivateApiTest {
                 0, deserialize(1491555286), 97951082L);
         when(connector.post(eq("https://btc-e.com/tapi"),
                 anyString(),
-//                eq("from_id=0&method=TradeHistory&count=5&end_id=5&from=0&end=1491555286&nonce=1495180901&pair=btc_usd&order=ASC&since=1491555286"),
                 anyMap()))
                 .thenReturn(getJson("tradeHistory.json"));
 
-        List<TradeHistory> trades = api.getTradesList(0L, 5, 0L, 5L, Sort.ASC, deserialize(1491555286), deserialize(1491555286), BTC_USD);
+        List<TradeHistory> trades = api.getTradeHistory(0L, 5, 0L, 5L, Sort.ASC, deserialize(1491555286), deserialize(1491555286), BTC_USD);
 
         assertNotNull("Trade history list must be not null", trades);
         assertFalse("Trade history list must be non empty", trades.isEmpty());

@@ -20,9 +20,9 @@ Features
 * Public v3 API: [ticker](https://btc-e.com/api/3/ticker/btc_usd-btc-rur), [trades](https://btc-e.com/api/3/trades/btc_usd-btc-rur), [depth](https://btc-e.com/api/3/depth/btc_usd-btc-rur), [fee](https://btc-e.com/api/3/fee/btc_usd-btc-rur), [info](https://btc-e.com/api/3/info)
 * Private API
   - getInfo
-  - OrderList (some attributes doesn't work on btc-e side)
-  - TransHistory (some attributes doesn't work on btc-e side)
-  - TradeHistory (some attributes doesn't work on btc-e side)
+  - OrderList
+  - TransHistory
+  - TradeHistory
   - CancelOrder
   - Trade
 
@@ -31,7 +31,7 @@ How-To
 use Public v2 api:
 ```java
 // Create public api using default connector
-PublicApi api = new PublicApi();
+PublicApiV2 api = new PublicApiV2();
 Tick tick = api.getTick(BTC_USD);
 System.out.println(tick);
 ```
@@ -45,6 +45,7 @@ PublicApiV3 api = new PublicApiV3();
                 .map(e -> String.format("%s: %s", e.getKey(), e.getValue()))
                 .forEach(System.out::println);
 ```
+
 or Private api:
 ```java
 String key = "...";

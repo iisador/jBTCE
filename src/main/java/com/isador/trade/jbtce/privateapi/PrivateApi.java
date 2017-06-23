@@ -31,16 +31,40 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 
+/**
+ * TAPI implementation.
+ *
+ * @author isador
+ * @since 2.0.1
+ */
 public class PrivateApi extends AbstractApi {
 
     private static final String PRIVATE_API_URL = "tapi";
     private static final AtomicLong nonce = new AtomicLong(System.currentTimeMillis() / 1000);
     private final Mac mac;
 
+    /**
+     * Create new private api instance using default serverProvider and connector
+     *
+     * @param key    api key
+     * @param secret api secret
+     * @throws NullPointerException if key or secret is null
+     * @throws RuntimeException     if there is any exception during mac init.
+     */
     public PrivateApi(String key, String secret) {
         this(key, secret, new ServerProvider(), new DefaultConnector());
     }
 
+    /**
+     * Create new private api instance
+     *
+     * @param key            api key
+     * @param secret         api secret
+     * @param serverProvider server provider implementation
+     * @param connector      connector implementation
+     * @throws NullPointerException if key or secret is null
+     * @throws RuntimeException     if there is any exception during mac init.
+     */
     @SuppressWarnings("unchecked")
     public PrivateApi(String key, String secret, ServerProvider serverProvider, Connector connector) {
         super(serverProvider, connector, new Builder()
@@ -68,11 +92,33 @@ public class PrivateApi extends AbstractApi {
         headers.put("Key", key);
     }
 
+    /**
+     * Returns information about the user’s current balance, API-key privileges, the number of open orders and Server Time.<br/>
+     * To use this method you need a privilege of the key info.<br/>
+     *
+     * @return userInfo
+     * @throws BTCEException if was any error during execution
+     * @see UserInfo
+     */
     public UserInfo getUserInfo() throws BTCEException {
         JsonElement response = call("getInfo", null);
         return gson.fromJson(response, UserInfo.class);
     }
 
+    /**
+     * The basic method that can be used for creating orders and trading on the exchange.<br/>
+     * To use this method you need an API key privilege to trade.<br/>
+     * You can only create limit orders using this method, but you can emulate market orders using rate parameters. E.g. using rate=0.1 you can sell at the best market price.<br/>
+     * Each pair has a different limit on the minimum / maximum amounts, the minimum amount and the number of digits after the decimal point. All limitations can be obtained using the info method in PublicAPI v3.<br/>
+     *
+     * @param pair   pair
+     * @param type   order type
+     * @param rate   the rate at which you need to buy/sell
+     * @param amount the amount you need to buy / sell
+     * @return tradeResult
+     * @throws BTCEException if was any error during execution
+     * @see TradeResult
+     */
     public TradeResult trade(Pair pair, TradeType type, double rate, double amount) throws BTCEException {
         requireNonNull(pair, "Invalid trade pair");
         requireNonNull(type, "Invalid trade type");
@@ -88,6 +134,43 @@ public class PrivateApi extends AbstractApi {
         return gson.fromJson(response, TradeResult.class);
     }
 
+    /**
+     * Returns the list of your active orders.
+     * To use this method you need a privilege of the info key.
+     * If the order disappears from the list, it was either executed or canceled
+     *
+     * @param pair orders pair
+     * @return list of active orders
+     * @throws BTCEException if was any error during execution
+     */
+    public List<Order> getActiveOrders(Pair pair) throws BTCEException {
+        Map<String, Object> map = new ParametersBuilder().pair(pair).build();
+        JsonObject response = (JsonObject) call("ActiveOrders", map);
+
+        // stupid orders return format
+        return response.entrySet().stream()
+                .peek(e -> e.getValue().getAsJsonObject().addProperty("id", e.getKey()))
+                .map(e -> gson.fromJson(e.getValue(), Order.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns orders list
+     *
+     * @param fromNum transaction number from which to read
+     * @param count   transactions count
+     * @param fromId  from <code>transactionId</code> (inclusive)
+     * @param endId   end <code>transactionId</code> (inclusive)
+     * @param sort    <code>ASC</code> when using <code>since</code> or <code>end</code>
+     * @param since   list transactions after timestamp
+     * @param end     list transactions before this timestamp
+     * @param pair    order pair
+     * @param active  return only active orders
+     * @return orders list
+     * @throws BTCEException if was any error during execution
+     * @deprecated Now returns only active orders. Use getActiveOrders instead.
+     */
+    @Deprecated
     public List<Order> getOrderList(Long fromNum, Integer count, Long fromId,
                                     Long endId, Sort sort, LocalDateTime since,
                                     LocalDateTime end, Pair pair, Boolean active) throws BTCEException {
@@ -114,7 +197,8 @@ public class PrivateApi extends AbstractApi {
     }
 
     /**
-     * Returns user transactions history
+     * Returns the history of transactions.<br/>
+     * To use this method you need a privilege of the info key.<br/>
      *
      * @param fromNum transaction number from which to read
      * @param count   transactions count
@@ -124,7 +208,7 @@ public class PrivateApi extends AbstractApi {
      * @param since   list transactions after timestamp
      * @param end     list transactions before this timestamp
      * @return list of user transactions
-     * @throws BTCEException if no such fromId\endId\since
+     * @throws BTCEException if no such fromId\endId\since, if was any error during execution
      */
     public List<Transaction> getTransactionsList(Long fromNum, Integer count, Long fromId,
                                                  Long endId, Sort sort, LocalDateTime since,
@@ -140,15 +224,40 @@ public class PrivateApi extends AbstractApi {
                 .build();
 
         JsonObject response = (JsonObject) call("TransHistory", map);
+        LocalDateTime.parse("2007-12-03T00:00:00");
         return response.entrySet().stream()
                 .peek(e -> e.getValue().getAsJsonObject().addProperty("id", e.getKey()))
                 .map(e -> gson.fromJson(e.getValue(), Transaction.class))
                 .collect(Collectors.toList());
     }
 
-    public List<TradeHistory> getTradesList(Long fromNum, Integer count, Long fromId,
-                                            Long endId, Sort sort, LocalDateTime since,
-                                            LocalDateTime end, Pair pair) throws BTCEException {
+    /**
+     * Returns trade history.<br/>
+     * To use this method you need a privilege of the info key.<br/>
+     * This method doesn't do any operations upon retrieved trades list. List returned just as API  returns is.<br/>
+     * <pre>
+     * {@code
+     * // getLast 5 transactions
+     * getTradeHistory(null, 5, null, null, null, null, null, null);
+     * // get only btc_usd transactions for one day
+     * getTradeHistory(null, null, null, null, null, LocalDateTime.parse("2007-12-03T00:00:00"), LocalDateTime.parse("2007-12-03T23:59:59"), BTC_USD);
+     * }
+     * </pre>
+     *
+     * @param fromNum trade number, from which the display starts (default: 0)
+     * @param count   the number of trades for display (default: 1000)
+     * @param fromId  trade ID, from which the display starts (default: 0)
+     * @param endId   trade ID on which the display ends (default: ∞)
+     * @param sort    Sorting (default: DESC)
+     * @param since   the time to start the display (default: 0)
+     * @param end     the time to end the display (default: ∞)
+     * @param pair    pair to be displayed (default: all pairs)
+     * @return list of trades
+     * @throws BTCEException if was any error during execution
+     */
+    public List<TradeHistory> getTradeHistory(Long fromNum, Integer count, Long fromId,
+                                              Long endId, Sort sort, LocalDateTime since,
+                                              LocalDateTime end, Pair pair) throws BTCEException {
         Map<String, Object> map = new ParametersBuilder()
                 .from(fromNum)
                 .count(count)
@@ -167,6 +276,14 @@ public class PrivateApi extends AbstractApi {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * This method is used for order cancelation.
+     * To use this method you need a privilege of the trade key.
+     *
+     * @param orderId id of cancelled order
+     * @return cancel order result
+     * @throws BTCEException if was any error during execution
+     */
     public CancelOrderResult cancelOrder(long orderId) throws BTCEException {
         checkArgument(orderId > 0, "Invalid oderId: %s", orderId);
 
@@ -175,6 +292,14 @@ public class PrivateApi extends AbstractApi {
         return gson.fromJson(response, CancelOrderResult.class);
     }
 
+    /**
+     * Call tapi method with specified parameters
+     *
+     * @param method               tapi method
+     * @param additionalParameters method parameters
+     * @return parsed json as JsonElement
+     * @throws BTCEException if there was an error executing method, invalid json returned, or smth else
+     */
     private JsonElement call(String method, Map<String, Object> additionalParameters) throws BTCEException {
         String body = getBody(method, additionalParameters);
         Map<String, String> headers = getHeaders(body);
@@ -189,6 +314,13 @@ public class PrivateApi extends AbstractApi {
         return get(response, "return");
     }
 
+    /**
+     * Prepare request body
+     *
+     * @param method               tapi method
+     * @param additionalParameters filters/etc.
+     * @return prepared request body
+     */
     private String getBody(String method, Map<String, Object> additionalParameters) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("nonce", nonce.getAndIncrement());
@@ -203,6 +335,13 @@ public class PrivateApi extends AbstractApi {
                 .collect(joining("&"));
     }
 
+    /**
+     * Prepare request headers map.
+     * Singing request body with key\secret pair
+     *
+     * @param body request body
+     * @return headers for request
+     */
     private Map<String, String> getHeaders(String body) {
         mac.update(body.getBytes(Charset.forName("UTF-8")));
         Map<String, String> headers = new HashMap<>(this.headers);
@@ -211,6 +350,9 @@ public class PrivateApi extends AbstractApi {
         return headers;
     }
 
+    /**
+     * Parameters builder. Simply aggregate and construct additional parameters map for tapi requests
+     */
     private class ParametersBuilder {
 
         private final Map<String, Object> parameters;
