@@ -50,17 +50,17 @@ public enum Pair {
         this.sec = sec;
     }
 
-    /**
-     * Construct pair from two currencies
-     *
-     * @param prim primary currency
-     * @param sec  secondary currency
-     * @return Pair object regarding provided currencies
-     * @throws IllegalArgumentException if no such pair
-     */
-    public static Pair from(Currency prim, Currency sec) {
-        return valueOf(String.format("%s_%s", prim.name(), sec.name()));
-    }
+//    /**
+//     * Construct pair from two currencies
+//     *
+//     * @param prim primary currency
+//     * @param sec  secondary currency
+//     * @return Pair object regarding provided currencies
+//     * @throws IllegalArgumentException if no such pair
+//     */
+//    public static Pair from(Currency prim, Currency sec) {
+//        return valueOf(String.format("%s_%s", prim.name(), sec.name()));
+//    }
 
     /**
      * Prepare pairs for PublicV3 API url.

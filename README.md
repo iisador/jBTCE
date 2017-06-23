@@ -58,4 +58,4 @@ System.out.println(info);
 ```
 
 Next release goals:
-* Logging support
+* Nonce fix
