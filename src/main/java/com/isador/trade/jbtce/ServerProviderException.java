@@ -1,8 +1,10 @@
 package com.isador.trade.jbtce;
 
 /**
- * Created by isador
- * on 18.05.17
+ * Server provider exception
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public class ServerProviderException extends BTCEException {
 

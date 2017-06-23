@@ -13,8 +13,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Created by isador
- * on 05.04.17
+ * Default connector implementation.
+ * Relies on HttpURLConnection. Pure java.
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public class DefaultConnector implements Connector {
 
@@ -22,7 +25,7 @@ public class DefaultConnector implements Connector {
 
     @Override
     public String post(String url, String body, Map<String, String> headers) {
-        try{
+        try {
             return call(url, "POST", headers, body);
         } catch (IOException e) {
             throw new ConnectorException(e);
@@ -31,13 +34,23 @@ public class DefaultConnector implements Connector {
 
     @Override
     public String get(String url, Map<String, String> headers) throws ConnectorException {
-        try{
+        try {
             return call(url, "GET", headers, null);
         } catch (IOException e) {
             throw new ConnectorException(e);
         }
     }
 
+    /**
+     * Call method.
+     *
+     * @param url     url to call
+     * @param method  request method
+     * @param headers additional request headers
+     * @param body    request body
+     * @return response as string
+     * @throws IOException ioe:)
+     */
     private String call(String url, String method, Map<String, String> headers, String body) throws IOException {
         LOG.debug("{}: '{}'", method, url);
         HttpURLConnection uc = (HttpURLConnection) new URL(url).openConnection();

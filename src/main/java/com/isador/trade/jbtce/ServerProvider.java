@@ -16,33 +16,64 @@ import java.util.stream.Stream;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Created by isador
- * on 12.05.17
+ * Implement mirror switching
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public class ServerProvider {
-
     public static final String DEFAULT_SERVER = "https://btc-e.com/";
     public static final String[] DEFAULT_MIRRORS = {"https://btc-e.nz/"};
+    /**
+     * Server provider for only btc-e.com
+     */
+    public static final ServerProvider BTCE_COM = new ServerProvider(DEFAULT_SERVER);
+    /**
+     * Server provider for only btc-e.nz
+     */
+    public static final ServerProvider BTCE_NZ = new ServerProvider(DEFAULT_MIRRORS[0]);
     private static final Logger LOG = LoggerFactory.getLogger(ServerProvider.class);
     private static final String TEST_URL_TEMPLATE = "%sapi/3/fee/btc_usd";
     private static final String API_VALIDATION_TEMPLATE = "^\\{\\\"btc_usd\\\"\\:(\\d+|\\d+\\.\\d+)\\}$";
     private String currentServer;
     private String[] mirrors;
 
+    /**
+     * Create new server provider with current server and mirrors
+     *
+     * @param currentServer current server
+     * @param mirrors       mirrors
+     */
     public ServerProvider(String currentServer, String... mirrors) {
         this.currentServer = requireNonNull(currentServer, "Current server must be not null");
         this.mirrors = validateMirrors(mirrors);
     }
 
+    /**
+     * Create new server provider with list of servers.
+     * The first valid server will be used as current server, others will be mirrors
+     *
+     * @param mirrors server list
+     */
     public ServerProvider(String[] mirrors) {
         this.mirrors = validateMirrors(mirrors);
         nextMirror();
     }
 
+    /**
+     * Default server provider with btc-e.com as current server,
+     * btc-e.nz as mirror
+     */
     public ServerProvider() {
         this(DEFAULT_SERVER, DEFAULT_MIRRORS);
     }
 
+    /**
+     * Validate and distinct mirrors list
+     *
+     * @param mirrors server array
+     * @return prepared server list
+     */
     private String[] validateMirrors(String[] mirrors) {
         if (mirrors != null) {
             mirrors = Stream.of(mirrors)
@@ -56,14 +87,28 @@ public class ServerProvider {
         return new String[0];
     }
 
+    /**
+     * Get last server where api method was executed successfully
+     *
+     * @return server
+     */
     public String getCurrentServer() {
         return currentServer;
     }
 
+    /**
+     * @return mirrors array
+     */
     public String[] getMirrors() {
         return mirrors;
     }
 
+    /**
+     * Get next mirror from mirror list.
+     * If found one - becomes current server. Old current server becomes mirror
+     *
+     * @throws ServerProviderException if no valid server found
+     */
     public void nextMirror() {
         LOG.debug("Searching next mirror");
         String newServer = Stream.of(mirrors)
@@ -79,6 +124,13 @@ public class ServerProvider {
         currentServer = newServer;
     }
 
+    /**
+     * Test server availability.
+     * Tries to execute {$server_name}api/3/fee/btc_usd
+     *
+     * @param server server
+     * @return false if server is not available, or response doesn't match expected
+     */
     private boolean isServerReachable(String server) {
         try {
             HttpURLConnection urlConnection = prepareConnection(new URL(String.format(TEST_URL_TEMPLATE, server)));
@@ -93,6 +145,13 @@ public class ServerProvider {
         return false;
     }
 
+    /**
+     * Prepare connection
+     *
+     * @param url source url
+     * @return prepared url connection
+     * @throws IOException ioe
+     */
     private HttpURLConnection prepareConnection(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         AbstractApi.DEFAULT_HEADERS.forEach(urlConnection::setRequestProperty);

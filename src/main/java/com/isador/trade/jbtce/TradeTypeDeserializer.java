@@ -9,8 +9,10 @@ import com.isador.trade.jbtce.constants.TradeType;
 import java.lang.reflect.Type;
 
 /**
- * Created by isador
- * on 02.06.17
+ * Trade type deserializer
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public class TradeTypeDeserializer implements JsonDeserializer<TradeType> {
 

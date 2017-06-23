@@ -1,8 +1,10 @@
 package com.isador.trade.jbtce;
 
 /**
- * Created by isador
- * on 29.03.17
+ * Common exception.
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public class BTCEException extends RuntimeException {
 

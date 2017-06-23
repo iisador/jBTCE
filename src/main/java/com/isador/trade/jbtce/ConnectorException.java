@@ -1,8 +1,10 @@
 package com.isador.trade.jbtce;
 
 /**
- * Created by isador
- * on 16.05.17
+ * Connector exception
+ *
+ * @author isador
+ * @since 2.0.1
  */
 public class ConnectorException extends BTCEException {
 
