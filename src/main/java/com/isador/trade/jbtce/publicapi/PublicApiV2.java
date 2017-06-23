@@ -43,7 +43,7 @@ public class PublicApiV2 extends AbstractApi {
     }
 
     /**
-     * Provides all the information about pair.<br/>
+     * Provides all the information about pair.<br>
      * All information is provided over the past 24 hours.
      *
      * @param pair pair
@@ -58,7 +58,7 @@ public class PublicApiV2 extends AbstractApi {
     }
 
     /**
-     * Provides the information about the last 150 trades<br/>
+     * Provides the information about the last 150 trades<br>
      *
      * @param pair pair
      * @return trades array
@@ -88,7 +88,7 @@ public class PublicApiV2 extends AbstractApi {
     }
 
     /**
-     * Provides pair commission<br/>
+     * Provides pair commission<br>
      * The Commission is displayed for all users, it will not change even if it was reduced on your account in case of promotional pricing
      *
      * @param pair pair

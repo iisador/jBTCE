@@ -61,7 +61,7 @@ public class PublicApiV3 extends AbstractApi {
     }
 
     /**
-     * Provides commission for each pair<br/>
+     * Provides commission for each pair<br>
      * The Commission is displayed for all users, it will not change even if it was reduced on your account in case of promotional pricing.
      *
      * @param pairs pair

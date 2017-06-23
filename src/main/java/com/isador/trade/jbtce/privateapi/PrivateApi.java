@@ -93,8 +93,8 @@ public class PrivateApi extends AbstractApi {
     }
 
     /**
-     * Returns information about the user’s current balance, API-key privileges, the number of open orders and Server Time.<br/>
-     * To use this method you need a privilege of the key info.<br/>
+     * Returns information about the user’s current balance, API-key privileges, the number of open orders and Server Time.<br>
+     * To use this method you need a privilege of the key info.<br>
      *
      * @return userInfo
      * @throws BTCEException if was any error during execution
@@ -106,10 +106,10 @@ public class PrivateApi extends AbstractApi {
     }
 
     /**
-     * The basic method that can be used for creating orders and trading on the exchange.<br/>
-     * To use this method you need an API key privilege to trade.<br/>
-     * You can only create limit orders using this method, but you can emulate market orders using rate parameters. E.g. using rate=0.1 you can sell at the best market price.<br/>
-     * Each pair has a different limit on the minimum / maximum amounts, the minimum amount and the number of digits after the decimal point. All limitations can be obtained using the info method in PublicAPI v3.<br/>
+     * The basic method that can be used for creating orders and trading on the exchange.<br>
+     * To use this method you need an API key privilege to trade.<br>
+     * You can only create limit orders using this method, but you can emulate market orders using rate parameters. E.g. using rate=0.1 you can sell at the best market price.<br>
+     * Each pair has a different limit on the minimum / maximum amounts, the minimum amount and the number of digits after the decimal point. All limitations can be obtained using the info method in PublicAPI v3.<br>
      *
      * @param pair   pair
      * @param type   order type
@@ -197,8 +197,8 @@ public class PrivateApi extends AbstractApi {
     }
 
     /**
-     * Returns the history of transactions.<br/>
-     * To use this method you need a privilege of the info key.<br/>
+     * Returns the history of transactions.<br>
+     * To use this method you need a privilege of the info key.<br>
      *
      * @param fromNum transaction number from which to read
      * @param count   transactions count
@@ -232,9 +232,9 @@ public class PrivateApi extends AbstractApi {
     }
 
     /**
-     * Returns trade history.<br/>
-     * To use this method you need a privilege of the info key.<br/>
-     * This method doesn't do any operations upon retrieved trades list. List returned just as API  returns is.<br/>
+     * Returns trade history.<br>
+     * To use this method you need a privilege of the info key.<br>
+     * This method doesn't do any operations upon retrieved trades list. List returned just as API  returns is.<br>
      * <pre>
      * {@code
      * // getLast 5 transactions
