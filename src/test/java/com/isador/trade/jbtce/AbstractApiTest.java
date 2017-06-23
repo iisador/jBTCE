@@ -71,7 +71,7 @@ public class AbstractApiTest {
 
     @Test
     public void testProcessResponseInvalidJson() {
-        thrown.expect(IllegalStateException.class);
+        thrown.expect(BTCEException.class);
         thrown.expectMessage("Not a JSON Object: \"bla bla bla\"");
         when(connector.get("https://btc-e.com/", headers)).thenReturn("bla bla bla");
 
