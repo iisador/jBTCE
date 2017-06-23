@@ -458,6 +458,7 @@ public class PrivateApiTest {
         Order actualOrder = orders.get(0);
         assertEquals("Actual order doesn't match", expectedOrder, actualOrder);
         assertEquals("Actual order id doesn't match", expectedOrder.getId(), actualOrder.getId());
+        assertEquals("Actual order start amount doesn't equals", expectedOrder.getStartAmount(), actualOrder.getStartAmount(), 0.000001);
         assertEquals("Actual order amount doesn't match", expectedOrder.getAmount(), actualOrder.getAmount(), 0.000001);
         assertEquals("Actual order status doesn't match", expectedOrder.getStatus(), actualOrder.getStatus());
         assertEquals("Actual order type doesn't match", expectedOrder.getType(), actualOrder.getType());
