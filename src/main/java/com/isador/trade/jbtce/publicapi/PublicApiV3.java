@@ -9,7 +9,6 @@ import com.isador.trade.jbtce.constants.Currency;
 import com.isador.trade.jbtce.constants.Pair;
 import com.isador.trade.jbtce.constants.TradeType;
 import com.isador.trade.jbtce.publicapi.Depth.SimpleOrder;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +16,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -72,8 +72,7 @@ public class PublicApiV3 extends AbstractApi {
         JsonObject json = call("fee", null, pairs);
 
         return Stream.of(pairs)
-                .map(pair -> ImmutablePair.of(pair, json.get(pair.getName()).getAsDouble())) // todo: remove unused map
-                .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
+                .collect(toMap(identity(), pair -> json.get(pair.getName()).getAsDouble()));
     }
 
     /**
@@ -87,8 +86,7 @@ public class PublicApiV3 extends AbstractApi {
         JsonObject json = call("ticker", null, pairs);
 
         return Stream.of(pairs)
-                .map(pair -> ImmutablePair.of(pair, gson.fromJson(json.get(pair.getName()), Tick.class))) // todo: remove unused map
-                .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
+                .collect(toMap(identity(), pair -> gson.fromJson(json.get(pair.getName()), Tick.class)));
     }
 
     /**
@@ -115,8 +113,7 @@ public class PublicApiV3 extends AbstractApi {
         JsonObject json = call("depth", limit, pairs);
 
         return Stream.of(pairs)
-                .map(pair -> ImmutablePair.of(pair, gson.fromJson(json.get(pair.getName()), Depth.class)))
-                .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
+                .collect(toMap(identity(), pair -> gson.fromJson(json.get(pair.getName()), Depth.class)));
     }
 
     /**
@@ -143,8 +140,7 @@ public class PublicApiV3 extends AbstractApi {
         JsonObject json = call("trades", limit, pairs);
 
         return Stream.of(pairs)
-                .map(pair -> ImmutablePair.of(pair, toTradeList(pair, json.get(pair.getName()).getAsJsonArray())))
-                .collect(toMap(ImmutablePair::getLeft, ImmutablePair::getRight));
+                .collect(toMap(identity(), pair -> toTradeList(pair, json.get(pair.getName()).getAsJsonArray())));
     }
 
     /**
